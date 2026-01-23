@@ -1,19 +1,19 @@
 import { cva } from "../../utils/variants";
 
 export const avatarVariants = cva(
-    "relative flex shrink-0 overflow-hidden rounded-full transition-all duration-200 ease-mechanical",
+    "relative flex shrink-0 overflow-hidden rounded-full transition-all duration-200 ease-out",
     {
         variants: {
             size: {
-                sm: "h-8 w-8", // 32px
-                md: "h-10 w-10", // 40px
-                lg: "h-12 w-12", // 48px
-                xl: "h-14 w-14", // 56px
+                sm: "h-8 w-8 text-[10px]", // 32px - Matches Button sm
+                md: "h-10 w-10 text-xs",   // 40px - Matches Button default
+                lg: "h-12 w-12 text-sm",   // 48px - Matches Button lg
+                xl: "h-14 w-14 text-base", // 56px
             },
             variant: {
-                default: "bg-muted/50 shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]", // Machined well without rim (no border)
+                default: "bg-muted shadow-sm",
                 flat: "bg-muted shadow-none",
-                outline: "border-2 border-border bg-transparent shadow-none",
+                outline: "bg-background ring-1 ring-border shadow-sm dark:ring-white/20", // Crisp ring instead of border
             },
         },
         defaultVariants: {
@@ -24,17 +24,17 @@ export const avatarVariants = cva(
 );
 
 export const avatarImageVariants = cva(
-    "aspect-square h-full w-full rounded-full object-cover transition-opacity duration-200" // Added rounded-full to match inner radius
+    "aspect-square h-full w-full rounded-full object-cover transition-opacity duration-200"
 );
 
 export const avatarFallbackVariants = cva(
-    "flex h-full w-full items-center justify-center rounded-full bg-muted font-medium text-muted-foreground",
+    "flex h-full w-full items-center justify-center rounded-full bg-muted font-medium tracking-tight text-muted-foreground", // Added tracking-tight and font-medium
     {
         variants: {
             variant: {
                 default: "animate-in fade-in zoom-in-50 duration-200",
                 flat: "",
-                outline: "",
+                outline: "bg-background", // Ensure fallback doesn't look like a solid blob in outline mode
             }
         },
         defaultVariants: {
