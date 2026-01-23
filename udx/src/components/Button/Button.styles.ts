@@ -1,32 +1,28 @@
 import { cva } from "../../utils/variants";
 
 export const buttonVariants = cva(
-    // Base: Strictly controlled transitions, mechanical easing, no bounce.
-    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[transform,box-shadow,background-color,color] duration-200 ease-mechanical focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-slate-900 disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 active:scale-95 motion-reduce:transition-none motion-reduce:active:transform-none select-none",
+    // Base: Premium feel with smooth transitions, refined typography, and tactile feedback.
+    "relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium tracking-tight transition-[all] duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 active:scale-[0.98] select-none ring-offset-background",
     {
         variants: {
             variant: {
                 default:
-                    "bg-primary text-primary-foreground shadow-[var(--shadow-button-rest),var(--shadow-button-lip)] hover:bg-primary/90 hover:shadow-md active:shadow-[0_0_0_0_transparent,var(--shadow-button-lip)] active:translate-y-[0.75px]",
+                    "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 hover:shadow-md",
                 destructive:
-                    "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 hover:shadow-md active:shadow-none active:translate-y-[0.75px]",
+                    "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 hover:shadow-md",
                 outline:
-                    "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground hover:shadow-md active:shadow-none active:translate-y-[0.75px]",
+                    "border border-input bg-background hover:bg-accent hover:text-accent-foreground hover:border-foreground/20 dark:border-white/10 dark:hover:border-white/20",
                 secondary:
-                    "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 hover:shadow-md active:shadow-none active:translate-y-[0.75px]",
-                ghost: "hover:bg-accent hover:text-accent-foreground active:bg-accent/80",
+                    "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+                ghost: "border border-transparent hover:bg-accent hover:text-accent-foreground",
                 link: "text-primary underline-offset-4 hover:underline",
             },
             size: {
-                default: "h-10 px-4 py-2", // Medium (Default): 40px
-                sm: "h-8 rounded-md px-3 text-xs active:translate-y-[0.5px]", // Small: 32px
-                lg: "h-12 rounded-md px-6 text-base active:translate-y-[1px]", // Large: 48px
-
-                // System-Level Icon Sizes (Square Geometry Tuning)
-                // Physics Override: Less scale (0.985 vs 0.98) and less travel to prevent "wobbly" feel
-                "icon-sm": "h-8 w-8 p-0 [&_svg]:size-4 active:scale-[0.985] active:translate-y-[0.5px]",
-                "icon-md": "h-9 w-9 p-0 [&_svg]:size-4 active:scale-[0.985] active:translate-y-[0.5px]",
-                "icon-lg": "h-10 w-10 p-0 [&_svg]:size-5 active:scale-[0.985] active:translate-y-[0.5px]",
+                default: "h-10 px-5 py-2.5", // Standard comfortable touch target
+                sm: "h-8 rounded-md px-3 text-xs", // Distinctly smaller
+                lg: "h-12 rounded-md px-8 text-base", // Distinctly larger
+                icon: "h-10 w-10",
+                "icon-sm": "h-8 w-8",
             },
         },
         defaultVariants: {
