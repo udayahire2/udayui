@@ -4,10 +4,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, Terminal, Copy, Check } from "lucide-react";
-
-gsap.registerPlugin(ScrollTrigger);
+import { motion } from "framer-motion";
+import { Terminal } from "lucide-react";
 
 interface HeroSectionProps {
     title?: string;
@@ -17,59 +15,58 @@ interface HeroSectionProps {
 }
 
 export function HeroSection({
-    title = "Build faster with UDX UI",
-    subtitle = "A collection of premium Shadcn-based blocks to accelerate your development workflow. Engineered for precision and scale.",
-    primaryAction = "Get Started",
+    title = "Transform Your Workflow",
+    subtitle = "The complete platform for building and scaling your SaaS business. Automated, secure, and developer-friendly.",
+    primaryAction = "Start Building",
     secondaryAction = "Documentation",
 }: HeroSectionProps) {
-    const [copied, setCopied] = useState(false);
     const containerRef = useRef<HTMLElement>(null);
     const bgRef = useRef<SVGSVGElement>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
 
-    // Scroll parallax for content
-    const { scrollY } = useScroll();
-    const y1 = useTransform(scrollY, [0, 500], [0, 100]); // Foreground moves slightly faster
-    const y2 = useTransform(scrollY, [0, 500], [0, 50]);  // Background moves slower
-
-    // Background Motion System
+    // Motion System Integration
     useEffect(() => {
-        if (!bgRef.current) return;
+        if (typeof window !== "undefined") {
+            gsap.registerPlugin(ScrollTrigger);
+        }
+        if (!bgRef.current || !containerRef.current) return;
 
         const ctx = gsap.context(() => {
-            // Group 1: Primary Curves - Ultra slow drift (60s)
-            gsap.to(".layer-primary", {
-                x: -20,
-                duration: 60,
+            // --------------------------------------------------------
+            // 1. TEMPORAL VARIATION (Layered Time)
+            // --------------------------------------------------------
+
+            // Layer 1: Primary Curves (The Drift)
+            // Long, sine-based linear drift. Feels like a deep current.
+            const primaryTimeline = gsap.to(".layer-primary", {
+                x: -40,
+                duration: 80, // Extended duration
                 ease: "sine.inOut",
                 yoyo: true,
                 repeat: -1,
             });
 
-            // Group 2: Secondary Curves - Phase shifted vertical sway (45s)
-            gsap.to(".layer-secondary", {
-                y: 15,
+            // Layer 2: Secondary Curves (The Variation)
+            // Shorter, asymmetric easing. Adds "life".
+            const secondaryTimeline = gsap.to(".layer-secondary", {
+                y: -15,
                 duration: 45,
-                ease: "sine.inOut",
+                ease: "power1.inOut", // Slight acceleration bias
                 yoyo: true,
                 repeat: -1,
                 stagger: {
-                    amount: 10,
+                    amount: 8,
                     from: "random"
                 }
             });
 
-            // Group 3: Grid - Near static, very subtle breathing (30s)
-            gsap.to(".layer-grid", {
-                opacity: 0.4,
-                duration: 30,
-                ease: "sine.inOut",
-                yoyo: true,
-                repeat: -1,
-            });
+            // --------------------------------------------------------
+            // 2. SCROLL OWNERSHIP (GSAP is Truth)
+            // --------------------------------------------------------
 
-            // Interactive: Scroll coupling
-            gsap.to(bgRef.current, {
-                y: 50,
+            // Parallax for Content (Foreground)
+            gsap.to(contentRef.current, {
+                y: 120, // Moves slower than scroll speed
                 ease: "none",
                 scrollTrigger: {
                     trigger: containerRef.current,
@@ -79,25 +76,50 @@ export function HeroSection({
                 },
             });
 
+            // Parallax for Background (Deep Space)
+            gsap.to(bgRef.current, {
+                y: 50, // Moves very slowly
+                ease: "none",
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true,
+                },
+            });
+
+            // --------------------------------------------------------
+            // 3. STATE AWARENESS (Motion Decay)
+            // --------------------------------------------------------
+
+            ScrollTrigger.create({
+                trigger: containerRef.current,
+                start: "top top",
+                end: "bottom top",
+                onLeave: () => {
+                    // Decay motion when user leaves the hero area
+                    // "If everything moves, nothing feels intentional"
+                    gsap.to([primaryTimeline, secondaryTimeline], { timeScale: 0.1, duration: 2 });
+                },
+                onEnterBack: () => {
+                    // Restore motion when re-entering
+                    gsap.to([primaryTimeline, secondaryTimeline], { timeScale: 1, duration: 1 });
+                }
+            });
+
         }, containerRef);
 
         return () => ctx.revert();
     }, []);
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText("npm i udx-ui");
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
+    // --------------------------------------------------------
+    // 4. CONTENT ENTRANCE (Framer Motion Hierarchy)
+    // --------------------------------------------------------
 
-    // Motion Hierarchies - Engineered Entrance
-    const transitionBase = { duration: 1.2, ease: [0.16, 1, 0.3, 1] }; // Engineered EaseOut
+    // "Engineered" easing: No bounce, calm arrival.
+    const transitionBase = { duration: 1.2, ease: [0.16, 1, 0.3, 1] };
 
     const sequence = {
-        badge: {
-            hidden: { opacity: 0, y: 8 },
-            visible: { opacity: 1, y: 0, transition: { ...transitionBase, delay: 0.1 } }
-        },
         headline: {
             hidden: { opacity: 0, y: 16 },
             visible: { opacity: 1, y: 0, transition: { ...transitionBase, duration: 1.4, delay: 0.2 } }
@@ -115,13 +137,12 @@ export function HeroSection({
     return (
         <section
             ref={containerRef}
-            className="relative flex min-h-[90vh] w-full flex-col items-center justify-center overflow-hidden bg-[#0a0a0a] px-6 text-center text-white sm:px-12 selection:bg-white/20 perspective-[1000px]"
+            className="relative flex min-h-[95vh] w-full flex-col items-center justify-center overflow-hidden bg-background px-6 text-center text-foreground sm:px-12 selection:bg-primary/10 perspective-[1000px]"
         >
 
-            {/* 📐 System Background - Layered Logic */}
-            <motion.div
-                style={{ y: y2 }}
-                className="absolute inset-0 z-0 pointer-events-none opacity-[0.4] mix-blend-screen"
+            {/* 📐 SVG Environment */}
+            <div
+                className="absolute inset-0 z-0 pointer-events-none dark:mix-blend-screen"
             >
                 <svg
                     ref={bgRef}
@@ -129,83 +150,91 @@ export function HeroSection({
                     viewBox="0 0 1440 900"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    preserveAspectRatio="none"
+                    preserveAspectRatio="xMidYMid slice"
                 >
-                    {/* Layer 0: Static Grid foundation */}
-                    <pattern id="grid-pattern" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
-                        <path d="M 32 0 L 0 0 0 32" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.04" />
-                    </pattern>
-                    <rect className="layer-grid" width="100%" height="100%" fill="url(#grid-pattern)" opacity="0.3" />
+                    {/* Layer 1: ANCHOR LAYER (Absolute Stillness) */}
+                    {/* Visual grounding. Mathematical reference points. Never moves. */}
+                    <g className="layer-anchor opacity-10 dark:opacity-20">
+                        {/* Horizontal horizon line */}
+                        <line x1="0" y1="450" x2="1440" y2="450" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 4" opacity="0.5" />
+                        {/* Vertical reference lines */}
+                        <line x1="360" y1="0" x2="360" y2="900" stroke="currentColor" strokeWidth="0.5" opacity="0.3" />
+                        <line x1="1080" y1="0" x2="1080" y2="900" stroke="currentColor" strokeWidth="0.5" opacity="0.3" />
+                        {/* Technical markers / Crosshairs */}
+                        <path d="M 350 450 L 370 450 M 360 440 L 360 460" stroke="currentColor" strokeWidth="0.5" />
+                        <path d="M 1070 450 L 1090 450 M 1080 440 L 1080 460" stroke="currentColor" strokeWidth="0.5" />
+                    </g>
 
-                    {/* Layer 1: Primary Flow (Horizontal Emphasis) */}
-                    <path className="layer-primary" d="M-100 250 C 300 250, 500 150, 720 200 S 1300 250, 1640 250" stroke="white" strokeWidth="1" strokeOpacity="0.08" fill="none" />
-                    <path className="layer-primary" d="M-100 270 C 300 270, 520 170, 740 220 S 1320 270, 1640 270" stroke="white" strokeWidth="1" strokeOpacity="0.06" fill="none" />
+                    {/* Layer 2: FLOW LAYER (Primary Structure) */}
+                    {/* Long continuous curves. Defines direction. Readable at a glance. */}
+                    <path
+                        className="layer-primary stroke-foreground/15 dark:stroke-foreground/10"
+                        d="M -200 650 C 300 650, 600 500, 1000 550 S 1600 600, 2000 500"
+                        stroke="currentColor"
+                        strokeWidth="1"
+                        fill="none"
+                    />
+                    <path
+                        className="layer-primary stroke-foreground/15 dark:stroke-foreground/10"
+                        d="M -200 350 C 400 350, 700 450, 1100 400 S 1700 300, 2000 400"
+                        stroke="currentColor"
+                        strokeWidth="1"
+                        fill="none"
+                    />
 
-                    <path className="layer-primary" d="M-100 700 C 400 700, 600 800, 720 750 S 1000 700, 1640 700" stroke="white" strokeWidth="1" strokeOpacity="0.08" fill="none" />
-                    <path className="layer-primary" d="M-100 720 C 400 720, 620 820, 740 770 S 1020 720, 1640 720" stroke="white" strokeWidth="1" strokeOpacity="0.06" fill="none" />
-
-                    {/* Layer 2: Secondary Flow (Vertical / Phase Emphasis) */}
-                    <path className="layer-secondary" d="M-100 400 Q 720 300 1540 400" stroke="white" strokeWidth="0.5" strokeOpacity="0.05" strokeDasharray="4 4" fill="none" />
-                    <path className="layer-secondary" d="M-100 500 Q 720 600 1540 500" stroke="white" strokeWidth="0.5" strokeOpacity="0.05" strokeDasharray="4 4" fill="none" />
+                    {/* Layer 3: DETAIL LAYER (Secondary Information) */}
+                    {/* Dashed lines, offsets. Complexity without noise. */}
+                    <path
+                        className="layer-secondary stroke-foreground/10 dark:stroke-foreground/5"
+                        d="M -200 670 C 300 670, 600 520, 1000 570 S 1600 620, 2000 520"
+                        stroke="currentColor"
+                        strokeWidth="0.5"
+                        strokeDasharray="6 6"
+                        fill="none"
+                    />
+                    <path
+                        className="layer-secondary stroke-foreground/10 dark:stroke-foreground/5"
+                        d="M -200 330 C 400 330, 700 430, 1100 380 S 1700 280, 2000 380"
+                        stroke="currentColor"
+                        strokeWidth="0.5"
+                        strokeDasharray="6 6"
+                        fill="none"
+                    />
                 </svg>
-            </motion.div>
+            </div>
 
-            {/* Content Container */}
+            {/* Content Layer */}
             <motion.div
-                style={{ y: y1 }}
+                ref={contentRef}
                 className="relative z-10 mx-auto max-w-3xl flex flex-col items-center gap-8"
                 initial="hidden"
                 animate="visible"
             >
 
-                {/* 1. Badge - Metadata (Fastest) */}
-                <motion.div variants={sequence.badge}>
-                    <button
-                        onClick={handleCopy}
-                        className="group flex items-center gap-3 rounded-full border border-white/5 bg-white/[0.02] pl-2.5 pr-4 py-1.5 transition-colors hover:bg-white/[0.05] hover:border-white/10"
-                    >
-                        <div className="flex items-center gap-2">
-                            <span className="relative flex h-1.5 w-1.5">
-                                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-neutral-400"></span>
-                            </span>
-                            <span className="font-mono text-[10px] text-neutral-500 tracking-wider uppercase">v3.0.0</span>
-                        </div>
-                        <div className="h-3 w-[1px] bg-white/5"></div>
-                        <span className="font-mono text-xs text-neutral-400 group-hover:text-neutral-200 transition-colors">
-                            npm i udx-ui
-                        </span>
-                        {copied ? (
-                            <Check className="h-3 w-3 text-white" />
-                        ) : (
-                            <Copy className="h-3 w-3 text-neutral-600 transition-colors group-hover:text-neutral-400" />
-                        )}
-                    </button>
-                </motion.div>
-
-                {/* 2. Headline - Core Message (Slowest, confident) */}
+                {/* Headline */}
                 <motion.h1
                     variants={sequence.headline}
-                    className="text-5xl font-medium tracking-tight text-white sm:text-7xl md:leading-[1.1] sm:tracking-[-0.02em]"
+                    className="text-5xl font-medium tracking-tight text-foreground/90 sm:text-7xl md:leading-[1.1] sm:tracking-[-0.02em]"
                 >
                     {title}
                 </motion.h1>
 
-                {/* 3. Subtitle - Context (Soft) */}
+                {/* Subtitle */}
                 <motion.p
                     variants={sequence.subtitle}
-                    className="max-w-xl text-lg text-neutral-400/80 sm:text-lg leading-relaxed antialiased"
+                    className="max-w-xl text-lg text-muted-foreground sm:text-lg leading-relaxed antialiased font-light"
                 >
                     {subtitle}
                 </motion.p>
 
-                {/* 4. Actions - Utility (Last) */}
+                {/* Actions */}
                 <motion.div
                     variants={sequence.actions}
                     className="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row"
                 >
                     <Button
                         size="lg"
-                        className="h-11 min-w-[140px] rounded-md bg-white text-black hover:bg-neutral-200 font-medium text-sm tracking-wide transition-all active:translate-y-[1px]"
+                        className="h-11 min-w-[140px] rounded-md bg-foreground text-background hover:bg-foreground/90 font-medium text-sm tracking-normal transition-all active:translate-y-[1px]"
                     >
                         {primaryAction}
                     </Button>
@@ -213,7 +242,7 @@ export function HeroSection({
                     <Button
                         size="lg"
                         variant="ghost"
-                        className="h-11 min-w-[140px] rounded-md text-neutral-500 hover:text-white hover:bg-white/[0.04] text-sm tracking-wide transition-colors border border-transparent hover:border-white/5"
+                        className="h-11 min-w-[140px] rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/10 text-sm tracking-normal transition-colors border border-transparent hover:border-border"
                     >
                         <Terminal className="mr-2 h-3.5 w-3.5" />
                         {secondaryAction}
