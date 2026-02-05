@@ -1,134 +1,186 @@
 "use client";
 
-import React, { useState } from "react";
-import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useTransform, useSpring, useMotionTemplate } from "framer-motion";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/ui/mode-toggle";
-import { Menu, X, Command, Sun, Moon } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import { Menu, Command, ArrowRight } from "lucide-react";
 import { useTheme } from "next-themes";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 const navItems = [
-    { name: "Docs", href: "#docs" },
-    { name: "Figma", href: "#figma" },
-    { name: "Roadmap", href: "#roadmap" },
+    { name: "Mission", href: "#" },
+    { name: "Technology", href: "#" },
+    { name: "Systems", href: "#" },
+    { name: "Status", href: "#" },
 ];
 
 export default function HeaderSecond() {
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const { scrollY } = useScroll();
+    const [isMobileOpen, setIsMobileOpen] = useState(false);
     const { theme, setTheme } = useTheme();
 
+    // --- Animation Hooks ---
+
+    // 1. GAP: Desktop 24px->0px | Mobile 12px->0px
+    // We can't easily conditionalize hooks based on window size without re-render, 
+    // but we can use CSS media queries for initial layout and motion for the dynamic part.
+    // Ideally, useTransform with a smaller start value would be nicer, but let's stick to a safe 24px max for now
+    // and handle mobile spacing via class suppression if needed.
+    // Actually, let's keep the gap dynamic but aggressive.
+
+    const gapRaw = useTransform(scrollY, [0, 80], [24, 0]);
+    const gap = useSpring(gapRaw, { stiffness: 300, damping: 30 });
+
+    // 2. CONTAINER PADDING
+    const paddingRaw = useTransform(scrollY, [0, 80], [0, 6]);
+    const padding = useSpring(paddingRaw, { stiffness: 300, damping: 30 });
+
+    // 3. CONTAINER BACKGROUND
+    const bgOpacity = useTransform(scrollY, [60, 100], [0, 1]);
+    const blurValue = useTransform(scrollY, [60, 100], [0, 16]);
+
+    // 4. ITEM TRANSFORMS
+    const itemBorderOpacity = useTransform(scrollY, [0, 50], [1, 0]);
+    const itemBgOpacity = useTransform(scrollY, [0, 50], [1, 0]);
+
+    // 5. LOGO TEXT WIDTH
+    const logoTextScale = useTransform(scrollY, [0, 50], [1, 0]);
+    const logoTextOpacity = useTransform(scrollY, [0, 30], [1, 0]);
+    const logoTextWidth = useTransform(scrollY, [0, 50], ["auto", "0px"]);
+
+    // 6. MAIN CONTAINER STYLES
+    const containerBg = useMotionTemplate`rgba(${theme === 'dark' ? '0,0,0' : '255,255,255'}, ${bgOpacity})`;
+    const containerBorder = useMotionTemplate`rgba(${theme === 'dark' ? '255,255,255' : '0,0,0'}, ${useTransform(scrollY, [60, 80], [0, 0.1])})`;
+    const containerShadow = useMotionTemplate`0 10px 40px -10px rgba(0,0,0,${useTransform(scrollY, [60, 100], [0, 0.1])})`;
+
+    // Item Styles
+    const itemBg = useMotionTemplate`rgba(${theme === 'dark' ? '0,0,0' : '255,255,255'}, ${itemBgOpacity})`;
+    const itemBorder = useMotionTemplate`rgba(${theme === 'dark' ? '255,255,255' : '0,0,0'}, ${useTransform(itemBorderOpacity, v => v * 0.1)})`;
+
     return (
-        <>
-            <motion.header
-                initial={{ y: -20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-[90%] md:max-w-5xl"
+        <div className="fixed inset-x-0 top-6 z-50 flex justify-center pointer-events-none px-4 md:px-0">
+            {/* Added padding x for mobile safety */}
+
+            <motion.div
+                style={{
+                    gap: gap,
+                    padding: padding,
+                    background: containerBg,
+                    backdropFilter: useMotionTemplate`blur(${blurValue}px)`,
+                    borderRadius: "9999px",
+                    borderWidth: "1px",
+                    borderColor: containerBorder,
+                    boxShadow: containerShadow,
+                }}
+                className="flex items-center pointer-events-auto overflow-hidden transition-colors max-w-full"
             >
-                <div className="mx-auto bg-[#0a0a0a] border border-white/10 rounded-full px-2 py-2 flex items-center justify-between shadow-[0_8px_32px_rgba(0,0,0,0.24)]">
-
-                    {/* Left: Logo */}
-                    <Link href="/" className="flex items-center gap-3 pl-3 pr-4 group">
-                        <div className="relative flex items-center justify-center w-8 h-8 rounded-lg bg-neutral-800 border border-white/10 group-hover:bg-neutral-700 transition-colors">
-                            <div className="absolute inset-0 bg-white/5 rounded-lg"></div>
-                            <Command className="w-4 h-4 text-white" />
-                            {/* Dot for flavor */}
-                            <div className="absolute -bottom-0.5 -right-0.5 w-1.5 h-1.5 bg-white rounded-full border border-[#0a0a0a]"></div>
+                {/* --- ISLAND 1: LOGO --- */}
+                <motion.div
+                    style={{
+                        backgroundColor: itemBg,
+                        borderColor: itemBorder,
+                    }}
+                    className="h-12 flex items-center px-2 rounded-full border shadow-sm shrink-0 overflow-hidden"
+                >
+                    <div className="flex items-center gap-3 cursor-pointer group px-3">
+                        <div className="w-6 h-6 bg-foreground text-background flex items-center justify-center rounded-md shrink-0">
+                            <Command className="w-3 h-3" />
                         </div>
-                        <div className="flex flex-col leading-none">
-                            <span className="font-bold text-white tracking-tight text-[15px]">UDX</span>
-                            <span className="text-[10px] text-neutral-400 font-medium tracking-wider uppercase">UI Kit</span>
-                        </div>
-                    </Link>
+                        <motion.div
+                            style={{
+                                opacity: logoTextOpacity,
+                                width: logoTextWidth,
+                                scale: logoTextScale,
+                                transformOrigin: "left center"
+                            }}
+                            className="overflow-hidden flex items-center whitespace-nowrap"
+                        >
+                            <span className="font-bold text-sm tracking-tight">
+                                UDX <span className="text-muted-foreground font-normal">LABS</span>
+                            </span>
+                        </motion.div>
+                    </div>
+                </motion.div>
 
-                    {/* Middle: Desktop Nav */}
-                    <nav className="hidden md:flex items-center gap-1">
+                {/* --- ISLAND 2: NAVIGATION (DESKTOP ONLY) --- */}
+                <motion.div
+                    style={{
+                        backgroundColor: itemBg,
+                        borderColor: itemBorder,
+                    }}
+                    className="hidden md:flex h-12 items-center rounded-full border shadow-sm px-1.5 shrink-0"
+                >
+                    <nav className="flex items-center gap-0.5">
                         {navItems.map((item) => (
-                            <Link
+                            <a
                                 key={item.name}
                                 href={item.href}
-                                className="px-4 py-2 text-sm font-medium text-neutral-400 hover:text-white transition-colors"
+                                className="relative px-4 py-2 text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-all group"
                             >
                                 {item.name}
-                            </Link>
+                            </a>
                         ))}
                     </nav>
+                </motion.div>
 
-                    {/* Right: Actions */}
-                    <div className="flex items-center gap-1 pr-1">
+                {/* --- ISLAND 3: ACTIONS --- */}
+                <motion.div
+                    style={{
+                        backgroundColor: itemBg,
+                        borderColor: itemBorder,
+                    }}
+                    className="h-12 flex items-center px-1.5 gap-2 rounded-full border shadow-sm shrink-0"
+                >
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                        className="w-9 h-9 rounded-full shrink-0"
+                    >
+                        <div className="w-4 h-4 rounded-full border border-current opacity-50" />
+                    </Button>
 
-                        {/* Desktop: SignIn */}
-                        <Button
-                            variant="ghost"
-                            className="hidden md:inline-flex text-neutral-300 hover:text-white hover:bg-white/5 rounded-full px-5 h-10 font-medium"
-                        >
-                            SignIn
-                        </Button>
+                    <Button className="hidden md:flex h-9 px-5 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20 shrink-0">
+                        Get Access
+                    </Button>
 
-                        {/* Mobile: SignIn (Inside pill in original design, but let's keep it here for now or distinct) 
-                            Actually, the mobile design shows SignIn inside. We'll handle mobile layout shifts via utility classes.
-                        */}
-                        <Button
-                            variant="ghost"
-                            className="md:hidden inline-flex text-neutral-300 hover:text-white hover:bg-white/5 rounded-full px-4 h-9 font-medium text-sm"
-                        >
-                            SignIn
-                        </Button>
+                    <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
+                        <SheetTrigger asChild>
+                            <Button variant="ghost" size="icon" className="md:hidden w-9 h-9 shrink-0">
+                                <Menu className="w-4 h-4" />
+                            </Button>
+                        </SheetTrigger>
+                        <SheetContent side="top" className="w-full h-full border-none bg-background/95 backdrop-blur-xl pt-20">
+                            <VisuallyHidden.Root>
+                                <SheetTitle>Menu</SheetTitle>
+                            </VisuallyHidden.Root>
 
-                        {/* Get Started Button */}
-                        <Button
-                            className="bg-white hover:bg-neutral-200 text-black rounded-full px-6 h-10 font-medium transition-all shadow-lg shadow-white/5 mx-1"
-                        >
-                            Get Started
-                        </Button>
+                            {/* Mobile Menu Content - Staggered entrance could go here */}
+                            <div className="flex flex-col items-center gap-8 px-8">
+                                <div className="flex flex-col items-center gap-6 w-full">
+                                    {navItems.map(item => (
+                                        <a
+                                            key={item.name}
+                                            href={item.href}
+                                            className="text-3xl font-light tracking-tight w-full text-center py-2 active:bg-accent rounded-xl transition-colors"
+                                        >
+                                            {item.name}
+                                        </a>
+                                    ))}
+                                </div>
 
-                        {/* Theme Toggle Custom */}
-                        <button
-                            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                            className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/5 text-neutral-400 hover:text-white transition-colors"
-                        >
-                            <Sun className="w-5 h-5" />
-                        </button>
+                                <div className="w-12 h-px bg-border" />
 
-                        {/* Mobile Hamburger */}
-                        <div className="md:hidden pl-1 border-l border-white/10 ml-1">
-                            <button
-                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                                className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/5 text-white transition-colors"
-                            >
-                                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Mobile Menu Dropdown (if needed, though image doesn't explicitly show expanded state, standard practice implies it) */}
-                <AnimatePresence>
-                    {mobileMenuOpen && (
-                        <motion.div
-                            initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                            transition={{ duration: 0.2 }}
-                            className="absolute top-full mt-2 left-0 w-full bg-[#0a0a0a] border border-white/10 rounded-2xl p-2 shadow-2xl overflow-hidden z-40"
-                        >
-                            <nav className="flex flex-col">
-                                {navItems.map((item) => (
-                                    <Link
-                                        key={item.name}
-                                        href={item.href}
-                                        className="px-4 py-3 text-sm font-medium text-neutral-400 hover:text-white hover:bg-white/5 rounded-xl transition-all"
-                                        onClick={() => setMobileMenuOpen(false)}
-                                    >
-                                        {item.name}
-                                    </Link>
-                                ))}
-                            </nav>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </motion.header>
-        </>
+                                <Button className="w-full max-w-xs h-12 rounded-xl text-base shadow-xl bg-blue-600 hover:bg-blue-700 text-white">
+                                    Get Access Now
+                                </Button>
+                            </div>
+                        </SheetContent>
+                    </Sheet>
+                </motion.div>
+            </motion.div>
+        </div>
     );
 }
