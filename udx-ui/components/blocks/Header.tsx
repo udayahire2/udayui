@@ -64,7 +64,7 @@ export function Header() {
     React.useEffect(() => {
         const timer = setTimeout(() => {
             setIsLoaded(true);
-        }, 3000);
+        }, 1500);
         return () => clearTimeout(timer);
     }, []);
 
@@ -120,7 +120,7 @@ export function Header() {
             y: -12,
             scale: 0.98,
             filter: "blur(4px)",
-            transition: { duration: 0.15, ease: "easeOut" }
+            transition: { duration: 0.15, ease: "power4.out" }
         }
     };
 

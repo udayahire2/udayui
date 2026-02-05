@@ -1,4 +1,4 @@
-// import { Header } from "@/components/blocks/Header";
+
 
 export default function PreviewLayout({
     children,
@@ -7,7 +7,7 @@ export default function PreviewLayout({
 }) {
     return (
         <div className="min-h-screen bg-background font-sans antialiased relative">
-            
+         
             {children}
         </div>
     );
