@@ -33,10 +33,28 @@ const useSound = (url: string) => {
 // --- Theme Trigger Component ---
 const ThemeTrigger = () => {
     const { theme, setTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
     const playSound = useSound(AUDIO_FILE_PATH);
-    // Actually, let's use a very simple synthesized sound or just rely on the placeholder.
-    // The provided base64 is a placeholder; usually we'd want a real short 'click' mp3.
-    // For now, assume it works.
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    // Prevent hydration mismatch by rendering a placeholder until mounted
+    // Or render a static version if possible, but for this morphing icon, loading state is safer.
+    if (!mounted) {
+        return (
+            <Button
+                variant="ghost"
+                size="icon"
+                className="w-10 h-10 rounded-full shrink-0 relative overflow-hidden group hover:bg-muted/50 transition-colors"
+            >
+                <div className="relative w-full h-full flex items-center justify-center opacity-0">
+                    {/* Placeholder to keep layout stable */}
+                </div>
+            </Button>
+        );
+    }
 
     const isDark = theme === "dark";
 
@@ -119,7 +137,7 @@ const navItems = [
 export default function HeaderSecond() {
     const { scrollY } = useScroll();
     const [isMobileOpen, setIsMobileOpen] = useState(false);
-    const { theme, setTheme } = useTheme();
+    // Removed unused theme destructuring
     const shouldReduceMotion = useReducedMotion();
     const [isLogoHovered, setIsLogoHovered] = useState(false);
 
@@ -148,12 +166,13 @@ export default function HeaderSecond() {
     const itemBgAlpha = useTransform(progress, [0, 0.5], [1, 0]);
 
     // Motion Templates
-    const containerBg = useMotionTemplate`rgba(${theme === 'dark' ? '0,0,0' : '255,255,255'}, ${bgOpacity})`;
-    const containerBorder = useMotionTemplate`rgba(${theme === 'dark' ? '255,255,255' : '0,0,0'}, ${borderOpacity})`;
-    const containerShadow = useMotionTemplate`0 10px 40px -10px rgba(0,0,0,${shadowOpacity})`;
+    // Use CSS variables with relative color syntax to avoid hydration mismatch
+    const containerBg = useMotionTemplate`oklch(from var(--background) l c h / ${bgOpacity})`;
+    const containerBorder = useMotionTemplate`oklch(from var(--foreground) l c h / ${borderOpacity})`;
+    const containerShadow = useMotionTemplate`0 10px 40px -10px oklch(from var(--foreground) l c h / ${shadowOpacity})`;
 
-    const itemBg = useMotionTemplate`rgba(${theme === 'dark' ? '0,0,0' : '255,255,255'}, ${itemBgAlpha})`;
-    const itemBorder = useMotionTemplate`rgba(${theme === 'dark' ? '255,255,255' : '0,0,0'}, ${useTransform(itemBorderAlpha, v => v * 0.1)})`;
+    const itemBg = useMotionTemplate`oklch(from var(--background) l c h / ${itemBgAlpha})`;
+    const itemBorder = useMotionTemplate`oklch(from var(--foreground) l c h / ${useTransform(itemBorderAlpha, v => v * 0.1)})`;
 
     return (
         <div className="fixed inset-x-0 top-6 z-50 flex justify-center pointer-events-none px-4 md:px-0">
