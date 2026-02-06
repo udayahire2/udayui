@@ -213,7 +213,7 @@ export function HeroSimpleCentered({
 
                 {/* Headline */}
                 <motion.h1
-                    variants={sequence.headline}
+
                     className="text-5xl font-medium tracking-tight text-foreground/90 sm:text-7xl md:leading-[1.1] sm:tracking-[-0.02em]"
                 >
                     {title}
@@ -221,7 +221,7 @@ export function HeroSimpleCentered({
 
                 {/* Subtitle */}
                 <motion.p
-                    variants={sequence.subtitle}
+
                     className="max-w-xl text-lg text-muted-foreground sm:text-lg leading-relaxed antialiased font-light"
                 >
                     {subtitle}
@@ -229,7 +229,7 @@ export function HeroSimpleCentered({
 
                 {/* Actions */}
                 <motion.div
-                    variants={sequence.actions}
+
                     className="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row"
                 >
                     <Button
