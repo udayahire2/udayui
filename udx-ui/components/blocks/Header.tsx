@@ -5,7 +5,8 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-toggle";
-import { Menu, X, Command } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import { UDXLogo } from "@/components/ui/udx-logo";
 
 const navItems = [
   { name: "Product", href: "#product" },
@@ -138,10 +139,9 @@ export function Header() {
           rounded-full px-2 py-2
           w-fit max-w-[92vw] overflow-hidden
           transition-colors duration-500
-          ${
-            scrolled
-              ? "bg-white/40 dark:bg-neutral-900/40 border-white/20 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
-              : "bg-white/20 dark:bg-neutral-900/20 border-white/10 dark:border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.04)]"
+          ${scrolled
+            ? "bg-white/40 dark:bg-neutral-900/40 border-white/20 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
+            : "bg-white/20 dark:bg-neutral-900/20 border-white/10 dark:border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.04)]"
           }
           border
         `}
@@ -166,8 +166,8 @@ export function Header() {
             aria-label="Homepage"
             onClick={() => mobileMenuOpen && setMobileMenuOpen(false)}
           >
-            <div className="flex items-center justify-center p-1.5 rounded-full bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-sm border border-white/10 shadow-inner">
-              <Command className="h-4 w-4" />
+            <div className="flex items-center justify-center p-0.5 rounded-full bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-sm border border-white/10 shadow-inner">
+              <UDXLogo className="h-6 w-6 text-foreground" />
             </div>
             <span className="font-semibold text-sm tracking-tight bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">
               SaaS

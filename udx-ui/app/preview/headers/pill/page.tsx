@@ -1,14 +1,14 @@
-import HeaderSecond from "@/components/blocks/HeaderSecond";
+import HeaderPill from "@/components/headers/header-pill";
 
 
-export default function HeaderSecondPreview() {
+export default function HeaderPillPreview() {
     return (
         <div className="relative min-h-[200vh] bg-neutral-100 dark:bg-neutral-900 overflow-hidden">
             {/* Background Decor to verify transparency */}
             <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
             <div className="absolute top-20 right-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
 
-            <HeaderSecond />
+            <HeaderPill />
 
             <main className="container mx-auto px-6 pt-32 pb-20 relative z-10">
                 <h1 className="text-4xl md:text-6xl font-black text-center mb-8 tracking-tighter uppercase">

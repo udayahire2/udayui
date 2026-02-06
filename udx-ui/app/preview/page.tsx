@@ -2,15 +2,33 @@ import Link from "next/link";
 
 const components = [
     {
+        name: "Header (Scroll Morph)",
+        slug: "headers/scroll-morph",
+        description: "Glassmorphic header that morphs into a pill on scroll.",
+        category: "Headers",
+    },
+    {
+        name: "Header (Pill)",
+        slug: "headers/pill",
+        description: "Always-visible pill-shaped header with smooth animations.",
+        category: "Headers",
+    },
+    {
+        name: "Hero (Simple Centered)",
+        slug: "hero-sections/simple-centered",
+        description: "Clean, centered hero section with calm motion.",
+        category: "Hero Sections",
+    },
+    {
+        name: "Hero (Modern Grid)",
+        slug: "hero-sections/modern-grid",
+        description: "Dark mode hero with grid background and star effects.",
+        category: "Hero Sections",
+    },
+    {
         name: "User Card",
         slug: "user-card",
         description: "A composite card component for displaying user profiles.",
-        category: "Blocks",
-    },
-    {
-        name: "Hero Section",
-        slug: "hero-section",
-        description: "A hero section component with title, subtitle, and CTA buttons.",
         category: "Blocks",
     },
 ];

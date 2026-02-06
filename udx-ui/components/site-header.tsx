@@ -6,9 +6,9 @@ import { Header } from "@/components/blocks/Header";
 export function SiteHeader() {
     const pathname = usePathname();
 
-    // Hide the global header on the HeaderSecond preview page
-    // and potentially other standalone previews in the future
-    if (pathname?.includes("/preview/header-second")) {
+    // Hide the global header on all preview pages to avoid conflict
+    // with the components being previewed (especially other headers)
+    if (pathname?.includes("/preview")) {
         return null;
     }
 
