@@ -2,11 +2,10 @@ import * as React from "react";
 import dynamic from "next/dynamic";
 
 // --- Headers ---
-// --- Headers ---
-const HeaderScrollMorph = dynamic(() => import("@/components/headers/header-scroll-morph") as any);
-const HeaderPill = dynamic(() => import("@/components/headers/header-pill") as any);
 const Header01 = dynamic(() => import("@/components/blocks/header/header-01").then(mod => mod.Header01) as any);
 const Header02 = dynamic(() => import("@/components/blocks/header/header-02").then(mod => mod.Header02) as any);
+const Header03 = dynamic(() => import("@/components/blocks/header/header-03") as any);
+const Header04 = dynamic(() => import("@/components/blocks/header/header-04") as any);
 
 // --- Hero Sections ---
 const HeroSimpleCentered = dynamic(() => import("@/components/hero-sections/hero-simple-centered") as any);
@@ -24,26 +23,12 @@ export type ComponentItem = {
 };
 
 export const registry: Record<string, ComponentItem> = {
-    "headers/scroll-morph": {
-        name: "Header (Scroll Morph)",
-        slug: "headers/scroll-morph",
-        component: HeaderScrollMorph,
-        category: "Headers",
-        description: "Glassmorphic header that morphs into a pill on scroll.",
-    },
-    "headers/pill": {
-        name: "Header (Pill)",
-        slug: "headers/pill",
-        component: HeaderPill,
-        category: "Headers",
-        description: "Always-visible pill-shaped header with smooth animations.",
-    },
     "headers/header-01": {
-        name: "Header (01)",
+        name: "Header (Minimal Shaded)",
         slug: "headers/header-01",
         component: Header01,
         category: "Headers",
-        description: "Simple header variant 01.",
+        description: "Premium minimal shaded responsive header with sticky behavior.",
     },
     "headers/header-02": {
         name: "Header (02)",
@@ -51,6 +36,20 @@ export const registry: Record<string, ComponentItem> = {
         component: Header02,
         category: "Headers",
         description: "Simple header variant 02.",
+    },
+    "headers/header-03": {
+        name: "Header (Scroll Morph)",
+        slug: "headers/header-03",
+        component: Header03,
+        category: "Headers",
+        description: "Glassmorphic header that morphs into a pill on scroll.",
+    },
+    "headers/header-04": {
+        name: "Header (Pill)",
+        slug: "headers/header-04",
+        component: Header04,
+        category: "Headers",
+        description: "Always-visible pill-shaped header with smooth animations.",
     },
     "hero-sections/simple-centered": {
         name: "Hero (Simple Centered)",

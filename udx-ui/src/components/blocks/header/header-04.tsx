@@ -128,7 +128,7 @@ const navItems = [
     { name: "Status", href: "#" },
 ];
 
-export default function HeaderPill() {
+export default function Header04() {
     const { scrollY } = useScroll();
     const { theme, resolvedTheme } = useTheme();
     const [isMobileOpen, setIsMobileOpen] = useState(false);

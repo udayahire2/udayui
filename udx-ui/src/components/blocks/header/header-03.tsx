@@ -187,7 +187,7 @@ const navItems = [
     { name: "Enterprise", href: "#" },
 ];
 
-export default function HeaderScrollMorph() {
+export default function Header03() {
     const { scrollY } = useScroll();
     const { theme, resolvedTheme } = useTheme();
     const [isMobileOpen, setIsMobileOpen] = useState(false);

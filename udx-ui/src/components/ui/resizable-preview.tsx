@@ -55,34 +55,11 @@ export function ResizablePreview({ children, title, backHref = "/preview", isFul
 
     const currentWidth = width || containerRef.current?.offsetWidth || 0;
 
-    // Full-page preview mode (for headers) - minimal controls
+    // Full-page preview mode (for headers) - clean preview without controls
     if (isFullPagePreview) {
         return (
             <div className="w-full min-h-screen flex flex-col bg-background" ref={fullscreenWrapperRef}>
-                {/* Floating Controls - Only Theme & Refresh */}
-                {!isFullscreen && (
-                    <div className="fixed top-4 right-4 z-[9999] flex items-center gap-2">
-                        <Button onClick={handleRefresh} variant="secondary" size="icon" className="h-9 w-9 rounded-full shadow-lg">
-                            <RefreshCw className="w-4 h-4" />
-                        </Button>
-                        <ModeToggle />
-                    </div>
-                )}
-
-                {/* Fullscreen Controls */}
-                {isFullscreen && (
-                    <div className="fixed top-4 right-4 z-[9999] flex items-center gap-2">
-                        <Button onClick={handleRefresh} variant="secondary" size="icon" className="h-9 w-9 rounded-full">
-                            <RefreshCw className="w-4 h-4" />
-                        </Button>
-                        <ModeToggle />
-                        <Button onClick={exitFullscreen} variant="secondary" size="icon" className="h-9 w-9 rounded-full">
-                            <X className="w-4 h-4" />
-                        </Button>
-                    </div>
-                )}
-
-                {/* Full-page Content */}
+                {/* Full-page Content - No floating controls */}
                 <div key={refreshKey} className="w-full min-h-screen">
                     {children}
                 </div>
@@ -176,10 +153,10 @@ export function ResizablePreview({ children, title, backHref = "/preview", isFul
                 <div
                     ref={containerRef}
                     className={`${isFullscreen
-                            ? "w-full h-full overflow-auto"
-                            : width !== null
-                                ? "border border-border overflow-auto"
-                                : "w-full overflow-auto"
+                        ? "w-full h-full overflow-auto"
+                        : width !== null
+                            ? "border border-border overflow-auto"
+                            : "w-full overflow-auto"
                         }`}
                     style={{
                         width: isFullscreen ? "100%" : width !== null ? `${width}px` : "100%",
