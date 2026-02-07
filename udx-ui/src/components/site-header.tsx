@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Header } from "@/components/blocks/Header";
+import { Header } from "@/components/blocks/main-header";
 
 export function SiteHeader() {
     const pathname = usePathname();
