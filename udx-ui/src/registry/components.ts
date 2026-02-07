@@ -31,11 +31,11 @@ export const registry: Record<string, ComponentItem> = {
         description: "Premium minimal shaded responsive header with sticky behavior.",
     },
     "headers/header-02": {
-        name: "Header (02)",
+        name: "Header (Enhanced SaaS)",
         slug: "headers/header-02",
         component: Header02,
         category: "Headers",
-        description: "Simple header variant 02.",
+        description: "Enhanced SaaS header with dropdown navigation and premium features.",
     },
     "headers/header-03": {
         name: "Header (Scroll Morph)",
