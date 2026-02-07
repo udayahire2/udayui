@@ -22,98 +22,86 @@ export default async function PreviewPage(props: PreviewPageProps) {
     const isHeaderComponent = componentItem.category === "Headers";
 
     return (
-        <div className="min-h-screen w-full bg-background relative flex flex-col">
+        <>
             {isHeaderComponent ? (
-                // For header components: Floating controls that don't interfere
-                <>
-                    {/* Floating Back Button */}
-                    <div className="fixed top-4 left-4 z-200 flex items-center gap-2">
-                        <a
-                            href="/preview"
-                            className="px-3 py-2 text-sm font-medium text-foreground bg-background/95 backdrop-blur-md border border-border rounded-lg hover:bg-muted transition-colors flex items-center gap-2 shadow-lg"
-                        >
-                            <span>←</span> Back
-                        </a>
-                    </div>
-
-                    {/* Floating Theme Toggle */}
-                    <div className="fixed top-4 right-4 z-200">
-                        <div className="bg-background/95 backdrop-blur-md border border-border rounded-lg shadow-lg">
-                            <ModeToggle />
-                        </div>
-                    </div>
-
-                    {/* Floating Component Info */}
-                    <div className="fixed bottom-4 left-4 right-4 z-200 flex justify-center pointer-events-none">
-                        <div className="px-4 py-2 bg-background/95 backdrop-blur-md border border-border rounded-lg shadow-lg pointer-events-auto max-w-2xl">
-                            <p className="text-xs text-muted-foreground text-center">
-                                <span className="font-semibold text-foreground">{componentItem.name}</span>
-                                {" • "}
-                                {componentItem.description}
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Full-width preview with scroll demo */}
-                    <div className="w-full min-h-screen relative">
+                // Full-page preview for headers - like real browser
+                <ResizablePreview
+                    title={componentItem.name}
+                    backHref="/preview"
+                    isFullPagePreview={true}
+                >
+                    <div className="w-full min-h-screen flex flex-col bg-background">
                         <Component />
-                        {/* Demo content to show scroll behavior */}
-                        <div className="relative z-10 px-4 sm:px-8 py-24">
-                            <div className="max-w-4xl mx-auto space-y-8">
-                                <div className="space-y-4">
-                                    <h2 className="text-3xl font-bold text-foreground">Component Preview</h2>
-                                    <p className="text-muted-foreground">{componentItem.description}</p>
+                        {/* Demo content for scroll testing */}
+                        <div className="flex-1 px-4 sm:px-8 py-16">
+                            <div className="max-w-5xl mx-auto space-y-12">
+                                {/* Hero Section */}
+                                <div className="text-center space-y-4 py-12">
+                                    <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
+                                        Test Header Scroll Behavior
+                                    </h1>
+                                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                                        Scroll down to see how the header transforms and animates. This page contains enough content to properly test scroll-based animations.
+                                    </p>
                                 </div>
 
-                                {/* Dummy content for scroll */}
-                                <div className="space-y-6 pt-12">
-                                    {[1, 2, 3, 4, 5].map((i) => (
-                                        <div key={i} className="p-6 border border-border rounded-lg bg-card">
-                                            <h3 className="text-xl font-semibold mb-2">Section {i}</h3>
-                                            <p className="text-muted-foreground">
-                                                Scroll down to see the header transform. This is demo content to showcase
-                                                the header's scroll behavior and animations.
-                                            </p>
-                                        </div>
-                                    ))}
+                                {/* Content Sections */}
+                                {[
+                                    {
+                                        title: "Introduction",
+                                        content: "This is a demo page designed to test header scroll animations. As you scroll, watch how the header responds with smooth transitions and morphing effects."
+                                    },
+                                    {
+                                        title: "Features",
+                                        content: "Modern headers often include scroll-based animations like changing opacity, size, background blur, or even morphing into different shapes. This content helps you test all those behaviors."
+                                    },
+                                    {
+                                        title: "Design Principles",
+                                        content: "Good scroll animations should be smooth, performant, and enhance the user experience without being distracting. They should feel natural and respond immediately to user input."
+                                    },
+                                    {
+                                        title: "Implementation",
+                                        content: "Scroll animations can be implemented using various techniques including CSS transforms, Framer Motion, or vanilla JavaScript. Each approach has its own benefits and trade-offs."
+                                    },
+                                    {
+                                        title: "Performance",
+                                        content: "When implementing scroll animations, it's crucial to consider performance. Use GPU-accelerated properties like transform and opacity, and avoid triggering layout recalculations."
+                                    },
+                                    {
+                                        title: "Accessibility",
+                                        content: "Remember to respect user preferences for reduced motion. Some users may experience discomfort with animations, so always provide a way to disable or reduce them."
+                                    },
+                                    {
+                                        title: "Testing",
+                                        content: "Test your scroll animations across different devices and browsers. What works smoothly on desktop might feel different on mobile devices with touch scrolling."
+                                    },
+                                    {
+                                        title: "Best Practices",
+                                        content: "Keep animations subtle and purposeful. The header should enhance navigation without drawing too much attention away from the main content."
+                                    },
+                                ].map((section, i) => (
+                                    <div key={i} className="p-8 border border-border rounded-lg bg-card shadow-sm">
+                                        <h2 className="text-2xl font-semibold mb-4">{section.title}</h2>
+                                        <p className="text-muted-foreground leading-relaxed">
+                                            {section.content}
+                                        </p>
+                                    </div>
+                                ))}
+
+                                {/* Footer Spacer */}
+                                <div className="py-12 text-center text-sm text-muted-foreground">
+                                    <p>Scroll back to the top to see the header animation in reverse</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </>
+                </ResizablePreview>
             ) : (
-                // For other components: Standard layout with top nav
-                <>
-                    {/* Top Navigation Bar */}
-                    <div className="sticky top-0 z-50 w-full h-14 border-b border-border bg-background/95 backdrop-blur-md flex items-center justify-between px-4 sm:px-8">
-                        <div className="flex items-center gap-4">
-                            <a href="/preview" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2">
-                                <span>←</span> Back
-                            </a>
-                            <div className="h-4 w-px bg-border" />
-                            <h1 className="text-sm font-semibold truncate">{componentItem.name}</h1>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <ModeToggle />
-                        </div>
-                    </div>
-
-                    {/* Centered preview with background pattern */}
-                    <div className="w-full min-h-screen relative flex flex-col items-center justify-start p-6 sm:p-12">
-                        {/* Background Pattern */}
-                        <div className="absolute inset-0 z-0 bg-dot-black-20 dark:bg-dot-white-20 pointer-events-none opacity-50" />
-
-                        <div className="w-full max-w-[1400px] mx-auto space-y-4 relative z-10">
-                            <ResizablePreview>
-                                <Component />
-                            </ResizablePreview>
-                            <div className="flex items-center justify-center text-xs text-muted-foreground px-1 mt-4">
-                                <p>{componentItem.description}</p>
-                            </div>
-                        </div>
-                    </div>
-                </>
+                // Regular preview for other components
+                <ResizablePreview title={componentItem.name} backHref="/preview">
+                    <Component />
+                </ResizablePreview>
             )}
-        </div>
+        </>
     );
 }
