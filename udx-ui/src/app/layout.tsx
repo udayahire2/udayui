@@ -39,7 +39,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {/* Product Shell Header - Hidden on Preview Pages */}
-          {!isPreview && <SiteHeader />}
+         
 
           {/* App Content */}
           <main className="relative min-h-screen">
