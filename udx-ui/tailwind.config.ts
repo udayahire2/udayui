@@ -55,6 +55,20 @@ const config: Config = {
                 lg: 'var(--radius)',
                 md: 'calc(var(--radius) - 2px)',
                 sm: 'calc(var(--radius) - 4px)'
+            },
+            animation: {
+                marquee: "marquee 25s linear infinite",
+                "marquee-reverse": "marquee-reverse 25s linear infinite",
+            },
+            keyframes: {
+                marquee: {
+                    from: { transform: "translateX(0)" },
+                    to: { transform: "translateX(-100%)" },
+                },
+                "marquee-reverse": {
+                    from: { transform: "translateX(-100%)" },
+                    to: { transform: "translateX(0)" },
+                },
             }
         }
     },
