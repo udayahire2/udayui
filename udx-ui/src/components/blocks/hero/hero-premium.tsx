@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRightIcon, ChartBarIcon, CheckIcon, ChevronRightIcon, DocumentDuplicateIcon, UsersIcon, HeartIcon, CommandLineIcon, WindowIcon, ChartPieIcon, CreditCardIcon, Cog6ToothIcon, MagnifyingGlassIcon, HomeIcon } from "@heroicons/react/24/outline";
+import { ArrowRight, BarChart3, Check, ChevronRight, Copy, Users, Heart, Terminal, Window, PieChart, CreditCard, Settings, Search, Home } from "lucide-react";
 import { motion, useMotionValue, useTransform, animate, useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

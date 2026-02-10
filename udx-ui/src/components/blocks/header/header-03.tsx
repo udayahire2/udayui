@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring, useMotionTemplate, useReducedMotion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
-import { Bars3Icon, ChevronDownIcon, ArrowRightIcon, Squares2X2Icon, CpuChipIcon, GlobeAltIcon, BoltIcon, ShieldCheckIcon, UsersIcon, CommandLineIcon } from "@heroicons/react/24/outline";
+import { Menu, ChevronDown, ArrowRight, LayoutGrid, Cpu, Globe, Zap, ShieldCheck, Users, Terminal } from "lucide-react";
 import { UDXLogo } from "@/components/ui/udx-logo";
 import { useTheme } from "next-themes";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";

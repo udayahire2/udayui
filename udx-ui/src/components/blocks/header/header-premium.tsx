@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Bars3Icon, XMarkIcon, ChevronDownIcon, SparklesIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
+import { Menu, X, ChevronDown, Sparkles, ArrowRight } from "lucide-react";
 import { UDXLogo } from "@/components/ui/udx-logo";
 
 const navItems = [

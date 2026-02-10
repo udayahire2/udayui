@@ -3,7 +3,6 @@ import dynamic from "next/dynamic";
 
 // --- Headers ---
 const Header01 = dynamic(() => import("@/components/blocks/header/header-01").then(mod => mod.DefaultNavbar) as any);
-const Header02 = dynamic(() => import("@/components/blocks/header/header-02").then(mod => mod.Header02) as any);
 const Header03 = dynamic(() => import("@/components/blocks/header/header-03") as any);
 const Header04 = dynamic(() => import("@/components/blocks/header/header-04") as any);
 
@@ -33,7 +32,6 @@ export const registry: Record<string, ComponentItem> = {
     "headers/header-02": {
         name: "Header (Enhanced SaaS)",
         slug: "headers/header-02",
-        component: Header02,
         category: "Headers",
         description: "Enhanced SaaS header with dropdown navigation and premium features.",
     },

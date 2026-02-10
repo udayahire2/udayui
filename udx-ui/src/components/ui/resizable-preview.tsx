@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { ComputerDesktopIcon, DeviceTabletIcon, DevicePhoneIcon, ArrowsPointingOutIcon, XMarkIcon, ArrowPathIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
+import { Monitor, Tablet, Smartphone, Expand, X, RefreshCw, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 

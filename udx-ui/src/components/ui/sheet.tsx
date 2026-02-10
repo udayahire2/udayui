@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { XMarkIcon } from "@heroicons/react/24/outline"
+import { X } from "lucide-react";
 import { Dialog as SheetPrimitive } from "radix-ui"
 
 import { cn } from "@/lib/utils"

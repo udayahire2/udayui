@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "framer-motion";
-import { CommandLineIcon } from "@heroicons/react/24/outline";
+import { Terminal } from "lucide-react";
 
 interface HeroSimpleCenteredProps {
     title?: string;

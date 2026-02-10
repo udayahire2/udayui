@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import { ArrowRight } from "lucide-react";
 
 export function HeroSimple() {
     return (

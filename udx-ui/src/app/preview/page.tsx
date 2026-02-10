@@ -4,7 +4,7 @@ import Link from "next/link";
 import { registry, categories, ComponentItem } from "@/registry/components";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-toggle";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import { ArrowRight } from "lucide-react";
 
 export default function PreviewPage() {
     // Group components by category

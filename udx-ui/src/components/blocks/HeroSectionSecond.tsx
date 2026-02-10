@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { StarIcon } from "@heroicons/react/24/outline";
+import { Star } from "lucide-react";
 import gsap from "gsap";
 
 const BlinkingStars = () => {
