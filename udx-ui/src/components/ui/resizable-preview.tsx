@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Monitor, Tablet, Smartphone, Maximize2, X, RefreshCw, ChevronLeft } from "lucide-react";
+import { ComputerDesktopIcon, DeviceTabletIcon, DevicePhoneIcon, ArrowsPointingOutIcon, XMarkIcon, ArrowPathIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 
@@ -77,7 +77,7 @@ export function ResizablePreview({ children, title, backHref = "/preview", isFul
                         {/* Left: Back & Title */}
                         <div className="flex items-center gap-3">
                             <a href={backHref} className="flex items-center gap-1 text-sm hover:text-foreground text-muted-foreground">
-                                <ChevronLeft className="w-4 h-4" />
+                                <ChevronLeftIcon className="w-4 h-4" />
                                 Back
                             </a>
                             {title && (
@@ -110,7 +110,7 @@ export function ResizablePreview({ children, title, backHref = "/preview", isFul
                                 className="h-8"
                                 title="Full Width"
                             >
-                                <Maximize2 className="w-4 h-4" />
+                                <ArrowsPointingOutIcon className="w-4 h-4" />
                             </Button>
 
                             <div className="h-6 w-px bg-border" />
@@ -124,10 +124,10 @@ export function ResizablePreview({ children, title, backHref = "/preview", isFul
 
                             {/* Actions */}
                             <Button variant="ghost" size="icon" onClick={handleRefresh} className="h-8 w-8">
-                                <RefreshCw className="w-4 h-4" />
+                                <ArrowPathIcon className="w-4 h-4" />
                             </Button>
                             <Button variant="ghost" size="icon" onClick={enterFullscreen} className="h-8 w-8">
-                                <Maximize2 className="w-4 h-4" />
+                                <ArrowsPointingOutIcon className="w-4 h-4" />
                             </Button>
                             <ModeToggle />
                         </div>
@@ -139,11 +139,11 @@ export function ResizablePreview({ children, title, backHref = "/preview", isFul
             {isFullscreen && (
                 <div className="fixed top-4 right-4 z-[9999] flex items-center gap-2">
                     <Button onClick={handleRefresh} variant="secondary" size="icon" className="h-9 w-9 rounded-full">
-                        <RefreshCw className="w-4 h-4" />
+                        <ArrowPathIcon className="w-4 h-4" />
                     </Button>
                     <ModeToggle />
                     <Button onClick={exitFullscreen} variant="secondary" size="icon" className="h-9 w-9 rounded-full">
-                        <X className="w-4 h-4" />
+                        <XMarkIcon className="w-4 h-4" />
                     </Button>
                 </div>
             )}

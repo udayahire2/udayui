@@ -2,7 +2,7 @@ import * as React from "react";
 import dynamic from "next/dynamic";
 
 // --- Headers ---
-const Header01 = dynamic(() => import("@/components/blocks/header/header-01").then(mod => mod.Header01) as any);
+const Header01 = dynamic(() => import("@/components/blocks/header/header-01").then(mod => mod.DefaultNavbar) as any);
 const Header02 = dynamic(() => import("@/components/blocks/header/header-02").then(mod => mod.Header02) as any);
 const Header03 = dynamic(() => import("@/components/blocks/header/header-03") as any);
 const Header04 = dynamic(() => import("@/components/blocks/header/header-04") as any);

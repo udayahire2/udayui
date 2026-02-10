@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Star } from "lucide-react";
+import { StarIcon } from "@heroicons/react/24/outline";
 import gsap from "gsap";
 
 const BlinkingStars = () => {
@@ -202,7 +202,7 @@ export default function HeroModernGrid() {
                     <div className="flex-col items-center gap-1.5 pt-1">
                         <div className="flex gap-0.5">
                             {[...Array(5)].map((_, i) => (
-                                <Star key={i} className="w-3.5 h-3.5 fill-white text-white" />
+                                <StarIcon key={i} className="w-3.5 h-3.5 fill-white text-white" />
                             ))}
                         </div>
                         <span className="text-xs font-medium text-white/60 tracking-wide">

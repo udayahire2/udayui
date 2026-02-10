@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { UDXLogo } from "@/components/ui/udx-logo";
 
 const navItems = [
@@ -88,7 +88,7 @@ export function HeaderSimple() {
                                 {isMobileOpen ? (
                                     <X className="w-5 h-5" />
                                 ) : (
-                                    <Menu className="w-5 h-5" />
+                                    <Bars3Icon className="w-5 h-5" />
                                 )}
                             </Button>
                         </div>

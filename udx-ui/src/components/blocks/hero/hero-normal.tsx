@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "framer-motion";
-import { Terminal } from "lucide-react";
+import { CommandLineIcon } from "@heroicons/react/24/outline";
 
 export function HeroNormal() {
     const containerRef = useRef<HTMLElement>(null);
@@ -75,7 +75,7 @@ export function HeroNormal() {
         return () => ctx.revert();
     }, []);
 
-    const transitionBase = { duration: 1.2, ease: [0.16, 1, 0.3, 1] };
+    const transitionBase = { duration: 1.2 };
 
     return (
         <section

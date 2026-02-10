@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, BarChart2, Check, ChevronRight, Command, CreditCard, Home, LayoutDashboard, LineChart, PieChart, Search, Settings, Terminal, Copy, Users, Activity } from "lucide-react";
+import { ArrowRight, Check, ChevronRight, Terminal, CreditCard, Home, BarChart3, PieChart, Search, Settings, Copy, Users, Heart, LayoutDashboard } from "lucide-react";
 import { motion, useMotionValue, useTransform, animate, useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -225,7 +225,7 @@ const Hero01: React.FC = () => {
                 <div className="flex flex-1 overflow-hidden">
                   {/* Sidebar - Clean & Thin Icons */}
                   <aside className="hidden w-14 shrink-0 flex-col items-center gap-4 border-r border-border/50 bg-muted/5 py-4 sm:flex">
-                    {[LayoutDashboard, PieChart, Users, CreditCard, Settings].map((Icon, i) => (
+                    {[LayoutDashboard, PieChart, Users, CreditCard, Settings].map((Icon: any, i: number) => (
                       <div key={i} className={cn(
                         "flex h-9 w-9 items-center justify-center rounded-md transition-all duration-300 cursor-pointer",
                         i === 0
@@ -246,14 +246,14 @@ const Hero01: React.FC = () => {
                       <div className="group rounded-lg border border-border/50 bg-card/50 p-4 shadow-sm hover:shadow-md hover:border-border transition-all duration-300">
                         <div className="flex items-center justify-between mb-2">
                           <p className="text-xs font-medium text-muted-foreground">Total Revenue</p>
-                          <LineChart className="h-4 w-4 text-muted-foreground/40 group-hover:text-foreground/70 transition-colors" />
+                          <BarChart3 className="h-4 w-4 text-muted-foreground/40 group-hover:text-foreground/70 transition-colors" />
                         </div>
                         <div className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
                           <Counter value={45231} prefix="$" />
                         </div>
                         <div className="mt-1 flex items-center text-[11px]">
                           <span className="text-emerald-600 font-medium flex items-center">
-                            <Activity className="h-3 w-3 mr-1" /> +20.1%
+                            <Heart className="h-3 w-3 mr-1" /> +20.1%
                           </span>
                           <span className="text-muted-foreground ml-1 font-medium opacity-60">vs last month</span>
                         </div>
@@ -280,7 +280,7 @@ const Hero01: React.FC = () => {
                       <div className="group rounded-lg border border-border/50 bg-card/50 p-4 shadow-sm hover:shadow-md hover:border-border transition-all duration-300">
                         <div className="flex items-center justify-between mb-2">
                           <p className="text-xs font-medium text-muted-foreground">Bounce Rate</p>
-                          <BarChart2 className="h-4 w-4 text-muted-foreground/40 group-hover:text-foreground/70 transition-colors" />
+                          <BarChart3 className="h-4 w-4 text-muted-foreground/40 group-hover:text-foreground/70 transition-colors" />
                         </div>
                         <div className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
                           <Counter value={42.3} suffix="%" decimals={1} />

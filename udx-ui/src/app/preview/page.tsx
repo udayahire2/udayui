@@ -4,7 +4,7 @@ import Link from "next/link";
 import { registry, categories, ComponentItem } from "@/registry/components";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-toggle";
-import { ArrowRight } from "lucide-react";
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
 
 export default function PreviewPage() {
     // Group components by category
@@ -51,7 +51,7 @@ export default function PreviewPage() {
                                         >
                                             <Link href={`/preview/${component.slug}`} className="flex items-center gap-2">
                                                 <span>{component.name}</span>
-                                                <ArrowRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                                                <ArrowRightIcon className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                                             </Link>
                                         </Button>
                                     ))}

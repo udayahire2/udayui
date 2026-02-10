@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring, useMotionTemplate, useReducedMotion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { Bars3Icon } from "@heroicons/react/24/outline";
 import { UDXLogo } from "@/components/ui/udx-logo";
 import { useTheme } from "next-themes";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
@@ -233,7 +233,7 @@ export default function Header04() {
                     <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
                         <SheetTrigger asChild>
                             <Button variant="ghost" size="icon" className="md:hidden w-8 h-8 shrink-0" aria-label="Open menu">
-                                <Menu className="w-4 h-4" aria-hidden="true" />
+                                <Bars3Icon className="w-4 h-4" aria-hidden="true" />
                             </Button>
                         </SheetTrigger>
                         <SheetContent side="top" className="w-full h-full border-none bg-background/95 backdrop-blur-md pt-16" aria-describedby="menu-description"> {/* Reduced blur and padding */}

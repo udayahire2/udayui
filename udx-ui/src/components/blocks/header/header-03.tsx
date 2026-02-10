@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring, useMotionTemplate, useReducedMotion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
-import { Menu, ChevronDown, MoveRight, Layers, Cpu, Globe, Zap, Shield, Users, Command } from "lucide-react";
+import { Bars3Icon, ChevronDownIcon, ArrowRightIcon, Squares2X2Icon, CpuChipIcon, GlobeAltIcon, BoltIcon, ShieldCheckIcon, UsersIcon, CommandLineIcon } from "@heroicons/react/24/outline";
 import { UDXLogo } from "@/components/ui/udx-logo";
 import { useTheme } from "next-themes";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
@@ -290,7 +290,7 @@ export default function Header03() {
                                 >
                                     {item.name}
                                     {item.megaMenu && (
-                                        <ChevronDown
+                                        <ChevronDownIcon
                                             className={`w-3.5 h-3.5 transition-transform duration-300 ${hoveredNav === item.name ? "rotate-180 text-foreground" : "text-muted-foreground"}`}
                                         />
                                     )}
@@ -360,7 +360,7 @@ export default function Header03() {
                     <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
                         <SheetTrigger asChild>
                             <Button variant="ghost" size="icon" className="md:hidden w-8 h-8 shrink-0" aria-label="Open menu">
-                                <Menu className="w-4 h-4" aria-hidden="true" />
+                                <Bars3Icon className="w-4 h-4" aria-hidden="true" />
                             </Button>
                         </SheetTrigger>
                         <SheetContent side="top" className="w-full h-full border-none bg-background/95 backdrop-blur-3xl pt-20" aria-describedby="menu-description">

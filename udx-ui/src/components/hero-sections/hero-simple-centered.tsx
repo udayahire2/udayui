@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "framer-motion";
-import { Terminal } from "lucide-react";
+import { CommandLineIcon } from "@heroicons/react/24/outline";
 
 interface HeroSimpleCenteredProps {
     title?: string;
@@ -117,7 +117,7 @@ export function HeroSimpleCentered({
     // --------------------------------------------------------
 
     // "Engineered" easing: No bounce, calm arrival.
-    const transitionBase = { duration: 1.2, ease: [0.16, 1, 0.3, 1] };
+    const transitionBase = { duration: 1.2 };
 
     const sequence = {
         headline: {
@@ -244,7 +244,7 @@ export function HeroSimpleCentered({
                         variant="ghost"
                         className="h-11 min-w-[140px] rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/10 text-sm tracking-normal transition-colors border border-transparent hover:border-border"
                     >
-                        <Terminal className="mr-2 h-3.5 w-3.5" />
+                        <CommandLineIcon className="mr-2 h-3.5 w-3.5" />
                         {secondaryAction}
                     </Button>
                 </motion.div>
