@@ -4,7 +4,6 @@ import React, { useState, useEffect, ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, MoreHorizontal } from "lucide-react";
 import { ModeToggle } from "@/components/ui/mode-toggle";
-import { UDXLogo } from "@/components/ui";
 
 /**
  * Navigation item structure
@@ -15,9 +14,9 @@ interface NavigationItem {
 }
 
 /**
- * Header02 component props configuration
+ * DefaultNavbar component props configuration
  */
-interface Header02Props {
+interface DefaultNavbarProps {
   /** Border radius variant: "normal" (rounded-md) or "rounded" (rounded-full) */
   variant?: "normal" | "rounded";
   /** Logo component to display */
@@ -26,7 +25,7 @@ interface Header02Props {
   logoText?: string;
   /** Custom navigation items array */
   navItems?: NavigationItem[];
-  /** Anchor links - comma separated string (e.g., "Docs,Figma,Roadmap") */
+  /** Anchor links - comma separated string (e.g., "Home,About,Services") */
   anchor?: string;
   /** Action buttons - comma separated string (e.g., "Sign In,Get Started") */
   button?: string;
@@ -38,14 +37,15 @@ interface Header02Props {
 
 // Default navigation items used when no anchor or navItems provided
 const DEFAULT_NAVIGATION_ITEMS: NavigationItem[] = [
-  { name: "Docs", href: "#docs" },
-  { name: "Figma", href: "#figma" },
-  { name: "Roadmap", href: "#roadmap" },
+  { name: "Features", href: "#features" },
+  { name: "Solutions", href: "#solutions" },
+  { name: "Pricing", href: "#pricing" },
+  { name: "Resources", href: "#resources" },
 ];
 
 /**
  * Parse anchor string into navigation items
- * @param anchorString - Comma-separated anchor text (e.g., "Docs,Figma,Roadmap")
+ * @param anchorString - Comma-separated anchor text (e.g., "Home,About,Services")
  * @returns Array of navigation items with generated hrefs
  */
 const createNavigationItemsFromString = (anchorString: string): NavigationItem[] => {
@@ -80,59 +80,62 @@ const createButtonLabelsFromString = (buttonString: string): string[] => {
 const getButtonVariant = (index: number, total: number): "default" | "destructive" | "outline" | "secondary" | "ghost" => {
   // Single button: use default (primary)
   if (total === 1) return "default";
-  
+
   // First button: ghost (secondary)
   if (index === 0) return "ghost";
-  
+
   // Last button: default (primary)
   if (index === total - 1) return "default";
-  
+
   // Middle buttons: outline (tertiary)
   return "outline";
 };
 
 /**
- * Responsive Header02 Component (Floating Rounded Style)
+ * Responsive DefaultNavbar Component
  * 
- * A flexible, fully configurable floating navbar with support for:
+ * A flexible, fully configurable navbar with support for:
  * - Custom logo and branding
  * - Navigation items via anchor prop or custom array
  * - Action buttons or dots menu
  * - Light/dark theme toggle
  * - Mobile-responsive hamburger menu
- * - Floating design with rounded appearance
+ * - Rounded or normal border radius variants
  * 
  * @example
  * ```tsx
  * // Simple usage with anchor links
- * <Header02
- *   logo={<UDXLogo />}
- *   anchor="Docs,Figma,Roadmap"
+ * <DefaultNavbar 
+ *   variant="rounded"
+ *   logo={<Logo />}
+ *   anchor="Home,About,Services,Contact"
  *   button="Sign In,Get Started"
  * />
  * 
  * // Advanced usage with custom nav items
- * <Header02
+ * <DefaultNavbar 
  *   navItems={customItems}
  *   button="Login,Subscribe"
+ *   variant="rounded"
  * />
  * ```
  */
-export function Header02({
-  variant = "rounded",
-  logo = <UDXLogo />,
-  logoText = "",
+export function NavbarStandard({
+  variant = "normal",
+  logo,
+  logoText = "Brand",
   navItems: customNavItems,
   anchor,
-  button = "Sign In,Get Started",
+  button,
   actions = "dots",
   showThemeToggle = true,
-}: Header02Props) {
+}: DefaultNavbarProps) {
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   // Determine navigation items to use
-  const navigationItems = anchor 
-    ? createNavigationItemsFromString(anchor) 
+  const navigationItems = anchor
+    ? createNavigationItemsFromString(anchor)
     : customNavItems || DEFAULT_NAVIGATION_ITEMS;
 
   // Parse action buttons if provided
@@ -141,7 +144,17 @@ export function Header02({
   // Determine which action type to display
   const actionType = button ? "buttons" : anchor ? "none" : actions;
 
-  // Handle Escape key and prevent body scroll when mobile menu is open
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close mobile menu when clicking outside or pressing Escape
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isMobileOpen) {
@@ -149,35 +162,27 @@ export function Header02({
       }
     };
 
-    if (isMobileOpen) {
-      document.body.style.overflow = "hidden";
-      window.addEventListener("keydown", handleEscape);
-    } else {
-      document.body.style.overflow = "unset";
-    }
-
-    return () => {
-      document.body.style.overflow = "unset";
-      window.removeEventListener("keydown", handleEscape);
-    };
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
   }, [isMobileOpen]);
 
   // Border radius styles based on variant
   const borderRadiusClass = variant === "rounded" ? "rounded-full" : "rounded-md";
-
-  const closeMobileMenu = () => setIsMobileOpen(false);
+  const buttonRadiusClass = variant === "rounded" ? "rounded-full" : "";
 
   return (
     <>
-      {/* Floating Header */}
-      <div className="sticky top-0 z-50 flex justify-center pt-4 px-4">
-        <header className={`flex w-fit ${borderRadiusClass} bg-background/80 backdrop-blur-md border border-border/40 shadow-lg shadow-black/5 transition-all duration-300`}>
-          <div className="px-6 py-2 flex items-center gap-4">
-
-            {/* Logo Section */}
+      <header
+        className={`sticky top-0 z-50 w-full transition-all duration-300 ${isScrolled
+            ? "bg-background/95 backdrop-blur-md border-b shadow-sm"
+            : "bg-background/70 backdrop-blur-sm border-b border-transparent"
+          }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between py-3">
+            {/* Brand Logo Section */}
             <a
               href="/"
-              onClick={closeMobileMenu}
               className="flex items-center gap-2 -ml-1 group flex-shrink-0 hover:opacity-80 transition-opacity duration-200"
             >
               {logo ? (
@@ -189,12 +194,12 @@ export function Header02({
             </a>
 
             {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-0.5">
+            <nav className="hidden md:flex items-center gap-0.5">
               {navigationItems.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
-                  className={`px-3 py-1.5 text-[13px] font-medium text-foreground/60 hover:text-foreground bg-transparent hover:bg-muted/60 transition-colors duration-200 ${borderRadiusClass}`}
+                  className={`px-3 py-1.5 text-[12px] font-medium text-foreground/70 hover:text-foreground bg-transparent hover:bg-muted/60  hover:border-primary ${borderRadiusClass}`}
                 >
                   {item.name}
                 </a>
@@ -202,26 +207,26 @@ export function Header02({
             </nav>
 
             {/* Desktop Actions Section */}
-            <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
+            <div className="hidden md:flex items-center gap-2 flex-shrink-0">
               {showThemeToggle && <ModeToggle />}
               {actionType === "dots" && (
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className={`h-8 w-8 hover:bg-muted/60 transition-colors duration-200 ${borderRadiusClass}`}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={`h-8 w-8 hover:bg-muted/60 transition-colors duration-200 ${buttonRadiusClass}`}
                   aria-label="More options"
                 >
                   <MoreHorizontal className="h-4 w-4" />
                 </Button>
               )}
               {actionType === "buttons" && (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5">
                   {actionButtons.map((btnLabel, index) => (
                     <Button
                       key={btnLabel}
                       variant={getButtonVariant(index, actionButtons.length)}
                       size="sm"
-                      className={`text-[13px] font-medium px-4 transition-all duration-200 hover:shadow-md active:scale-95 h-9 ${borderRadiusClass}`}
+                      className={`text-[12px] font-medium px-3 transition-all duration-200 hover:shadow-md active:scale-95 ${buttonRadiusClass}`}
                     >
                       {btnLabel}
                     </Button>
@@ -231,36 +236,35 @@ export function Header02({
             </div>
 
             {/* Mobile Menu Trigger */}
-            <div className="flex lg:hidden items-center gap-2 flex-shrink-0">
+            <div className="flex md:hidden items-center gap-1.5 flex-shrink-0">
               {showThemeToggle && <ModeToggle />}
               <Button
                 variant="ghost"
                 size="icon"
-                className={`h-9 w-9 hover:bg-muted/60 transition-colors duration-200 ${borderRadiusClass}`}
+                className={`h-8 w-8 hover:bg-muted/60 transition-colors duration-200 ${buttonRadiusClass}`}
                 aria-label="Toggle mobile menu"
                 aria-expanded={isMobileOpen}
                 onClick={() => setIsMobileOpen(!isMobileOpen)}
               >
                 {isMobileOpen ? (
-                  <X className="w-[18px] h-[18px] stroke-[2.2] transition-transform duration-200" />
+                  <X className="w-4 h-4 transition-transform duration-200" />
                 ) : (
-                  <Menu className="w-[18px] h-[18px] stroke-[2.2] transition-transform duration-200" />
+                  <Menu className="w-4 h-4 transition-transform duration-200" />
                 )}
               </Button>
             </div>
-
           </div>
-        </header>
-      </div>
+        </div>
+      </header>
 
       {/* Mobile Navigation Menu Overlay */}
       {isMobileOpen && (
-        <div 
-          className="fixed inset-0 z-40 lg:hidden bg-background/95 backdrop-blur-lg border-b animate-in fade-in slide-in-from-top-2 duration-200 pt-24"
-          onClick={closeMobileMenu}
+        <div
+          className="fixed inset-0 z-40 md:hidden bg-background/95 backdrop-blur-lg border-b animate-in fade-in slide-in-from-top-2 duration-200 pt-16"
+          onClick={() => setIsMobileOpen(false)}
         >
-          <div 
-            className="container mx-auto px-4 py-6 max-h-[calc(100vh-96px)] overflow-y-auto"
+          <div
+            className="container mx-auto px-4 py-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex flex-col gap-6">
@@ -270,7 +274,7 @@ export function Header02({
                   <a
                     key={item.name}
                     href={item.href}
-                    onClick={closeMobileMenu}
+                    onClick={() => setIsMobileOpen(false)}
                     className={`px-3 py-3 text-[15px] font-medium text-foreground/80 hover:text-foreground hover:bg-muted/60 transition-all duration-200 active:scale-95 ${borderRadiusClass}`}
                   >
                     {item.name}
@@ -285,8 +289,8 @@ export function Header02({
                     <Button
                       key={btnLabel}
                       variant={getButtonVariant(index, actionButtons.length)}
-                      className={`w-full justify-center h-10 text-[15px] font-medium transition-all duration-200 active:scale-95 ${borderRadiusClass}`}
-                      onClick={closeMobileMenu}
+                      className={`w-full justify-center h-10 text-[15px] font-medium transition-all duration-200 active:scale-95 ${buttonRadiusClass}`}
+                      onClick={() => setIsMobileOpen(false)}
                     >
                       {btnLabel}
                     </Button>

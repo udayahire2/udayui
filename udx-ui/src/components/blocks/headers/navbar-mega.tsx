@@ -10,52 +10,60 @@ import { useTheme } from "next-themes";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 /**
+ * Navigation item structure
+ */
+interface NavigationItem {
+    name: string;
+    href: string;
+}
+
+/**
  * Dropdown menu item structure
  */
 interface DropdownItem {
-  name: string;
-  desc: string;
-  icon: React.ComponentType<{ className?: string }>;
+    name: string;
+    desc: string;
+    icon: React.ComponentType<{ className?: string }>;
 }
 
 /**
  * Dropdown group structure
  */
 interface DropdownGroup {
-  title: string;
-  items: DropdownItem[];
+    title: string;
+    items: DropdownItem[];
 }
 
 /**
  * Header03 component props configuration
  */
 interface Header03Props {
-  /** Logo component to display */
-  logo?: ReactNode;
-  /** Logo text label */
-  logoText?: string;
-  /** Custom navigation items array */
-  navItems?: NavigationItem[];
-  /** Anchor links - comma separated string (e.g., "Products,Solutions,Pricing") */
-  anchor?: string;
-  /** Action button label */
-  actionButton?: string;
-  /** Show or hide theme toggle button */
-  showThemeToggle?: boolean;
-  /** Enable sound effect on theme toggle */
-  enableSound?: boolean;
-  /** Enable dropdowns for nav items */
-  enableDropdowns?: boolean;
-  /** Custom dropdown data - object with nav item names as keys */
-  dropdownData?: { [key: string]: DropdownGroup[] };
+    /** Logo component to display */
+    logo?: ReactNode;
+    /** Logo text label */
+    logoText?: string;
+    /** Custom navigation items array */
+    navItems?: NavigationItem[];
+    /** Anchor links - comma separated string (e.g., "Products,Solutions,Pricing") */
+    anchor?: string;
+    /** Action button label */
+    actionButton?: string;
+    /** Show or hide theme toggle button */
+    showThemeToggle?: boolean;
+    /** Enable sound effect on theme toggle */
+    enableSound?: boolean;
+    /** Enable dropdowns for nav items */
+    enableDropdowns?: boolean;
+    /** Custom dropdown data - object with nav item names as keys */
+    dropdownData?: { [key: string]: DropdownGroup[] };
 }
 
 // Default navigation items used when no anchor or navItems provided
 const DEFAULT_NAVIGATION_ITEMS: NavigationItem[] = [
-  { name: "Products", href: "#products" },
-  { name: "Solutions", href: "#solutions" },
-  { name: "Pricing", href: "#pricing" },
-  { name: "Enterprise", href: "#enterprise" },
+    { name: "Products", href: "#products" },
+    { name: "Solutions", href: "#solutions" },
+    { name: "Pricing", href: "#pricing" },
+    { name: "Enterprise", href: "#enterprise" },
 ];
 
 /**
@@ -64,11 +72,11 @@ const DEFAULT_NAVIGATION_ITEMS: NavigationItem[] = [
  * @returns Array of navigation items with generated hrefs
  */
 const createNavigationItemsFromString = (anchorString: string): NavigationItem[] => {
-  return anchorString.split(",").map((item) => {
-    const name = item.trim();
-    const href = `#${name.toLowerCase().replace(/\s+/g, "-")}`;
-    return { name, href };
-  });
+    return anchorString.split(",").map((item) => {
+        const name = item.trim();
+        const href = `#${name.toLowerCase().replace(/\s+/g, "-")}`;
+        return { name, href };
+    });
 };
 
 // --- Sound Hook ---
@@ -185,74 +193,74 @@ const ThemeTrigger = ({ enableSound = false }: { enableSound?: boolean }) => {
 
 // --- Default Mega Menu Structure ---
 const createDefaultMegaMenu = (navItem: NavigationItem) => {
-  const megaMenus: { [key: string]: any } = {
-    "Products": [
-      {
-        title: "Platform",
-        items: [
-          { name: "Core Engine", desc: "High-performance processing power.", icon: Cpu },
-          { name: "Global Mesh", desc: "Distributed edge network.", icon: Globe },
-          { name: "Security", desc: "Enterprise-grade protection.", icon: ShieldCheck }
+    const megaMenus: { [key: string]: any } = {
+        "Products": [
+            {
+                title: "Platform",
+                items: [
+                    { name: "Core Engine", desc: "High-performance processing power.", icon: Cpu },
+                    { name: "Global Mesh", desc: "Distributed edge network.", icon: Globe },
+                    { name: "Security", desc: "Enterprise-grade protection.", icon: ShieldCheck }
+                ]
+            },
+            {
+                title: "Solutions",
+                items: [
+                    { name: "Analytics", desc: "Real-time data insights.", icon: LayoutGrid },
+                    { name: "Automation", desc: "Workflow optimization.", icon: Zap },
+                    { name: "Collaboration", desc: "Team sync tools.", icon: Users }
+                ]
+            },
+            {
+                title: "Resources",
+                items: [
+                    { name: "Documentation", desc: "Guides and references.", icon: Terminal },
+                    { name: "API Reference", desc: "Complete endpoints.", icon: ArrowRight },
+                    { name: "Community", desc: "Forums and support.", icon: Users }
+                ]
+            }
+        ],
+        "Solutions": [
+            {
+                title: "Use Cases",
+                items: [
+                    { name: "Startups", desc: "Scale fast with us.", icon: Zap },
+                    { name: "Enterprise", desc: "Security and control.", icon: ShieldCheck },
+                    { name: "Government", desc: "Compliant clouds.", icon: Globe }
+                ]
+            },
+            {
+                title: "By Industry",
+                items: [
+                    { name: "Finance", desc: "Low latency trading.", icon: LayoutGrid },
+                    { name: "Healthcare", desc: "HIPAA compliant.", icon: Users },
+                    { name: "E-commerce", desc: "High availability.", icon: Cpu }
+                ]
+            },
+            {
+                title: "Developers",
+                items: [
+                    { name: "Open Source", desc: "Contribute today.", icon: Terminal },
+                    { name: "SDKs", desc: "Libraries for all langs.", icon: LayoutGrid },
+                    { name: "Status", desc: "System uptime.", icon: Zap }
+                ]
+            }
         ]
-      },
-      {
-        title: "Solutions",
-        items: [
-          { name: "Analytics", desc: "Real-time data insights.", icon: LayoutGrid },
-          { name: "Automation", desc: "Workflow optimization.", icon: Zap },
-          { name: "Collaboration", desc: "Team sync tools.", icon: Users }
-        ]
-      },
-      {
-        title: "Resources",
-        items: [
-          { name: "Documentation", desc: "Guides and references.", icon: Terminal },
-          { name: "API Reference", desc: "Complete endpoints.", icon: ArrowRight },
-          { name: "Community", desc: "Forums and support.", icon: Users }
-        ]
-      }
-    ],
-    "Solutions": [
-      {
-        title: "Use Cases",
-        items: [
-          { name: "Startups", desc: "Scale fast with us.", icon: Zap },
-          { name: "Enterprise", desc: "Security and control.", icon: ShieldCheck },
-          { name: "Government", desc: "Compliant clouds.", icon: Globe }
-        ]
-      },
-      {
-        title: "By Industry",
-        items: [
-          { name: "Finance", desc: "Low latency trading.", icon: LayoutGrid },
-          { name: "Healthcare", desc: "HIPAA compliant.", icon: Users },
-          { name: "E-commerce", desc: "High availability.", icon: Cpu }
-        ]
-      },
-      {
-        title: "Developers",
-        items: [
-          { name: "Open Source", desc: "Contribute today.", icon: Terminal },
-          { name: "SDKs", desc: "Libraries for all langs.", icon: LayoutGrid },
-          { name: "Status", desc: "System uptime.", icon: Zap }
-        ]
-      }
-    ]
-  };
-  
-  return megaMenus[navItem.name] || null;
+    };
+
+    return megaMenus[navItem.name] || null;
 };
 
-export default function Header03({
-  logo = <UDXLogo />,
-  logoText = "UDX",
-  navItems: customNavItems,
-  anchor,
-  actionButton = "Start Building",
-  showThemeToggle = true,
-  enableSound = false,
-  enableDropdowns = true,
-  dropdownData,
+export function NavbarMega({
+    logo = <UDXLogo />,
+    logoText = "UDX",
+    navItems: customNavItems,
+    anchor,
+    actionButton = "Start Building",
+    showThemeToggle = true,
+    enableSound = false,
+    enableDropdowns = true,
+    dropdownData,
 }: Header03Props) {
     const { scrollY } = useScroll();
     const { theme, resolvedTheme } = useTheme();
@@ -262,30 +270,30 @@ export default function Header03({
     const [hoveredNav, setHoveredNav] = useState<string | null>(null);
 
     // Determine navigation items to use
-    const navigationItems = anchor 
-      ? createNavigationItemsFromString(anchor) 
-      : customNavItems || DEFAULT_NAVIGATION_ITEMS;
+    const navigationItems = anchor
+        ? createNavigationItemsFromString(anchor)
+        : customNavItems || DEFAULT_NAVIGATION_ITEMS;
 
     // Enrich navigation items with mega menus
     const enrichedNavItems = navigationItems.map(item => ({
-      ...item,
-      megaMenu: enableDropdowns 
-        ? (dropdownData?.[item.name] || createDefaultMegaMenu(item))
-        : null
+        ...item,
+        megaMenu: enableDropdowns
+            ? (dropdownData?.[item.name] || createDefaultMegaMenu(item))
+            : null
     }));
 
     const isDark = resolvedTheme === "dark" || theme === "dark";
 
     // Prevent body scroll when mobile menu is open
     useEffect(() => {
-      if (isMobileOpen) {
-        document.body.style.overflow = "hidden";
-      } else {
-        document.body.style.overflow = "unset";
-      }
-      return () => {
-        document.body.style.overflow = "unset";
-      };
+        if (isMobileOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "unset";
+        }
+        return () => {
+            document.body.style.overflow = "unset";
+        };
     }, [isMobileOpen]);
 
     // Simplified Animation Hooks
@@ -400,13 +408,13 @@ export default function Header03({
                                             }}
                                         >
                                             <div className="grid grid-cols-3 gap-6">
-                                                {item.megaMenu.map((column, idx) => (
+                                                {item.megaMenu.map((column: DropdownGroup, idx: number) => (
                                                     <div key={idx} className="flex flex-col gap-4 p-4 border border-border/20 rounded-lg bg-background/10 backdrop-blur-sm">
                                                         <h4 className="text-sm font-bold text-foreground uppercase tracking-wide mb-2">
                                                             {column.title}
                                                         </h4>
                                                         <div className="flex flex-col gap-2">
-                                                            {column.items.map((subItem: any) => (
+                                                            {column.items.map((subItem: DropdownItem) => (
                                                                 <a
                                                                     key={subItem.name}
                                                                     href="#"

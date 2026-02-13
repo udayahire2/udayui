@@ -16,7 +16,7 @@ const navItems = [
     { name: "Enterprise", href: "#enterprise" },
 ];
 
-export function HeaderPremium() {
+export function NavbarMarketing() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileOpen, setIsMobileOpen] = useState(false);
 

@@ -7,7 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "framer-motion";
 import { Terminal } from "lucide-react";
 
-export function HeroNormal() {
+export function HeroSaas() {
     const containerRef = useRef<HTMLElement>(null);
     const bgRef = useRef<SVGSVGElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);

@@ -12,7 +12,7 @@ const navItems = [
     { name: "Resources", href: "#resources" },
 ];
 
-export function HeaderSimple() {
+export function NavbarSimple() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileOpen, setIsMobileOpen] = useState(false);
 
@@ -88,7 +88,7 @@ export function HeaderSimple() {
                                 {isMobileOpen ? (
                                     <X className="w-5 h-5" />
                                 ) : (
-                                    <Bars3Icon className="w-5 h-5" />
+                                    <Menu className="w-5 h-5" />
                                 )}
                             </Button>
                         </div>

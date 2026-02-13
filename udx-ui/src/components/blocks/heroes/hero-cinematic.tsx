@@ -29,7 +29,7 @@ const Counter = ({ value, prefix = "", suffix = "", decimals = 0 }: { value: num
     return <span ref={ref} />;
 };
 
-export function HeroPremium() {
+export function HeroCinematic() {
     const [copied, setCopied] = useState(false);
     const x = useMotionValue(0);
     const y = useMotionValue(0);

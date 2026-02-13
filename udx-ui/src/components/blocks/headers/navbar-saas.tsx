@@ -13,7 +13,7 @@ const navItems = [
   { name: "Company", href: "#company" },
 ];
 
-export function HeaderNormal() {
+export function NavbarSaas() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
@@ -32,15 +32,14 @@ export function HeaderNormal() {
     <>
       {/* ================= HEADER ================= */}
       <header
-        className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-          isScrolled
+        className={`sticky top-0 z-50 w-full transition-all duration-300 ${isScrolled
             ? "h-16 bg-background/90 backdrop-blur-xl border-b shadow-sm"
             : "h-[72px] bg-background/60 backdrop-blur-md border-b border-border/40"
-        }`}
+          }`}
       >
         <div className="h-full max-w-[1400px] mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-full gap-8">
-            
+
             {/* LOGO */}
             <a href="/" className="flex items-center gap-2.5 shrink-0 group">
               <div className="p-1.5 rounded-lg bg-primary/10 transition-colors group-hover:bg-primary/20">
@@ -71,7 +70,7 @@ export function HeaderNormal() {
 
             {/* DESKTOP ACTIONS */}
             <div className="hidden lg:flex items-center gap-3 shrink-0">
-              
+
               {/* Search */}
               <Button
                 variant="ghost"

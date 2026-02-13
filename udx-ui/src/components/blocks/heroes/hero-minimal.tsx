@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
-export function HeroSimple() {
+export function HeroMinimal() {
     return (
         <section className="w-full py-20 lg:py-32 bg-background flex flex-col items-center text-center px-4">
             <div className="max-w-3xl space-y-6">
