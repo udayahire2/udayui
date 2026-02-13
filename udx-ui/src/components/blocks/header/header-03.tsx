@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
 import { motion, useScroll, useTransform, useSpring, useMotionTemplate, useReducedMotion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
@@ -8,6 +8,68 @@ import { Menu, ChevronDown, ArrowRight, LayoutGrid, Cpu, Globe, Zap, ShieldCheck
 import { UDXLogo } from "@/components/ui/udx-logo";
 import { useTheme } from "next-themes";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+
+/**
+ * Dropdown menu item structure
+ */
+interface DropdownItem {
+  name: string;
+  desc: string;
+  icon: React.ComponentType<{ className?: string }>;
+}
+
+/**
+ * Dropdown group structure
+ */
+interface DropdownGroup {
+  title: string;
+  items: DropdownItem[];
+}
+
+/**
+ * Header03 component props configuration
+ */
+interface Header03Props {
+  /** Logo component to display */
+  logo?: ReactNode;
+  /** Logo text label */
+  logoText?: string;
+  /** Custom navigation items array */
+  navItems?: NavigationItem[];
+  /** Anchor links - comma separated string (e.g., "Products,Solutions,Pricing") */
+  anchor?: string;
+  /** Action button label */
+  actionButton?: string;
+  /** Show or hide theme toggle button */
+  showThemeToggle?: boolean;
+  /** Enable sound effect on theme toggle */
+  enableSound?: boolean;
+  /** Enable dropdowns for nav items */
+  enableDropdowns?: boolean;
+  /** Custom dropdown data - object with nav item names as keys */
+  dropdownData?: { [key: string]: DropdownGroup[] };
+}
+
+// Default navigation items used when no anchor or navItems provided
+const DEFAULT_NAVIGATION_ITEMS: NavigationItem[] = [
+  { name: "Products", href: "#products" },
+  { name: "Solutions", href: "#solutions" },
+  { name: "Pricing", href: "#pricing" },
+  { name: "Enterprise", href: "#enterprise" },
+];
+
+/**
+ * Parse anchor string into navigation items
+ * @param anchorString - Comma-separated anchor text
+ * @returns Array of navigation items with generated hrefs
+ */
+const createNavigationItemsFromString = (anchorString: string): NavigationItem[] => {
+  return anchorString.split(",").map((item) => {
+    const name = item.trim();
+    const href = `#${name.toLowerCase().replace(/\s+/g, "-")}`;
+    return { name, href };
+  });
+};
 
 // --- Sound Hook ---
 const AUDIO_FILE_PATH = "/mixkit-camera-shutter-click-1133.wav";
@@ -32,7 +94,7 @@ const useSound = (url: string) => {
 };
 
 // --- Theme Trigger Component ---
-const ThemeTrigger = () => {
+const ThemeTrigger = ({ enableSound = false }: { enableSound?: boolean }) => {
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
     const playSound = useSound(AUDIO_FILE_PATH);
@@ -63,7 +125,7 @@ const ThemeTrigger = () => {
             variant="ghost"
             size="icon"
             onClick={() => {
-                playSound();
+                if (enableSound) playSound();
                 setTheme(isDark ? "light" : "dark");
             }}
             className="w-10 h-10 rounded-none shrink-0 relative overflow-hidden group hover:bg-muted/50 transition-colors"
@@ -121,82 +183,110 @@ const ThemeTrigger = () => {
     );
 };
 
-// --- Nav Data with Mega Menu Structure ---
-const navItems = [
-    {
-        name: "Products",
-        href: "#",
-        megaMenu: [
-            {
-                title: "Platform",
-                items: [
-                    { name: "Core Engine", desc: "High-performance processing power.", icon: Cpu },
-                    { name: "Global Mesh", desc: "Distributed edge network.", icon: Globe },
-                    { name: "Security", desc: "Enterprise-grade protection.", icon: Shield }
-                ]
-            },
-            {
-                title: "Solutions",
-                items: [
-                    { name: "Analytics", desc: "Real-time data insights.", icon: Layers },
-                    { name: "Automation", desc: "Workflow optimization.", icon: Zap },
-                    { name: "Collaboration", desc: "Team sync tools.", icon: Users }
-                ]
-            },
-            {
-                title: "Resources",
-                items: [
-                    { name: "Documentation", desc: "Guides and references.", icon: Command },
-                    { name: "API Reference", desc: "Complete endpoints.", icon: MoveRight },
-                    { name: "Community", desc: "Forums and support.", icon: Users }
-                ]
-            }
+// --- Default Mega Menu Structure ---
+const createDefaultMegaMenu = (navItem: NavigationItem) => {
+  const megaMenus: { [key: string]: any } = {
+    "Products": [
+      {
+        title: "Platform",
+        items: [
+          { name: "Core Engine", desc: "High-performance processing power.", icon: Cpu },
+          { name: "Global Mesh", desc: "Distributed edge network.", icon: Globe },
+          { name: "Security", desc: "Enterprise-grade protection.", icon: ShieldCheck }
         ]
-    },
-    {
-        name: "Solutions",
-        href: "#",
-        megaMenu: [
-            {
-                title: "Use Cases",
-                items: [
-                    { name: "Startups", desc: "Scale fast with us.", icon: Zap },
-                    { name: "Enterprise", desc: "Security and control.", icon: Shield },
-                    { name: "Government", desc: "Compliant clouds.", icon: Globe }
-                ]
-            },
-            {
-                title: "By Industry",
-                items: [
-                    { name: "Finance", desc: "Low latency trading.", icon: Layers },
-                    { name: "Healthcare", desc: "HIPAA compliant.", icon: Users },
-                    { name: "E-commerce", desc: "High availability.", icon: Cpu }
-                ]
-            },
-            {
-                title: "Developers",
-                items: [
-                    { name: "Open Source", desc: "Contribute today.", icon: Command },
-                    { name: "SDKs", desc: "Libraries for all langs.", icon: Layers },
-                    { name: "Status", desc: "System uptime.", icon: Zap }
-                ]
-            }
+      },
+      {
+        title: "Solutions",
+        items: [
+          { name: "Analytics", desc: "Real-time data insights.", icon: LayoutGrid },
+          { name: "Automation", desc: "Workflow optimization.", icon: Zap },
+          { name: "Collaboration", desc: "Team sync tools.", icon: Users }
         ]
-    },
-    { name: "Pricing", href: "#" },
-    { name: "Enterprise", href: "#" },
-];
+      },
+      {
+        title: "Resources",
+        items: [
+          { name: "Documentation", desc: "Guides and references.", icon: Terminal },
+          { name: "API Reference", desc: "Complete endpoints.", icon: ArrowRight },
+          { name: "Community", desc: "Forums and support.", icon: Users }
+        ]
+      }
+    ],
+    "Solutions": [
+      {
+        title: "Use Cases",
+        items: [
+          { name: "Startups", desc: "Scale fast with us.", icon: Zap },
+          { name: "Enterprise", desc: "Security and control.", icon: ShieldCheck },
+          { name: "Government", desc: "Compliant clouds.", icon: Globe }
+        ]
+      },
+      {
+        title: "By Industry",
+        items: [
+          { name: "Finance", desc: "Low latency trading.", icon: LayoutGrid },
+          { name: "Healthcare", desc: "HIPAA compliant.", icon: Users },
+          { name: "E-commerce", desc: "High availability.", icon: Cpu }
+        ]
+      },
+      {
+        title: "Developers",
+        items: [
+          { name: "Open Source", desc: "Contribute today.", icon: Terminal },
+          { name: "SDKs", desc: "Libraries for all langs.", icon: LayoutGrid },
+          { name: "Status", desc: "System uptime.", icon: Zap }
+        ]
+      }
+    ]
+  };
+  
+  return megaMenus[navItem.name] || null;
+};
 
-export default function Header03() {
+export default function Header03({
+  logo = <UDXLogo />,
+  logoText = "UDX",
+  navItems: customNavItems,
+  anchor,
+  actionButton = "Start Building",
+  showThemeToggle = true,
+  enableSound = false,
+  enableDropdowns = true,
+  dropdownData,
+}: Header03Props) {
     const { scrollY } = useScroll();
     const { theme, resolvedTheme } = useTheme();
     const [isMobileOpen, setIsMobileOpen] = useState(false);
     const shouldReduceMotion = useReducedMotion();
     const [isLogoHovered, setIsLogoHovered] = useState(false);
     const [hoveredNav, setHoveredNav] = useState<string | null>(null);
-    const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
+
+    // Determine navigation items to use
+    const navigationItems = anchor 
+      ? createNavigationItemsFromString(anchor) 
+      : customNavItems || DEFAULT_NAVIGATION_ITEMS;
+
+    // Enrich navigation items with mega menus
+    const enrichedNavItems = navigationItems.map(item => ({
+      ...item,
+      megaMenu: enableDropdowns 
+        ? (dropdownData?.[item.name] || createDefaultMegaMenu(item))
+        : null
+    }));
 
     const isDark = resolvedTheme === "dark" || theme === "dark";
+
+    // Prevent body scroll when mobile menu is open
+    useEffect(() => {
+      if (isMobileOpen) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "unset";
+      }
+      return () => {
+        document.body.style.overflow = "unset";
+      };
+    }, [isMobileOpen]);
 
     // Simplified Animation Hooks
     const scrollRaw = useTransform(scrollY, [0, 250], [0, 1]); // Increased range for smoother transition
@@ -216,6 +306,8 @@ export default function Header03() {
 
     const containerBg = useMotionTemplate`oklch(from var(--background) l c h / ${bgOpacity})`;
     const containerBorder = useMotionTemplate`oklch(from var(--foreground) l c h / ${borderOpacity})`;
+
+    const closeMobileMenu = () => setIsMobileOpen(false);
 
     return (
         <div className="fixed inset-x-0 top-0 z-50 flex justify-center pointer-events-none px-4 md:px-0 pt-6"> {/* Added pt-6 for initial offset */}
@@ -243,13 +335,13 @@ export default function Header03() {
                     onHoverStart={() => setIsLogoHovered(true)}
                     onHoverEnd={() => setIsLogoHovered(false)}
                 >
-                    <div className="flex items-center gap-1 cursor-pointer px-2">
+                    <a href="/" onClick={closeMobileMenu} className="flex items-center gap-1 cursor-pointer px-2">
                         <div className="flex items-center justify-center shrink-0">
-                            <UDXLogo className="w-8 h-8 text-foreground" />
+                            {logo}
                         </div>
 
                         <AnimatePresence>
-                            {isLogoHovered && (
+                            {isLogoHovered && logoText && (
                                 <motion.div
                                     initial={{ width: 0, opacity: 0 }}
                                     animate={{ width: "auto", opacity: 1 }}
@@ -258,15 +350,12 @@ export default function Header03() {
                                     className="overflow-hidden flex flex-col justify-center leading-none whitespace-nowrap"
                                 >
                                     <span className="font-medium text-xs text-foreground leading-none ml-1">
-                                        UDX
-                                    </span>
-                                    <span className="text-[8px] font-medium text-muted-foreground leading-none uppercase mt-0.5 ml-1">
-                                        UI Kit
+                                        {logoText}
                                     </span>
                                 </motion.div>
                             )}
                         </AnimatePresence>
-                    </div>
+                    </a>
                 </motion.div>
 
                 {/* Navigation - Desktop */}
@@ -275,7 +364,7 @@ export default function Header03() {
                     role="navigation"
                 >
                     <nav className="flex items-center gap-1">
-                        {navItems.map((item) => (
+                        {enrichedNavItems.map((item) => (
                             <div
                                 key={item.name}
                                 className="relative"
@@ -290,7 +379,7 @@ export default function Header03() {
                                 >
                                     {item.name}
                                     {item.megaMenu && (
-                                        <ChevronDownIcon
+                                        <ChevronDown
                                             className={`w-3.5 h-3.5 transition-transform duration-300 ${hoveredNav === item.name ? "rotate-180 text-foreground" : "text-muted-foreground"}`}
                                         />
                                     )}
@@ -317,7 +406,7 @@ export default function Header03() {
                                                             {column.title}
                                                         </h4>
                                                         <div className="flex flex-col gap-2">
-                                                            {column.items.map((subItem) => (
+                                                            {column.items.map((subItem: any) => (
                                                                 <a
                                                                     key={subItem.name}
                                                                     href="#"
@@ -351,16 +440,16 @@ export default function Header03() {
                 <motion.div
                     className="h-10 flex items-center px-1 gap-1 border border-border shrink-0 bg-background/50 backdrop-blur-sm" // Added bg for contrast
                 >
-                    <ThemeTrigger />
+                    {showThemeToggle && <ThemeTrigger enableSound={enableSound} />}
 
                     <Button className="hidden md:flex h-8 px-5 rounded-none bg-foreground text-background hover:bg-foreground/90 text-sm font-medium shrink-0 shadow-lg shadow-black/5 dark:shadow-white/5 transition-all hover:scale-[1.02] active:scale-[0.98]">
-                        Start Building
+                        {actionButton}
                     </Button>
 
                     <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
                         <SheetTrigger asChild>
                             <Button variant="ghost" size="icon" className="md:hidden w-8 h-8 shrink-0" aria-label="Open menu">
-                                <Bars3Icon className="w-4 h-4" aria-hidden="true" />
+                                <Menu className="w-4 h-4" aria-hidden="true" />
                             </Button>
                         </SheetTrigger>
                         <SheetContent side="top" className="w-full h-full border-none bg-background/95 backdrop-blur-3xl pt-20" aria-describedby="menu-description">
@@ -369,13 +458,13 @@ export default function Header03() {
                             </VisuallyHidden.Root>
                             <div className="flex flex-col px-6 h-full overflow-hidden" id="menu-description">
                                 <nav className="flex flex-col flex-1 overflow-y-auto pr-2 -mr-2">
-                                    {navItems.map(item => (
-                                        <MobileNavItem key={item.name} item={item} />
+                                    {enrichedNavItems.map(item => (
+                                        <MobileNavItem key={item.name} item={item} onClose={closeMobileMenu} />
                                     ))}
                                 </nav>
                                 <div className="py-8 mt-auto border-t border-border/50">
-                                    <Button className="w-full h-12 rounded-lg text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20">
-                                        Start Building
+                                    <Button className="w-full h-12 rounded-lg text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20" onClick={closeMobileMenu}>
+                                        {actionButton}
                                     </Button>
                                 </div>
                             </div>
@@ -388,7 +477,7 @@ export default function Header03() {
 }
 
 // --- Mobile Nav Item Component ---
-const MobileNavItem = ({ item }: { item: typeof navItems[0] }) => {
+const MobileNavItem = ({ item, onClose }: { item: any, onClose: () => void }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -404,6 +493,8 @@ const MobileNavItem = ({ item }: { item: typeof navItems[0] }) => {
                         if (item.megaMenu) {
                             e.preventDefault();
                             setIsOpen(!isOpen);
+                        } else {
+                            onClose();
                         }
                     }}
                 >
@@ -426,16 +517,17 @@ const MobileNavItem = ({ item }: { item: typeof navItems[0] }) => {
                         className="overflow-hidden"
                     >
                         <div className="pb-6 pl-2 flex flex-col gap-6">
-                            {item.megaMenu.map((group, idx) => (
+                            {item.megaMenu.map((group: any, idx: number) => (
                                 <div key={idx} className="flex flex-col gap-3">
                                     <h5 className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest pl-1">
                                         {group.title}
                                     </h5>
                                     <div className="flex flex-col gap-1">
-                                        {group.items.map((sub) => (
+                                        {group.items.map((sub: any) => (
                                             <a
                                                 key={sub.name}
                                                 href="#"
+                                                onClick={onClose}
                                                 className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors"
                                             >
                                                 <div className="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center shrink-0">

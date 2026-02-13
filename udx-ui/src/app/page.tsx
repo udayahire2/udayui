@@ -1,11 +1,23 @@
 
+// import { Header02 } from "@/components/blocks/header/header-02";
+import Header03 from "@/components/blocks/header/header-03";
+import Header04 from "@/components/blocks/header/header-04";
 import { UDXLogo } from "@/components/ui/udx-logo";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* DefaultNavbar with smooth animations, sticky header, and responsive design */}
-
+      {/* Header03 with dropdowns enabled (default) */}
+      {/* <Header03
+        logo={<UDXLogo />}
+        logoText="UDX"
+        anchor="Products,Solutions,Pricing,Enterprise"
+        actionButton="Start Building"
+        showThemeToggle={true}
+        enableSound={true}
+        enableDropdowns={true}
+      /> */}
+      <Header04/>
       {/* Demo Content for Scrolling Testing */}
       <div className="container mx-auto px-4 py-16 max-w-4xl">
         <div className="space-y-16">

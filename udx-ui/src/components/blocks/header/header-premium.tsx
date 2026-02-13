@@ -82,7 +82,7 @@ export function HeaderPremium() {
                         </a>
                         <Button className="h-9 px-5 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_15px_-3px_rgba(var(--primary),0.4)] transition-all hover:shadow-[0_0_20px_-3px_rgba(var(--primary),0.6)] hover:scale-105">
                             <span className="flex items-center gap-2">
-                                Get Started <ArrowRightIcon className="w-3.5 h-3.5" />
+                                Get Started <ArrowRight className="w-3.5 h-3.5" />
                             </span>
                         </Button>
                     </div>
@@ -90,7 +90,7 @@ export function HeaderPremium() {
                     {/* Mobile Toggle */}
                     <div className="flex md:hidden relative z-10">
                         <Button variant="ghost" size="icon" onClick={() => setIsMobileOpen(!isMobileOpen)}>
-                            {isMobileOpen ? <XMarkIcon className="w-5 h-5" /> : <Bars3Icon className="w-5 h-5" />}
+                            {isMobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                         </Button>
                     </div>
                 </div>
@@ -111,7 +111,7 @@ export function HeaderPremium() {
                                     <span className="text-xl font-medium tracking-tight group-hover:translate-x-2 transition-transform duration-300">
                                         {item.name}
                                     </span>
-                                    <ArrowRightIcon className="w-5 h-5 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-primary" />
+                                    <ArrowRight className="w-5 h-5 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-primary" />
                                 </a>
                             ))}
                         </div>

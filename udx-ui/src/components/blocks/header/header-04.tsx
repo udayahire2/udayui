@@ -233,7 +233,7 @@ export default function Header04() {
                     <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
                         <SheetTrigger asChild>
                             <Button variant="ghost" size="icon" className="md:hidden w-8 h-8 shrink-0" aria-label="Open menu">
-                                <Bars3Icon className="w-4 h-4" aria-hidden="true" />
+                                <Menu className="w-4 h-4" aria-hidden="true" />
                             </Button>
                         </SheetTrigger>
                         <SheetContent side="top" className="w-full h-full border-none bg-background/95 backdrop-blur-md pt-16" aria-describedby="menu-description"> {/* Reduced blur and padding */}
