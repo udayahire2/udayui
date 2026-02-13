@@ -254,70 +254,27 @@ export default function Header04() {
                                 <Menu className="w-4 h-4" aria-hidden="true" />
                             </Button>
                         </SheetTrigger>
-                        <SheetContent
-                            side="top"
-                            className="w-full h-full border-none bg-background/40 backdrop-blur-xl flex items-center justify-center p-6"
-                            aria-describedby="menu-description"
-                        >
+                        <SheetContent side="top" className="w-full h-full border-none bg-background/95 backdrop-blur-md pt-16" aria-describedby="menu-description"> {/* Reduced blur and padding */}
                             <VisuallyHidden.Root>
                                 <SheetTitle>Menu</SheetTitle>
                             </VisuallyHidden.Root>
-
-                            {/* Glassmorphic Menu Container */}
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.95, y: -20 }}
-                                animate={{ opacity: 1, scale: 1, y: 0 }}
-                                exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                className="w-full max-w-md"
-                                id="menu-description"
-                            >
-                                <div
-                                    className="flex flex-col gap-4 p-6 rounded-3xl border border-border/40"
-                                    style={{
-                                        background: isDark
-                                            ? 'oklch(from var(--background) l c h / 0.95)'
-                                            : 'oklch(from var(--background) l c h / 0.98)',
-                                        backdropFilter: 'blur(16px)',
-                                    }}
-                                >
-                                    {/* Logo Section */}
-                                    <div className="flex items-center justify-center px-4 py-3 rounded-full border border-border bg-background/50">
-                                        <div className="flex items-center gap-2">
-                                            <UDXLogo className="w-8 h-8 text-foreground" />
-                                            <div className="flex flex-col leading-none">
-                                                <span className="font-semibold text-sm text-foreground">UDX</span>
-                                                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">UI Kit</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Navigation Section */}
-                                    <div className="flex flex-col gap-2 p-3 rounded-3xl border border-border bg-background/30">
-                                        {navItems.map((item, index) => (
-                                            <motion.a
-                                                key={item.name}
-                                                href={item.href}
-                                                initial={{ opacity: 0, x: -20 }}
-                                                animate={{ opacity: 1, x: 0 }}
-                                                transition={{ delay: index * 0.05 }}
-                                                className="px-4 py-3 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-full transition-colors text-center"
-                                                onClick={() => setIsMobileOpen(false)}
-                                            >
-                                                {item.name}
-                                            </motion.a>
-                                        ))}
-                                    </div>
-
-                                    {/* CTA Button Section */}
-                                    <Button
-                                        className="w-full h-12 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-base font-medium"
-                                        onClick={() => setIsMobileOpen(false)}
-                                    >
-                                        Get Access Now
-                                    </Button>
+                            <div className="flex flex-col items-center gap-6 px-6" id="menu-description">
+                                <div className="flex flex-col items-center gap-4 w-full">
+                                    {navItems.map(item => (
+                                        <a
+                                            key={item.name}
+                                            href={item.href}
+                                            className="text-2xl font-medium w-full text-center py-2 active:bg-accent rounded-lg transition-colors" // Simplified mobile nav
+                                        >
+                                            {item.name}
+                                        </a>
+                                    ))}
                                 </div>
-                            </motion.div>
+                                <div className="w-8 h-px bg-border" />
+                                <Button className="w-full max-w-sm h-10 rounded-lg text-sm bg-blue-600 hover:bg-blue-700 text-white">
+                                    Get Access Now
+                                </Button>
+                            </div>
                         </SheetContent>
                     </Sheet>
                 </motion.div>
