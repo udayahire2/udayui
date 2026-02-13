@@ -32,10 +32,12 @@ const useSound = (url: string) => {
 };
 
 // --- Theme Trigger Component ---
-const ThemeTrigger = () => {
+const ThemeTrigger = ({ progress }: { progress?: any }) => {
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
     const playSound = useSound(AUDIO_FILE_PATH);
+
+    const scrollRotation = useTransform(progress || 0, [0, 1], [0, 45]);
 
     useEffect(() => {
         setMounted(true);
@@ -94,7 +96,6 @@ const ThemeTrigger = () => {
                         transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     />
 
-                    {/* Sun Rays */}
                     <motion.g
                         initial={false}
                         animate={{
@@ -102,18 +103,25 @@ const ThemeTrigger = () => {
                             rotate: isDark ? 90 : 0,
                             scale: isDark ? 0.5 : 1
                         }}
+                        style={{
+                            originX: "12px",
+                            originY: "12px",
+                            rotate: scrollRotation
+                        }}
                         transition={{ duration: 0.2 }}
-                        style={{ originX: "12px", originY: "12px" }}
                     >
                         <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
                     </motion.g>
                 </svg>
 
-                {/* Moon Crater */}
+                {/* Moon Crater Mask/Path integration placeholder - using motion.circle for now as requested but adding more character */}
                 <motion.div
-                    className="absolute top-2 right-2 w-2 h-2 bg-background rounded-full"
+                    className="absolute top-[30%] right-[30%] w-1.5 h-1.5 bg-background rounded-full"
                     initial={false}
-                    animate={{ scale: isDark ? 1 : 0 }}
+                    animate={{
+                        scale: isDark ? 1 : 0,
+                        opacity: isDark ? 0.4 : 0
+                    }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 />
             </div>
@@ -138,27 +146,33 @@ export default function Header04() {
     const isDark = resolvedTheme === "dark" || theme === "dark";
 
     // Simplified Animation Hooks
-    const scrollRaw = useTransform(scrollY, [0, 100], [0, 1]);
-    const scrollSpring = useSpring(scrollRaw, { stiffness: 400, damping: 40, mass: 0.8 });
+    const scrollRaw = useTransform(scrollY, [0, 200], [0, 1]); // Extended range for smoother entrance
+    const scrollSpring = useSpring(scrollRaw, {
+        stiffness: 280,
+        damping: 32,
+        mass: 1.2,
+        restDelta: 0.001
+    });
     const progress = shouldReduceMotion ? scrollRaw : scrollSpring;
 
-    // Simplified Transforms
-    const gap = useTransform(progress, [0, 1], [16, 0]); // Reduced gap for simpler layout
-    const padding = useTransform(progress, [0.4, 1], [0, 4]); // Reduced padding
+    // Premium Transforms
+    const y = useTransform(progress, [0, 1], [-10, 0]); // Subtle slide-in
+    const gap = useTransform(progress, [0, 1], ["16px", "0px"]); // Use px units for proper animation
+    const padding = useTransform(progress, [0.4, 1], ["0px", "6px"]);
 
-    const bgOpacity = useTransform(progress, [0.4, 1], [0, 0.95]); // Slightly less transparent
-    const blurValue = useTransform(progress, [0.4, 1], [0, 8]); // Reduced blur for performance
-    const borderOpacity = useTransform(progress, [0, 1], [0.1, isDark ? 0.3 : 0.15]); // Always some outline, more prominent
+    const bgOpacity = useTransform(progress, [0.4, 1], [0, 0.98]);
+    const blurValue = useTransform(progress, [0.4, 1], [0, 12]);
+    const borderOpacity = useTransform(progress, [0, 1], [0.1, isDark ? 0.4 : 0.2]);
 
     // Removed item transforms for simplicity
     const containerBg = useMotionTemplate`oklch(from var(--background) l c h / ${bgOpacity})`;
     const containerBorder = useMotionTemplate`oklch(from var(--foreground) l c h / ${borderOpacity})`;
 
     return (
-        <div className="fixed inset-x-0 top-4 z-50 flex justify-center pointer-events-none px-4 md:px-0"> {/* Reduced top margin */}
-
+        <div className="fixed inset-x-0 top-4 z-50 flex justify-center pointer-events-none px-4 md:px-0">
             <motion.div
                 style={{
+                    y,
                     gap,
                     padding,
                     background: containerBg,
@@ -170,30 +184,34 @@ export default function Header04() {
                 className="flex items-center pointer-events-auto overflow-hidden transition-colors max-w-4xl" // Added max-width for robustness
                 role="banner"
             >
-                {/* Logo - Simplified hover */}
+                {/* Logo - Clean Transition */}
                 <motion.div
-                    className="h-10 flex items-center px-2 rounded-full border border-border shrink-0 overflow-hidden" // Reduced height, standard border
+                    className="h-10 flex items-center px-2 rounded-full border border-border shrink-0 overflow-hidden relative group/logo cursor-pointer"
                     onHoverStart={() => setIsLogoHovered(true)}
                     onHoverEnd={() => setIsLogoHovered(false)}
                 >
-                    <div className="flex items-center gap-1 cursor-pointer px-2"> {/* Reduced padding */}
-                        <div className="flex items-center justify-center shrink-0">
+                    <div className="flex items-center gap-1 px-2">
+                        <motion.div
+                            animate={{ scale: isLogoHovered ? 1.05 : 1 }}
+                            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                            className="flex items-center justify-center shrink-0"
+                        >
                             <UDXLogo className="w-8 h-8 text-foreground" />
-                        </div>
+                        </motion.div>
 
-                        <AnimatePresence>
+                        <AnimatePresence initial={false}>
                             {isLogoHovered && (
                                 <motion.div
-                                    initial={{ width: 0, opacity: 0 }}
-                                    animate={{ width: "auto", opacity: 1 }}
-                                    exit={{ width: 0, opacity: 0 }}
-                                    transition={{ ease: "easeOut", duration: 0.15 }} // Faster transition
+                                    initial={{ width: 0, opacity: 0, x: -5 }}
+                                    animate={{ width: "auto", opacity: 1, x: 0 }}
+                                    exit={{ width: 0, opacity: 0, x: -5 }}
+                                    transition={{ duration: 0.2, ease: "easeOut" }}
                                     className="overflow-hidden flex flex-col justify-center leading-none whitespace-nowrap"
                                 >
-                                    <span className="font-medium text-xs text-foreground leading-none ml-1">
+                                    <span className="font-semibold text-xs text-foreground leading-none ml-1.5">
                                         UDX
                                     </span>
-                                    <span className="text-[8px] font-medium text-muted-foreground leading-none uppercase mt-0.5 ml-1">
+                                    <span className="text-[8px] font-bold text-muted-foreground leading-none uppercase mt-0.5 ml-1.5 tracking-wider">
                                         UI Kit
                                     </span>
                                 </motion.div>
@@ -222,9 +240,9 @@ export default function Header04() {
 
                 {/* Actions */}
                 <motion.div
-                    className="h-10 flex items-center px-1 gap-1 rounded-full border border-border shrink-0" // Standard border
+                    className="h-10 flex items-center px-1 gap-1 rounded-full border border-border shrink-0"
                 >
-                    <ThemeTrigger />
+                    <ThemeTrigger progress={progress} />
 
                     <Button className="hidden md:flex h-8 px-4 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-sm shrink-0">
                         Get Access
@@ -236,27 +254,70 @@ export default function Header04() {
                                 <Menu className="w-4 h-4" aria-hidden="true" />
                             </Button>
                         </SheetTrigger>
-                        <SheetContent side="top" className="w-full h-full border-none bg-background/95 backdrop-blur-md pt-16" aria-describedby="menu-description"> {/* Reduced blur and padding */}
+                        <SheetContent
+                            side="top"
+                            className="w-full h-full border-none bg-background/40 backdrop-blur-xl flex items-center justify-center p-6"
+                            aria-describedby="menu-description"
+                        >
                             <VisuallyHidden.Root>
                                 <SheetTitle>Menu</SheetTitle>
                             </VisuallyHidden.Root>
-                            <div className="flex flex-col items-center gap-6 px-6" id="menu-description">
-                                <div className="flex flex-col items-center gap-4 w-full">
-                                    {navItems.map(item => (
-                                        <a
-                                            key={item.name}
-                                            href={item.href}
-                                            className="text-2xl font-medium w-full text-center py-2 active:bg-accent rounded-lg transition-colors" // Simplified mobile nav
-                                        >
-                                            {item.name}
-                                        </a>
-                                    ))}
+
+                            {/* Glassmorphic Menu Container */}
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.95, y: -20 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.95, y: -20 }}
+                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                className="w-full max-w-md"
+                                id="menu-description"
+                            >
+                                <div
+                                    className="flex flex-col gap-4 p-6 rounded-3xl border border-border/40"
+                                    style={{
+                                        background: isDark
+                                            ? 'oklch(from var(--background) l c h / 0.95)'
+                                            : 'oklch(from var(--background) l c h / 0.98)',
+                                        backdropFilter: 'blur(16px)',
+                                    }}
+                                >
+                                    {/* Logo Section */}
+                                    <div className="flex items-center justify-center px-4 py-3 rounded-full border border-border bg-background/50">
+                                        <div className="flex items-center gap-2">
+                                            <UDXLogo className="w-8 h-8 text-foreground" />
+                                            <div className="flex flex-col leading-none">
+                                                <span className="font-semibold text-sm text-foreground">UDX</span>
+                                                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">UI Kit</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Navigation Section */}
+                                    <div className="flex flex-col gap-2 p-3 rounded-3xl border border-border bg-background/30">
+                                        {navItems.map((item, index) => (
+                                            <motion.a
+                                                key={item.name}
+                                                href={item.href}
+                                                initial={{ opacity: 0, x: -20 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                transition={{ delay: index * 0.05 }}
+                                                className="px-4 py-3 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-full transition-colors text-center"
+                                                onClick={() => setIsMobileOpen(false)}
+                                            >
+                                                {item.name}
+                                            </motion.a>
+                                        ))}
+                                    </div>
+
+                                    {/* CTA Button Section */}
+                                    <Button
+                                        className="w-full h-12 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-base font-medium"
+                                        onClick={() => setIsMobileOpen(false)}
+                                    >
+                                        Get Access Now
+                                    </Button>
                                 </div>
-                                <div className="w-8 h-px bg-border" />
-                                <Button className="w-full max-w-sm h-10 rounded-lg text-sm bg-blue-600 hover:bg-blue-700 text-white">
-                                    Get Access Now
-                                </Button>
-                            </div>
+                            </motion.div>
                         </SheetContent>
                     </Sheet>
                 </motion.div>
