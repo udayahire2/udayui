@@ -39,7 +39,7 @@ const faqData = [
 ]
 
 const AnimatedIcon = ({ isOpen }: { isOpen: boolean }) => {
-  const iconRef = React.useRef<SVGSVGElement>(null)
+  const iconRef = React.useRef<HTMLDivElement>(null)
 
   React.useEffect(() => {
     if (!iconRef.current) return
@@ -52,10 +52,9 @@ const AnimatedIcon = ({ isOpen }: { isOpen: boolean }) => {
   }, [isOpen])
 
   return (
-    <Plus
-      ref={iconRef}
-      className="size-4 shrink-0 text-muted-foreground transition-colors duration-200"
-    />
+    <div ref={iconRef} className="flex items-center justify-center">
+      <Plus className="h-4 w-4 shrink-0 text-muted-foreground transition-colors duration-200" />
+    </div>
   )
 }
 
@@ -84,10 +83,7 @@ export function FaqMinimal() {
           >
             {faqData.map((item) => (
               <AccordionItem key={item.id} value={item.id} className="border-b">
-                <AccordionTrigger
-                  className="text-left text-base font-medium hover:no-underline [&>svg]:hidden"
-                  hideChevron
-                >
+                <AccordionTrigger className="text-left text-base font-medium hover:no-underline [&>svg]:hidden">
                   <span className="flex-1">{item.question}</span>
                   <AnimatedIcon isOpen={openItem === item.id} />
                 </AccordionTrigger>
