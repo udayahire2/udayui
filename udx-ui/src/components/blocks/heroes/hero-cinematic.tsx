@@ -1,12 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, BarChart3, Check, ChevronRight, Copy, Users, Heart, Terminal, Window, PieChart, CreditCard, Settings, Search, Home } from "lucide-react";
+import { ArrowRight, BarChart2, ChevronRight, Users, Settings, Home } from "lucide-react";
 import { motion, useMotionValue, useTransform, animate, useInView } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UDXLogo } from "@/components/ui/udx-logo";
 
 const Counter = ({ value, prefix = "", suffix = "", decimals = 0 }: { value: number; prefix?: string; suffix?: string; decimals?: number }) => {
@@ -30,7 +28,6 @@ const Counter = ({ value, prefix = "", suffix = "", decimals = 0 }: { value: num
 };
 
 export function HeroCinematic() {
-    const [copied, setCopied] = useState(false);
     const x = useMotionValue(0);
     const y = useMotionValue(0);
     const rotateX = useTransform(y, [-100, 100], [2, -2]);
@@ -47,12 +44,6 @@ export function HeroCinematic() {
     const handleMouseLeave = () => {
         x.set(0);
         y.set(0);
-    };
-
-    const copyCommand = () => {
-        navigator.clipboard.writeText("npm install @udrx/ui");
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
     };
 
     return (
@@ -87,7 +78,7 @@ export function HeroCinematic() {
                                 className="text-4xl font-bold tracking-tighter sm:text-5xl lg:text-7xl text-balance text-foreground leading-[1.1]"
                             >
                                 Ship your next idea. <br className="hidden lg:block" />
-                                <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-blue-600">Overnight.</span>
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">Overnight.</span>
                             </motion.h1>
 
                             <motion.p
