@@ -90,63 +90,13 @@ export function ResizablePreview({ children, title, backHref = "/preview", isFul
 
                         {/* Right: Controls */}
                         <div className="flex items-center gap-2">
-                            {/* Breakpoints */}
-                            {Object.entries(BREAKPOINTS).map(([key, { label, icon: Icon, width: bpWidth }]) => (
-                                <Button
-                                    key={key}
-                                    variant={width === bpWidth ? "default" : "outline"}
-                                    size="sm"
-                                    onClick={() => setWidth(bpWidth)}
-                                    className="h-8"
-                                    title={label}
-                                >
-                                    <Icon className="w-4 h-4" />
-                                </Button>
-                            ))}
-                            <Button
-                                variant={width === null ? "default" : "outline"}
-                                size="sm"
-                                onClick={() => setWidth(null)}
-                                className="h-8"
-                                title="Full Width"
-                            >
-                                <Expand className="w-4 h-4" />
-                            </Button>
-
-                            <div className="h-6 w-px bg-border" />
-
-                            {/* Width Display */}
-                            {width !== null && (
-                                <span className="text-xs font-mono text-muted-foreground min-w-[60px] text-right">
-                                    {Math.round(currentWidth)}px
-                                </span>
-                            )}
-
-                            {/* Actions */}
-                            <Button variant="ghost" size="icon" onClick={handleRefresh} className="h-8 w-8">
-                                <RefreshCw className="w-4 h-4" />
-                            </Button>
-                            <Button variant="ghost" size="icon" onClick={enterFullscreen} className="h-8 w-8">
-                                <Expand className="w-4 h-4" />
-                            </Button>
                             <ModeToggle />
                         </div>
                     </div>
                 </div>
             )}
 
-            {/* Fullscreen Controls */}
-            {isFullscreen && (
-                <div className="fixed top-4 right-4 z-[9999] flex items-center gap-2">
-                    <Button onClick={handleRefresh} variant="secondary" size="icon" className="h-9 w-9 rounded-full">
-                        <RefreshCw className="w-4 h-4" />
-                    </Button>
-                    <ModeToggle />
-                    <Button onClick={exitFullscreen} variant="secondary" size="icon" className="h-9 w-9 rounded-full">
-                        <X className="w-4 h-4" />
-                    </Button>
-                </div>
-            )}
+
 
             {/* Preview Area */}
             <div className="flex-1 flex items-start justify-center p-4">

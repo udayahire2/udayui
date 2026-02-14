@@ -28,6 +28,8 @@ const Features02 = dynamic(() => import("@/components/blocks/features/feature-ca
 
 // --- Footers ---
 const FooterPremium = dynamic(() => import("@/components/blocks/footers/footer-premium").then(mod => ({ default: mod.FooterPremium })));
+const FooterMinimal = dynamic(() => import("@/components/blocks/footers/footer-minimal").then(mod => ({ default: mod.FooterMinimal })));
+const FooterStandard = dynamic(() => import("@/components/blocks/footers/footer-standard").then(mod => ({ default: mod.FooterStandard })));
 
 export type ComponentItem = {
     name: string;
@@ -172,6 +174,20 @@ export const registry: Record<string, ComponentItem> = {
         component: FooterPremium,
         category: "Footers",
         description: "Premium responsive footer with newsletter and links.",
+    },
+    "footers/footer-minimal": {
+        name: "Footer Minimal",
+        slug: "footers/footer-minimal",
+        component: FooterMinimal,
+        category: "Footers",
+        description: "Minimalist centered footer with clean layout.",
+    },
+    "footers/footer-standard": {
+        name: "Footer Standard",
+        slug: "footers/footer-standard",
+        component: FooterStandard,
+        category: "Footers",
+        description: "Standard multi-column footer with newsletter and links.",
     },
 };
 export const categories = ["Headers", "Heroes", "Testimonials", "Features", "Footers"];
