@@ -31,6 +31,9 @@ const FooterPremium = dynamic(() => import("@/components/blocks/footers/footer-p
 const FooterMinimal = dynamic(() => import("@/components/blocks/footers/footer-minimal").then(mod => ({ default: mod.FooterMinimal })));
 const FooterStandard = dynamic(() => import("@/components/blocks/footers/footer-standard").then(mod => ({ default: mod.FooterStandard })));
 
+// --- FAQ ---
+const FaqMinimal = dynamic(() => import("@/components/blocks/faq/faq-minimal").then(mod => ({ default: mod.FaqMinimal })));
+
 export type ComponentItem = {
     name: string;
     slug: string;
@@ -189,5 +192,14 @@ export const registry: Record<string, ComponentItem> = {
         category: "Footers",
         description: "Standard multi-column footer with newsletter and links.",
     },
+
+    // FAQ
+    "faq/faq-minimal": {
+        name: "FAQ Minimal",
+        slug: "faq/faq-minimal",
+        component: FaqMinimal,
+        category: "FAQ",
+        description: "Minimal FAQ section with accordion.",
+    },
 };
-export const categories = ["Headers", "Heroes", "Testimonials", "Features", "Footers"];
+export const categories = ["Headers", "Heroes", "Testimonials", "Features", "Footers", "FAQ"];

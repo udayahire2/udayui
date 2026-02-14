@@ -1,2 +1,2 @@
-export * from "./faq-01";
-export * from "./faq-02";
+export * from "./faq-minimal";
+export * from "./faq-premium";

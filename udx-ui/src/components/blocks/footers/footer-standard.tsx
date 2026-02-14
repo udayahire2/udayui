@@ -70,7 +70,7 @@ export function FooterStandard() {
             {/* Newsletter */}
             <div className="flex flex-col gap-3">
               <h3 className="text-sm font-semibold">Subscribe to our newsletter</h3>
-              <form className="flex  gap-2 max-w-sm">
+              <form className="flex gap-2 max-w-sm">
                 <Input
                   type="email"
                   placeholder="Enter your email"
