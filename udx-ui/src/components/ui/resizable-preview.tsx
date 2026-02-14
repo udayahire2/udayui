@@ -77,7 +77,7 @@ export function ResizablePreview({ children, title, backHref = "/preview", isFul
                         {/* Left: Back & Title */}
                         <div className="flex items-center gap-3">
                             <a href={backHref} className="flex items-center gap-1 text-sm hover:text-foreground text-muted-foreground">
-                                <ChevronLeftIcon className="w-4 h-4" />
+                                <ChevronLeft className="w-4 h-4" />
                                 Back
                             </a>
                             {title && (
@@ -110,7 +110,7 @@ export function ResizablePreview({ children, title, backHref = "/preview", isFul
                                 className="h-8"
                                 title="Full Width"
                             >
-                                <ArrowsPointingOutIcon className="w-4 h-4" />
+                                <Expand className="w-4 h-4" />
                             </Button>
 
                             <div className="h-6 w-px bg-border" />
@@ -124,10 +124,10 @@ export function ResizablePreview({ children, title, backHref = "/preview", isFul
 
                             {/* Actions */}
                             <Button variant="ghost" size="icon" onClick={handleRefresh} className="h-8 w-8">
-                                <ArrowPathIcon className="w-4 h-4" />
+                                <RefreshCw className="w-4 h-4" />
                             </Button>
                             <Button variant="ghost" size="icon" onClick={enterFullscreen} className="h-8 w-8">
-                                <ArrowsPointingOutIcon className="w-4 h-4" />
+                                <Expand className="w-4 h-4" />
                             </Button>
                             <ModeToggle />
                         </div>
@@ -139,11 +139,11 @@ export function ResizablePreview({ children, title, backHref = "/preview", isFul
             {isFullscreen && (
                 <div className="fixed top-4 right-4 z-[9999] flex items-center gap-2">
                     <Button onClick={handleRefresh} variant="secondary" size="icon" className="h-9 w-9 rounded-full">
-                        <ArrowPathIcon className="w-4 h-4" />
+                        <RefreshCw className="w-4 h-4" />
                     </Button>
                     <ModeToggle />
                     <Button onClick={exitFullscreen} variant="secondary" size="icon" className="h-9 w-9 rounded-full">
-                        <XMarkIcon className="w-4 h-4" />
+                        <X className="w-4 h-4" />
                     </Button>
                 </div>
             )}

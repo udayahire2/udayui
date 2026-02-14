@@ -26,6 +26,9 @@ const TestimonialsPremium = dynamic(() => import("@/components/blocks/testimonia
 const Features01 = dynamic(() => import("@/components/blocks/features/feature-grid").then(mod => ({ default: mod.Features01 })));
 const Features02 = dynamic(() => import("@/components/blocks/features/feature-cards").then(mod => ({ default: mod.Features02 })));
 
+// --- Footers ---
+const FooterPremium = dynamic(() => import("@/components/blocks/footers/footer-premium").then(mod => ({ default: mod.FooterPremium })));
+
 export type ComponentItem = {
     name: string;
     slug: string;
@@ -161,6 +164,14 @@ export const registry: Record<string, ComponentItem> = {
         category: "Features",
         description: "Feature highlights with card-based design.",
     },
-};
 
-export const categories = ["Headers", "Heroes", "Testimonials", "Features"];
+    // Footers
+    "footers/footer-premium": {
+        name: "Footer Premium",
+        slug: "footers/footer-premium",
+        component: FooterPremium,
+        category: "Footers",
+        description: "Premium responsive footer with newsletter and links.",
+    },
+};
+export const categories = ["Headers", "Heroes", "Testimonials", "Features", "Footers"];
