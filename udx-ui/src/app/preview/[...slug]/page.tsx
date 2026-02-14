@@ -20,6 +20,7 @@ export default async function PreviewPage(props: PreviewPageProps) {
 
     const Component = componentItem.component;
     const isHeaderComponent = componentItem.category === "Headers";
+    const isHeroComponent = componentItem.category === "Heroes";
 
     return (
         <>
@@ -96,8 +97,19 @@ export default async function PreviewPage(props: PreviewPageProps) {
                         </div>
                     </div>
                 </ResizablePreview>
+            ) : isHeroComponent ? (
+                // Full-width preview for hero sections
+                <ResizablePreview
+                    title={componentItem.name}
+                    backHref="/preview"
+                    isFullPagePreview={true}
+                >
+                    <div className="w-full min-h-screen bg-background">
+                        <Component />
+                    </div>
+                </ResizablePreview>
             ) : (
-                // Regular preview for other components
+                // Regular preview for other components (testimonials, features, etc.)
                 <ResizablePreview title={componentItem.name} backHref="/preview">
                     <Component />
                 </ResizablePreview>

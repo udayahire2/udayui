@@ -2,16 +2,29 @@ import * as React from "react";
 import dynamic from "next/dynamic";
 
 // --- Headers ---
-const Header01 = dynamic(() => import("@/components/blocks/header/header-01").then(mod => mod.DefaultNavbar) as any);
-const Header03 = dynamic(() => import("@/components/blocks/header/header-03") as any);
-const Header04 = dynamic(() => import("@/components/blocks/header/header-04") as any);
+const NavbarSimple = dynamic(() => import("@/components/blocks/headers").then(mod => ({ default: mod.NavbarSimple })));
+const NavbarStandard = dynamic(() => import("@/components/blocks/headers").then(mod => ({ default: mod.NavbarStandard })));
+const NavbarFloating = dynamic(() => import("@/components/blocks/headers").then(mod => ({ default: mod.NavbarFloating })));
+const NavbarMega = dynamic(() => import("@/components/blocks/headers").then(mod => ({ default: mod.NavbarMega })));
+const NavbarCinematic = dynamic(() => import("@/components/blocks/headers").then(mod => ({ default: mod.NavbarCinematic })));
+const NavbarSaas = dynamic(() => import("@/components/blocks/headers").then(mod => ({ default: mod.NavbarSaas })));
+const NavbarMarketing = dynamic(() => import("@/components/blocks/headers").then(mod => ({ default: mod.NavbarMarketing })));
 
-// --- Hero Sections ---
-const HeroSimpleCentered = dynamic(() => import("@/components/hero-sections/hero-simple-centered") as any);
-const HeroModernGrid = dynamic(() => import("@/components/hero-sections/hero-modern-grid") as any);
+// --- Heroes ---
+const HeroMinimal = dynamic(() => import("@/components/blocks/heroes").then(mod => ({ default: mod.HeroMinimal })));
+const HeroSaas = dynamic(() => import("@/components/blocks/heroes").then(mod => ({ default: mod.HeroSaas })));
+const HeroCinematic = dynamic(() => import("@/components/blocks/heroes").then(mod => ({ default: mod.HeroCinematic })));
+const HeroGradient = dynamic(() => import("@/components/blocks/heroes").then(mod => ({ default: mod.HeroGradient })));
+const HeroSplit = dynamic(() => import("@/components/blocks/heroes").then(mod => ({ default: mod.HeroSplit })));
 
-// --- Blocks ---
-const UserCard = dynamic(() => import("@/components/blocks/UserCard") as any);
+// --- Testimonials ---
+const TestimonialsSimple = dynamic(() => import("@/components/blocks/testimonials/testimonial-minimal").then(mod => ({ default: mod.TestimonialsSimple })));
+const TestimonialsNormal = dynamic(() => import("@/components/blocks/testimonials/testimonial-cards").then(mod => ({ default: mod.TestimonialsNormal })));
+const TestimonialsPremium = dynamic(() => import("@/components/blocks/testimonials/testimonial-carousel").then(mod => ({ default: mod.TestimonialsPremium })));
+
+// --- Features ---
+const Features01 = dynamic(() => import("@/components/blocks/features/feature-grid").then(mod => ({ default: mod.Features01 })));
+const Features02 = dynamic(() => import("@/components/blocks/features/feature-cards").then(mod => ({ default: mod.Features02 })));
 
 export type ComponentItem = {
     name: string;
@@ -22,54 +35,132 @@ export type ComponentItem = {
 };
 
 export const registry: Record<string, ComponentItem> = {
-    "headers/header-01": {
-        name: "Header (Minimal Shaded)",
-        slug: "headers/header-01",
-        component: Header01,
+    // Headers
+    "headers/navbar-simple": {
+        name: "Navbar Simple",
+        slug: "headers/navbar-simple",
+        component: NavbarSimple,
         category: "Headers",
-        description: "Premium minimal shaded responsive header with sticky behavior.",
+        description: "Clean and minimal navigation bar with essential links.",
     },
-    "headers/header-02": {
-        name: "Header (Enhanced SaaS)",
-        slug: "headers/header-02",
+    "headers/navbar-standard": {
+        name: "Navbar Standard",
+        slug: "headers/navbar-standard",
+        component: NavbarStandard,
         category: "Headers",
-        description: "Enhanced SaaS header with dropdown navigation and premium features.",
+        description: "Standard navigation with dropdown menus and responsive design.",
     },
-    "headers/header-03": {
-        name: "Header (Scroll Morph)",
-        slug: "headers/header-03",
-        component: Header03,
+    "headers/navbar-floating": {
+        name: "Navbar Floating",
+        slug: "headers/navbar-floating",
+        component: NavbarFloating,
         category: "Headers",
-        description: "Glassmorphic header that morphs into a pill on scroll.",
+        description: "Floating pill-shaped navbar with smooth scroll animations.",
     },
-    "headers/header-04": {
-        name: "Header (Pill)",
-        slug: "headers/header-04",
-        component: Header04,
+    "headers/navbar-mega": {
+        name: "Navbar Mega",
+        slug: "headers/navbar-mega",
+        component: NavbarMega,
         category: "Headers",
-        description: "Always-visible pill-shaped header with smooth animations.",
+        description: "Advanced mega menu navigation with rich content sections.",
     },
-    "hero-sections/simple-centered": {
-        name: "Hero (Simple Centered)",
-        slug: "hero-sections/simple-centered",
-        component: HeroSimpleCentered,
-        category: "Hero Sections",
-        description: "Clean, centered hero section with calm motion.",
+    "headers/navbar-cinematic": {
+        name: "Navbar Cinematic",
+        slug: "headers/navbar-cinematic",
+        component: NavbarCinematic,
+        category: "Headers",
+        description: "Cinematic header with dramatic scroll effects and animations.",
     },
-    "hero-sections/modern-grid": {
-        name: "Hero (Modern Grid)",
-        slug: "hero-sections/modern-grid",
-        component: HeroModernGrid,
-        category: "Hero Sections",
-        description: "Dark mode hero with grid background and star effects.",
+    "headers/navbar-saas": {
+        name: "Navbar SaaS",
+        slug: "headers/navbar-saas",
+        component: NavbarSaas,
+        category: "Headers",
+        description: "Modern SaaS-style navigation with CTA buttons.",
     },
-    "blocks/user-card": {
-        name: "User Card",
-        slug: "blocks/user-card",
-        component: UserCard,
-        category: "Blocks",
-        description: "A composite card component for displaying user profiles.",
+    "headers/navbar-marketing": {
+        name: "Navbar Marketing",
+        slug: "headers/navbar-marketing",
+        component: NavbarMarketing,
+        category: "Headers",
+        description: "Marketing-focused header with prominent call-to-actions.",
+    },
+
+    // Heroes
+    "heroes/hero-minimal": {
+        name: "Hero Minimal",
+        slug: "heroes/hero-minimal",
+        component: HeroMinimal,
+        category: "Heroes",
+        description: "Minimal hero section with clean typography and subtle animations.",
+    },
+    "heroes/hero-saas": {
+        name: "Hero SaaS",
+        slug: "heroes/hero-saas",
+        component: HeroSaas,
+        category: "Heroes",
+        description: "SaaS-focused hero with feature highlights and CTA.",
+    },
+    "heroes/hero-cinematic": {
+        name: "Hero Cinematic",
+        slug: "heroes/hero-cinematic",
+        component: HeroCinematic,
+        category: "Heroes",
+        description: "Cinematic hero with dramatic visuals and animations.",
+    },
+    "heroes/hero-gradient": {
+        name: "Hero Gradient",
+        slug: "heroes/hero-gradient",
+        component: HeroGradient,
+        category: "Heroes",
+        description: "Hero section with vibrant gradient backgrounds and effects.",
+    },
+    "heroes/hero-split": {
+        name: "Hero Split",
+        slug: "heroes/hero-split",
+        component: HeroSplit,
+        category: "Heroes",
+        description: "Split-screen hero layout with content and visual sections.",
+    },
+
+    // Testimonials
+    "testimonials/testimonial-minimal": {
+        name: "Testimonials Simple",
+        slug: "testimonials/testimonial-minimal",
+        component: TestimonialsSimple,
+        category: "Testimonials",
+        description: "Simple testimonial cards in a clean grid layout.",
+    },
+    "testimonials/testimonial-cards": {
+        name: "Testimonials Cards",
+        slug: "testimonials/testimonial-cards",
+        component: TestimonialsNormal,
+        category: "Testimonials",
+        description: "Enhanced testimonial cards with avatars and rich styling.",
+    },
+    "testimonials/testimonial-carousel": {
+        name: "Testimonials Carousel",
+        slug: "testimonials/testimonial-carousel",
+        component: TestimonialsPremium,
+        category: "Testimonials",
+        description: "Premium animated carousel with marquee effect.",
+    },
+
+    // Features
+    "features/feature-grid": {
+        name: "Features Grid",
+        slug: "features/feature-grid",
+        component: Features01,
+        category: "Features",
+        description: "Feature showcase in a responsive grid layout.",
+    },
+    "features/feature-cards": {
+        name: "Features Cards",
+        slug: "features/feature-cards",
+        component: Features02,
+        category: "Features",
+        description: "Feature highlights with card-based design.",
     },
 };
 
-export const categories = ["Headers", "Hero Sections", "Blocks"];
+export const categories = ["Headers", "Heroes", "Testimonials", "Features"];
