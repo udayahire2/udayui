@@ -261,14 +261,13 @@ function CTABlock({ variants }: { variants: Variants }) {
             <div className="relative z-10 flex flex-col sm:flex-row items-center gap-4 px-6 py-4">
                 <Button
                     size="lg"
-                    className="h-12 px-8 text-base transition-transform hover:scale-105 active:scale-95"
                 >
                     Get Started
                 </Button>
                 <Button
                     size="lg"
                     variant="outline"
-                    className="h-12 px-8 text-base group transition-transform hover:scale-105 active:scale-95"
+                    
                 >
                     View Documentation
                     <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
