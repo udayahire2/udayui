@@ -63,10 +63,10 @@ const config: Config = {
             keyframes: {
                 marquee: {
                     from: { transform: "translateX(0)" },
-                    to: { transform: "translateX(-100%)" },
+                    to: { transform: "translateX(-50%)" },
                 },
                 "marquee-reverse": {
-                    from: { transform: "translateX(-100%)" },
+                    from: { transform: "translateX(-50%)" },
                     to: { transform: "translateX(0)" },
                 },
             }

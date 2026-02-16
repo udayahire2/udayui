@@ -1,2 +1,2 @@
-export * from "./cta-01";
-export * from "./cta-02";
+export * from "./cta-minimal";
+export * from "./cta-premium";

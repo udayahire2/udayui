@@ -34,6 +34,26 @@ const FooterStandard = dynamic(() => import("@/components/blocks/footers/footer-
 // --- FAQ ---
 const FaqMinimal = dynamic(() => import("@/components/blocks/faq/faq-minimal").then(mod => ({ default: mod.FaqMinimal })));
 
+// --- CTA ---
+const CtaMinimal = dynamic(() => import("@/components/blocks/cta/cta-minimal").then(mod => ({ default: mod.Cta01 })));
+const CtaStandard = dynamic(() => import("@/components/blocks/cta/cta-standard").then(mod => ({ default: mod.Cta02 })));
+const CtaPremium = dynamic(() => import("@/components/blocks/cta/cta-premium").then(mod => ({ default: mod.Cta03 })));
+
+// --- Features ---
+const FeatureMinimal = dynamic(() => import("@/components/blocks/features/feature-minimal").then(mod => ({ default: mod.Features01 })));
+const FeatureStandard = dynamic(() => import("@/components/blocks/features/feature-standard").then(mod => ({ default: mod.Features02 })));
+const FeaturePremium = dynamic(() => import("@/components/blocks/features/feature-premium").then(mod => ({ default: mod.Features03 })));
+
+// --- Pricing ---
+const PricingMinimal = dynamic(() => import("@/components/blocks/pricing/pricing-minimal").then(mod => ({ default: mod.Pricing01 })));
+const PricingStandard = dynamic(() => import("@/components/blocks/pricing/pricing-standard").then(mod => ({ default: mod.Pricing02 })));
+const PricingPremium = dynamic(() => import("@/components/blocks/pricing/pricing-premium").then(mod => ({ default: mod.Pricing03 })));
+
+// --- Stats ---
+const StatsMinimal = dynamic(() => import("@/components/blocks/stats/stats-minimal").then(mod => ({ default: mod.Stats01 })));
+const StatsStandard = dynamic(() => import("@/components/blocks/stats/stats-standard").then(mod => ({ default: mod.Stats02 })));
+const StatsPremium = dynamic(() => import("@/components/blocks/stats/stats-premium").then(mod => ({ default: mod.Stats03 })));
+
 export type ComponentItem = {
     name: string;
     slug: string;
@@ -201,5 +221,97 @@ export const registry: Record<string, ComponentItem> = {
         category: "FAQ",
         description: "Minimal FAQ section with accordion.",
     },
+
+    // CTA
+    "cta/cta-minimal": {
+        name: "CTA Minimal",
+        slug: "cta/cta-minimal",
+        component: CtaMinimal,
+        category: "CTA",
+        description: "Simple centered Call to Action section.",
+    },
+    "cta/cta-standard": {
+        name: "CTA Standard",
+        slug: "cta/cta-standard",
+        component: CtaStandard,
+        category: "CTA",
+        description: "Split layout CTA with email capture.",
+    },
+    "cta/cta-premium": {
+        name: "CTA Premium",
+        slug: "cta/cta-premium",
+        component: CtaPremium,
+        category: "CTA",
+        description: "High-impact animated Call to Action.",
+    },
+
+    // Features
+    "features/feature-minimal": {
+        name: "Feature Minimal",
+        slug: "features/feature-minimal",
+        component: FeatureMinimal,
+        category: "Features",
+        description: "Simple grid of features with icons.",
+    },
+    "features/feature-standard": {
+        name: "Feature Standard",
+        slug: "features/feature-standard",
+        component: FeatureStandard,
+        category: "Features",
+        description: "Card-based feature grid.",
+    },
+    "features/feature-premium": {
+        name: "Feature Premium",
+        slug: "features/feature-premium",
+        component: FeaturePremium,
+        category: "Features",
+        description: "Detailed split layout feature section.",
+    },
+
+    // Pricing
+    "pricing/pricing-minimal": {
+        name: "Pricing Minimal",
+        slug: "pricing/pricing-minimal",
+        component: PricingMinimal,
+        category: "Pricing",
+        description: "Simple pricing cards.",
+    },
+    "pricing/pricing-standard": {
+        name: "Pricing Standard",
+        slug: "pricing/pricing-standard",
+        component: PricingStandard,
+        category: "Pricing",
+        description: "Standard pricing with feature lists.",
+    },
+    "pricing/pricing-premium": {
+        name: "Pricing Premium",
+        slug: "pricing/pricing-premium",
+        component: PricingPremium,
+        category: "Pricing",
+        description: "Premium pricing with toggle and details.",
+    },
+
+    // Stats
+    "stats/stats-minimal": {
+        name: "Stats Minimal",
+        slug: "stats/stats-minimal",
+        component: StatsMinimal,
+        category: "Stats",
+        description: "Simple stats grid.",
+    },
+    "stats/stats-standard": {
+        name: "Stats Standard",
+        slug: "stats/stats-standard",
+        component: StatsStandard,
+        category: "Stats",
+        description: "Stats with detailed cards.",
+    },
+    "stats/stats-premium": {
+        name: "Stats Premium",
+        slug: "stats/stats-premium",
+        component: StatsPremium,
+        category: "Stats",
+        description: "High-impact split layout for stats.",
+    },
 };
-export const categories = ["Headers", "Heroes", "Testimonials", "Features", "Footers", "FAQ"];
+export const categories = ["Headers", "Heroes", "Testimonials", "Features", "Footers", "FAQ", "CTA", "Pricing", "Stats"];

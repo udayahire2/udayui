@@ -21,6 +21,7 @@ export default async function PreviewPage(props: PreviewPageProps) {
     const Component = componentItem.component;
     const isHeaderComponent = componentItem.category === "Headers";
     const isHeroComponent = componentItem.category === "Heroes";
+    const isCTAComponent = componentItem.category === "CTA";
 
     return (
         <>
@@ -97,8 +98,8 @@ export default async function PreviewPage(props: PreviewPageProps) {
                         </div>
                     </div>
                 </ResizablePreview>
-            ) : isHeroComponent ? (
-                // Full-width preview for hero sections
+            ) : isHeroComponent || isCTAComponent ? (
+                // Full-width preview for hero and CTA sections
                 <ResizablePreview
                     title={componentItem.name}
                     backHref="/preview"
