@@ -59,6 +59,11 @@ const TeamMinimal = dynamic(() => import("@/components/blocks/team/team-minimal"
 const TeamStandard = dynamic(() => import("@/components/blocks/team/team-standard").then(mod => ({ default: mod.TeamStandard })));
 const TeamPremium = dynamic(() => import("@/components/blocks/team/team-premium").then(mod => ({ default: mod.TeamPremium })));
 
+// --- Chatbot Inputs ---
+const ChatGPTInput = dynamic(() => import("@/components/blocks/chatbotInput/chatgpt").then(mod => ({ default: mod.ChatGPTInput })));
+const ClaudeInput = dynamic(() => import("@/components/blocks/chatbotInput/claude").then(mod => ({ default: mod.ClaudeInput })));
+const DeepSeekInput = dynamic(() => import("@/components/blocks/chatbotInput/deepseek").then(mod => ({ default: mod.DeepSeekInput })));
+
 export type ComponentItem = {
     name: string;
     slug: string;
@@ -341,5 +346,28 @@ export const registry: Record<string, ComponentItem> = {
         category: "Team",
         description: "Interactive team section with detailed modal views and animations.",
     },
+
+    // Chatbot Inputs
+    "chatbot-input/chatgpt": {
+        name: "ChatGPT Input",
+        slug: "chatbot-input/chatgpt",
+        component: ChatGPTInput,
+        category: "Chatbot Inputs",
+        description: "OpenAI ChatGPT-style input with rounded design and circular buttons.",
+    },
+    "chatbot-input/claude": {
+        name: "Claude Input",
+        slug: "chatbot-input/claude",
+        component: ClaudeInput,
+        category: "Chatbot Inputs",
+        description: "Anthropic Claude-style input with attachment menu and squared buttons.",
+    },
+    "chatbot-input/deepseek": {
+        name: "DeepSeek Input",
+        slug: "chatbot-input/deepseek",
+        component: DeepSeekInput,
+        category: "Chatbot Inputs",
+        description: "DeepSeek AI-style input with horizontal layout and voice input support.",
+    },
 };
-export const categories = ["Headers", "Heroes", "Testimonials", "Features", "Footers", "FAQ", "CTA", "Pricing", "Stats", "Team"];
+export const categories = ["Headers", "Heroes", "Testimonials", "Features", "Footers", "FAQ", "CTA", "Pricing", "Stats", "Team", "Chatbot Inputs"];
