@@ -54,6 +54,11 @@ const StatsMinimal = dynamic(() => import("@/components/blocks/stats/stats-minim
 const StatsStandard = dynamic(() => import("@/components/blocks/stats/stats-standard").then(mod => ({ default: mod.Stats02 })));
 const StatsPremium = dynamic(() => import("@/components/blocks/stats/stats-premium").then(mod => ({ default: mod.Stats03 })));
 
+// --- Team ---
+const TeamMinimal = dynamic(() => import("@/components/blocks/team/team-minimal").then(mod => ({ default: mod.TeamMinimal })));
+const TeamStandard = dynamic(() => import("@/components/blocks/team/team-standard").then(mod => ({ default: mod.TeamStandard })));
+const TeamPremium = dynamic(() => import("@/components/blocks/team/team-premium").then(mod => ({ default: mod.TeamPremium })));
+
 export type ComponentItem = {
     name: string;
     slug: string;
@@ -313,5 +318,28 @@ export const registry: Record<string, ComponentItem> = {
         category: "Stats",
         description: "High-impact split layout for stats.",
     },
+
+    // Team
+    "team/team-minimal": {
+        name: "Team Minimal",
+        slug: "team/team-minimal",
+        component: TeamMinimal,
+        category: "Team",
+        description: "Simple grid of team members with avatars and roles.",
+    },
+    "team/team-standard": {
+        name: "Team Standard",
+        slug: "team/team-standard",
+        component: TeamStandard,
+        category: "Team",
+        description: "Card-based team display with bios and social links.",
+    },
+    "team/team-premium": {
+        name: "Team Premium",
+        slug: "team/team-premium",
+        component: TeamPremium,
+        category: "Team",
+        description: "Interactive team section with detailed modal views and animations.",
+    },
 };
-export const categories = ["Headers", "Heroes", "Testimonials", "Features", "Footers", "FAQ", "CTA", "Pricing", "Stats"];
+export const categories = ["Headers", "Heroes", "Testimonials", "Features", "Footers", "FAQ", "CTA", "Pricing", "Stats", "Team"];
