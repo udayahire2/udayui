@@ -3,12 +3,17 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Plus, Mic, AudioLines, ArrowUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
  * ChatGPT-style input component (Voice Mode UI)
- * Replicates the pill-shaped design with voice features
+ * Replicates the pill-shaped design with premium UI nuances
  */
 
 interface ChatGPTInputProps {
@@ -20,12 +25,13 @@ interface ChatGPTInputProps {
 
 const ChatGPTInput = ({
     onSend,
-    placeholder = "Ask anything",
+    placeholder = "Message ChatGPT",
     disabled = false,
     className,
 }: ChatGPTInputProps) => {
     const [message, setMessage] = React.useState("");
     const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+    const [isFocused, setIsFocused] = React.useState(false);
 
     // Auto-resize textarea
     React.useEffect(() => {
@@ -53,71 +59,105 @@ const ChatGPTInput = ({
     const hasContent = message.trim().length > 0;
 
     return (
-        <div className={cn("w-full max-w-3xl mx-auto px-4", className)}>
-            <div className="relative flex items-end gap-2 rounded-full border border-border/50 bg-secondary/50 dark:bg-zinc-800/80 shadow-sm focus-within:border-primary/20 transition-all p-2">
+        <div className={cn("w-full max-w-3xl mx-auto px-4 py-6", className)}>
+            <div
+                className={cn(
+                    "relative flex items-center gap-3.5 rounded-[20px] p-4 transition-all duration-300 ease-in-out",
+                    "bg-gradient-to-r from-background via-secondary/50 to-background dark:from-zinc-900/80 dark:via-zinc-800/60 dark:to-zinc-900/80",
+                    "border border-border/60 hover:border-border/80 backdrop-blur-sm",
+                    isFocused && "border-blue-500/30 shadow-lg shadow-blue-500/10"
+                )}
+            >
                 {/* Plus Button (Left) */}
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-10 w-10 rounded-full hover:bg-muted/50 text-muted-foreground shrink-0"
-                    disabled={disabled}
-                    aria-label="Add attachment"
-                >
-                    <Plus className="h-5 w-5" />
-                </Button>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-11 w-11 rounded-full hover:bg-accent/60 text-muted-foreground hover:text-foreground transition-all duration-200 shrink-0 hover:scale-110 active:scale-95"
+                            disabled={disabled}
+                            aria-label="Add attachment"
+                        >
+                            <Plus className="h-6 w-6" />
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="text-xs">Add attachment</TooltipContent>
+                </Tooltip>
 
                 {/* Textarea */}
-                <div className="flex-1 min-h-[44px] flex items-center">
+                <div className="flex-1 flex items-center py-0.5">
                     <Textarea
                         ref={textareaRef}
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         onKeyDown={handleKeyDown}
+                        onFocus={() => setIsFocused(true)}
+                        onBlur={() => setIsFocused(false)}
                         placeholder={placeholder}
                         disabled={disabled}
-                        className="min-h-[24px] max-h-[200px] w-full resize-none border-0 bg-transparent px-2 py-0 text-base focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/60 leading-normal"
+                        className="w-full max-h-[200px] min-h-0 resize-none border-0 bg-transparent dark:bg-transparent px-4 py-3 text-sm font-medium focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/50 leading-relaxed transition-all selection:bg-blue-500/30 shadow-none"
                         rows={1}
                     />
                 </div>
 
                 {/* Right Actions */}
-                <div className="flex items-center gap-1 shrink-0 pb-0.5">
+                <div className="flex items-center gap-2 shrink-0">
                     {!hasContent ? (
                         <>
                             {/* Mic Button */}
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-10 w-10 rounded-full hover:bg-muted/50 text-muted-foreground"
-                                disabled={disabled}
-                                aria-label="Voice input"
-                            >
-                                <Mic className="h-5 w-5" />
-                            </Button>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-11 w-11 rounded-full hover:bg-accent/60 text-muted-foreground hover:text-foreground transition-all duration-200 hover:scale-110 active:scale-95"
+                                        disabled={disabled}
+                                        aria-label="Voice input"
+                                    >
+                                        <Mic className="h-6 w-6" />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent side="top" className="text-xs">Voice input</TooltipContent>
+                            </Tooltip>
 
                             {/* Voice Mode Button (Blue) */}
-                            <Button
-                                size="icon"
-                                className="h-10 w-10 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-md border-0"
-                                disabled={disabled}
-                                aria-label="Start voice mode"
-                            >
-                                <AudioLines className="h-5 w-5" />
-                            </Button>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button
+                                        size="icon"
+                                        className="h-11 w-11 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-blue-500/40 border-0 transition-all duration-200 hover:scale-110 active:scale-95"
+                                        disabled={disabled}
+                                        aria-label="Start voice mode"
+                                    >
+                                        <AudioLines className="h-6 w-6" />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent side="top" className="text-xs">Start Voice Mode</TooltipContent>
+                            </Tooltip>
                         </>
                     ) : (
                         /* Send Button (appears when typing) */
-                        <Button
-                            onClick={handleSend}
-                            disabled={disabled}
-                            size="icon"
-                            className="h-10 w-10 rounded-full bg-foreground text-background hover:bg-foreground/90 transition-all shadow-sm"
-                            aria-label="Send message"
-                        >
-                            <ArrowUp className="h-5 w-5" />
-                        </Button>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    onClick={handleSend}
+                                    disabled={disabled}
+                                    size="icon"
+                                    className="h-11 w-11 rounded-full bg-gradient-to-br from-foreground to-foreground/80 text-background hover:from-foreground hover:to-foreground transition-all duration-200 shadow-lg hover:shadow-foreground/40 active:scale-95 hover:scale-110"
+                                    aria-label="Send message"
+                                >
+                                    <ArrowUp className="h-6 w-6" />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent side="top" className="text-xs">Send message</TooltipContent>
+                        </Tooltip>
                     )}
                 </div>
+            </div>
+            <div className="text-center mt-3">
+                <p className="text-xs text-muted-foreground/60 font-medium">
+                    AI can make mistakes. Verify important information.
+                </p>
             </div>
         </div>
     );

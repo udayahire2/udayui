@@ -3,12 +3,18 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, ArrowUp, Paperclip, Image as ImageIcon } from "lucide-react";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Plus, Mic, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
  * Claude AI-style input component
- * Replicates Anthropic's Claude interface design
+ * Based on Anthropic's Claude interface design with horizontal layout
  */
 
 interface ClaudeInputProps {
@@ -16,16 +22,19 @@ interface ClaudeInputProps {
     placeholder?: string;
     disabled?: boolean;
     className?: string;
+    onModelSelect?: (model: string) => void;
+    selectedModel?: string;
 }
 
 const ClaudeInput = ({
     onSend,
-    placeholder = "Reply to Claude...",
+    placeholder = "How can I help you today?",
     disabled = false,
     className,
+    onModelSelect,
+    selectedModel = "Sonnet 4.5 Extended",
 }: ClaudeInputProps) => {
     const [message, setMessage] = React.useState("");
-    const [showAttachMenu, setShowAttachMenu] = React.useState(false);
     const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
     // Auto-resize textarea
@@ -51,40 +60,32 @@ const ClaudeInput = ({
         }
     };
 
-    const canSend = message.trim().length > 0 && !disabled;
+    const hasContent = message.trim().length > 0;
 
     return (
-        <div className={cn("w-full max-w-3xl mx-auto px-4", className)}>
-            <div className="relative">
-                {/* Attachment Menu */}
-                {showAttachMenu && (
-                    <div className="absolute bottom-full left-0 mb-2 bg-background border border-border rounded-lg shadow-lg p-2 min-w-[200px]">
-                        <button className="flex items-center gap-3 w-full px-3 py-2 text-sm hover:bg-muted rounded-md transition-colors">
-                            <Paperclip className="h-4 w-4" />
-                            <span>Attach file</span>
-                        </button>
-                        <button className="flex items-center gap-3 w-full px-3 py-2 text-sm hover:bg-muted rounded-md transition-colors">
-                            <ImageIcon className="h-4 w-4" />
-                            <span>Add image</span>
-                        </button>
-                    </div>
+        <div className={cn("w-full max-w-4xl mx-auto px-4 py-8", className)}>
+            {/* Input Container */}
+            <div
+                className={cn(
+                    "relative flex items-center gap-4 rounded-[20px] p-4 transition-all duration-300",
+                    "bg-gradient-to-r from-background via-secondary/40 to-background dark:from-zinc-900/90 dark:via-zinc-800/50 dark:to-zinc-900/90",
+                    "border border-border/50 hover:border-border/70",
+                    "focus-within:border-blue-500/50 focus-within:shadow-lg focus-within:shadow-blue-500/15"
                 )}
+            >
+                {/* Plus Button (Left) */}
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-11 w-11 rounded-lg shrink-0 hover:bg-slate-700/40 text-slate-400 hover:text-slate-200 transition-all duration-200"
+                    disabled={disabled}
+                    aria-label="Add attachment"
+                >
+                    <Plus className="h-6 w-6" />
+                </Button>
 
-                {/* Input Container */}
-                <div className="relative flex items-end gap-2 rounded-2xl border border-border bg-background shadow-sm focus-within:border-primary/50 transition-colors">
-                    {/* Add Attachment Button */}
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        className="absolute left-2 bottom-2 h-9 w-9 rounded-lg hover:bg-muted"
-                        disabled={disabled}
-                        onClick={() => setShowAttachMenu(!showAttachMenu)}
-                        aria-label="Add attachment"
-                    >
-                        <Plus className="h-5 w-5 text-muted-foreground" />
-                    </Button>
-
-                    {/* Textarea */}
+                {/* Textarea (Center) */}
+                <div className="flex-1 flex items-center">
                     <Textarea
                         ref={textareaRef}
                         value={message}
@@ -92,31 +93,64 @@ const ClaudeInput = ({
                         onKeyDown={handleKeyDown}
                         placeholder={placeholder}
                         disabled={disabled}
-                        className="min-h-[56px] max-h-[200px] resize-none border-0 bg-transparent pl-12 pr-12 py-4 text-base focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/60"
+                        className="w-full max-h-[200px] min-h-[56px] resize-none border-0 bg-transparent dark:bg-transparent px-0 py-3 text-base font-medium focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-slate-500 dark:placeholder:text-slate-400 leading-relaxed transition-all selection:bg-blue-500/30 shadow-none text-slate-100"
                         rows={1}
                     />
+                </div>
 
-                    {/* Send Button */}
+                {/* Right Actions */}
+                <div className="flex items-center gap-3 shrink-0">
+                    {/* Model Selector */}
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-11 px-3 rounded-lg hover:bg-slate-700/40 text-slate-300 hover:text-slate-100 transition-all duration-200 flex items-center gap-2"
+                                disabled={disabled}
+                            >
+                                <span className="text-sm font-medium">{selectedModel}</span>
+                                <ChevronDown className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-48">
+                            <DropdownMenuItem
+                                onClick={() => onModelSelect?.("Sonnet 4.5 Extended")}
+                                className="cursor-pointer"
+                            >
+                                Sonnet 4.5 Extended
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => onModelSelect?.("Claude 3.5 Sonnet")}
+                                className="cursor-pointer"
+                            >
+                                Claude 3.5 Sonnet
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => onModelSelect?.("Claude 3 Opus")}
+                                className="cursor-pointer"
+                            >
+                                Claude 3 Opus
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+
+                    {/* Voice Button */}
                     <Button
-                        onClick={handleSend}
-                        disabled={!canSend}
+                        variant="ghost"
                         size="icon"
-                        className={cn(
-                            "absolute right-2 bottom-2 h-9 w-9 rounded-lg transition-all",
-                            canSend
-                                ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                                : "bg-muted text-muted-foreground cursor-not-allowed"
-                        )}
-                        aria-label="Send message"
+                        className="h-11 w-11 rounded-lg hover:bg-slate-700/40 text-slate-400 hover:text-slate-200 transition-all duration-200"
+                        disabled={disabled}
+                        aria-label="Voice input"
                     >
-                        <ArrowUp className="h-5 w-5" />
+                        <Mic className="h-6 w-6" />
                     </Button>
                 </div>
             </div>
 
             {/* Helper text */}
-            <p className="mt-2 text-center text-xs text-muted-foreground">
-                Claude can make mistakes. Please double-check responses.
+            <p className="mt-4 text-center text-xs text-slate-500 dark:text-slate-400 font-medium">
+                AI can make mistakes. Verify important information.
             </p>
         </div>
     );

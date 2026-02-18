@@ -63,6 +63,7 @@ const TeamPremium = dynamic(() => import("@/components/blocks/team/team-premium"
 const ChatGPTInput = dynamic(() => import("@/components/blocks/chatbotInput/chatgpt").then(mod => ({ default: mod.ChatGPTInput })));
 const ClaudeInput = dynamic(() => import("@/components/blocks/chatbotInput/claude").then(mod => ({ default: mod.ClaudeInput })));
 const DeepSeekInput = dynamic(() => import("@/components/blocks/chatbotInput/deepseek").then(mod => ({ default: mod.DeepSeekInput })));
+const Kimi = dynamic(() => import("@/components/blocks/chatbotInput/kimi").then(mod => ({ default: mod.Kimi })));
 
 export type ComponentItem = {
     name: string;
@@ -368,6 +369,13 @@ export const registry: Record<string, ComponentItem> = {
         component: DeepSeekInput,
         category: "Chatbot Inputs",
         description: "DeepSeek AI-style input with horizontal layout and voice input support.",
+    },
+    "chatbot-input/kimi": {
+        name: "Kimi Input",
+        slug: "chatbot-input/kimi",
+        component: Kimi,
+        category: "Chatbot Inputs",
+        description: "Kimi AI-style input with horizontal layout and voice input support.",
     },
 };
 export const categories = ["Headers", "Heroes", "Testimonials", "Features", "Footers", "FAQ", "CTA", "Pricing", "Stats", "Team", "Chatbot Inputs"];
