@@ -49,7 +49,12 @@ const config: Config = {
                     '3': 'hsl(var(--chart-3))',
                     '4': 'hsl(var(--chart-4))',
                     '5': 'hsl(var(--chart-5))'
-                }
+                },
+                brand: {
+                    DEFAULT: "hsl(var(--brand))",
+                    foreground: "hsl(var(--brand-foreground))",
+                },
+                "brand-foreground": "hsl(var(--brand-foreground))",
             },
             borderRadius: {
                 lg: 'var(--radius)',
@@ -59,6 +64,8 @@ const config: Config = {
             animation: {
                 marquee: "marquee 25s linear infinite",
                 "marquee-reverse": "marquee-reverse 25s linear infinite",
+                appear: "appear 0.5s ease-out forwards",
+                "appear-zoom": "appear-zoom 0.5s ease-out forwards"
             },
             keyframes: {
                 marquee: {
@@ -69,6 +76,14 @@ const config: Config = {
                     from: { transform: "translateX(-50%)" },
                     to: { transform: "translateX(0)" },
                 },
+                appear: {
+                    "0%": { opacity: "0", transform: "translateY(10px)" },
+                    "100%": { opacity: "1", transform: "translateY(0)" }
+                },
+                "appear-zoom": {
+                    "0%": { opacity: "0", transform: "scale(0.95)" },
+                    "100%": { opacity: "1", transform: "scale(1)" }
+                }
             }
         }
     },

@@ -65,6 +65,11 @@ const ClaudeInput = dynamic(() => import("@/components/blocks/chatbotInput/claud
 const DeepSeekInput = dynamic(() => import("@/components/blocks/chatbotInput/deepseek").then(mod => ({ default: mod.DeepSeekInput })));
 const Kimi = dynamic(() => import("@/components/blocks/chatbotInput/kimi").then(mod => ({ default: mod.Kimi })));
 
+// --- Contact ---
+const ContactShaded = dynamic(() => import("@/components/blocks/contact/contact-shaded").then(mod => ({ default: mod.Contact })));
+const ContactMinimal = dynamic(() => import("@/components/blocks/contact/contact-minimal").then(mod => ({ default: mod.ContactMinimal })));
+const ContactPremium = dynamic(() => import("@/components/blocks/contact/contact-premium").then(mod => ({ default: mod.ContactPremium })));
+
 export type ComponentItem = {
     name: string;
     slug: string;
@@ -377,5 +382,28 @@ export const registry: Record<string, ComponentItem> = {
         category: "Chatbot Inputs",
         description: "Kimi AI-style input with horizontal layout and voice input support.",
     },
+
+    // Contact
+    "contact/contact-shaded": {
+        name: "Contact Shaded",
+        slug: "contact/contact-shaded",
+        component: ContactShaded,
+        category: "Contact",
+        description: "Bordered contact page with email, office, and phone boxes plus social links.",
+    },
+    "contact/contact-minimal": {
+        name: "Contact Minimal",
+        slug: "contact/contact-minimal",
+        component: ContactMinimal,
+        category: "Contact",
+        description: "Clean, centered minimal contact section with large typography.",
+    },
+    "contact/contact-premium": {
+        name: "Contact Premium",
+        slug: "contact/contact-premium",
+        component: ContactPremium,
+        category: "Contact",
+        description: "Structured premium contact page with detailed form and information.",
+    },
 };
-export const categories = ["Headers", "Heroes", "Testimonials", "Features", "Footers", "FAQ", "CTA", "Pricing", "Stats", "Team", "Chatbot Inputs"];
+export const categories = ["Headers", "Heroes", "Testimonials", "Features", "Footers", "FAQ", "CTA", "Pricing", "Stats", "Team", "Chatbot Inputs", "Contact"];
