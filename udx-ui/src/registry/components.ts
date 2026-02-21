@@ -33,7 +33,7 @@ const FooterStandard = dynamic(() => import("@/components/blocks/footers/footer-
 
 // --- FAQ ---
 const FaqMinimal = dynamic(() => import("@/components/blocks/faq/faq-minimal").then(mod => ({ default: mod.FaqMinimal })));
-
+const FaqPremium = dynamic(()=> import ("@/components/blocks/faq/faq-premium").then(mod =>({default: mod.FaqPremium}) ));
 // --- CTA ---
 const CtaMinimal = dynamic(() => import("@/components/blocks/cta/cta-minimal").then(mod => ({ default: mod.Cta01 })));
 const CtaStandard = dynamic(() => import("@/components/blocks/cta/cta-standard").then(mod => ({ default: mod.Cta02 })));
@@ -236,6 +236,13 @@ export const registry: Record<string, ComponentItem> = {
         component: FaqMinimal,
         category: "FAQ",
         description: "Minimal FAQ section with accordion.",
+    },
+    "faq/faq-premium": {
+        name: "FAQ Primium",
+        slug: "faq/faq-premium",
+        component: FaqPremium,
+        category: "FAQ",
+        description: "Premium FAQ section with accordion.",
     },
 
     // CTA
