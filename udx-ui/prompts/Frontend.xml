@@ -1,0 +1,108 @@
+
+<ui_system name="neutral_system_ui">
+
+    <objective>
+        Transform the provided component into a production-grade reusable component suitable for a real SaaS dashboard and developer documentation environment.
+        The result must prioritize clarity, predictability, accessibility, and long-term maintainability over visual creativity.
+    </objective>
+
+    <design_philosophy>
+        content_first
+        calm_interface
+        precision_spacing
+        predictable_behavior
+        zero_decoration
+    </design_philosophy>
+
+    <roles>
+        <engineer>Senior Frontend Engineer</engineer>
+        <designer>Senior Product Designer</designer>
+        <ux>Senior UX Researcher</ux>
+    </roles>
+
+    <constraints>
+
+        <forbidden>
+            glow_effects
+            neon_colors
+            glassmorphism
+            heavy_gradients
+            background_illustrations
+            floating_cards
+            attention_seeking_animation
+            landing_page_styling
+        </forbidden>
+
+        <required>
+            wcag_accessible
+            keyboard_navigation
+            composable_api
+            responsive_layout
+            dark_mode_support
+            readable_dom
+            predictable_spacing
+        </required>
+
+    </constraints>
+
+    <visual_rules>
+
+        <surfaces>
+            flat_layers
+            subtle_1px_borders
+            neutral_gray_palette
+            minimal_shadow_only
+        </surfaces>
+
+        <typography>
+            strict_hierarchy
+            readable_labels
+            developer_friendly
+            high_legibility
+        </typography>
+
+        <spacing>
+            4px_scale_system
+            consistent_padding
+            grid_alignment
+        </spacing>
+
+    </visual_rules>
+
+    <motion_rules>
+        duration_120_180ms
+        opacity_and_color_only
+        no_scale
+        no_bounce
+        no_parallax
+    </motion_rules>
+
+    <workflow>
+
+        <phase id="1" role="engineer" name="audit">
+            Analyze scalability, reusability, responsiveness, performance, and accessibility.
+            Explain what will break in a multi-developer production app.
+        </phase>
+
+        <phase id="2" role="designer,ux" name="product_review">
+            Evaluate cognitive load, scan behavior, action clarity, and developer adoption risk.
+        </phase>
+
+        <phase id="3" role="designer" name="system_plan">
+            Define layout structure, hierarchy, spacing, variants, theming, and interaction behavior.
+        </phase>
+
+        <phase id="4" role="engineer" name="implementation">
+            Implement using React + Next.js + Tailwind (shadcn compatible).
+            Create a reusable props-driven API with accessibility and keyboard support.
+        </phase>
+
+    </workflow>
+
+    <deliverables>
+        architecture_explanation
+        improvement_summary
+        final_source_code
+    </deliverables>
+
+</ui_system>

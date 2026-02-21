@@ -1,16 +1,30 @@
 "use client"
 
 import * as React from "react"
-import { Plus } from "lucide-react"
-import gsap from "gsap"
+import { Plus, Minus } from "lucide-react"
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { cn } from "@/lib/utils"
 
-const faqData = [
+export interface FaqItem {
+  id: string
+  question: string
+  answer: React.ReactNode
+}
+
+export interface FaqMinimalProps extends React.HTMLAttributes<HTMLDivElement> {
+  title?: string
+  description?: string
+  items?: FaqItem[]
+  defaultValue?: string
+}
+
+const defaultFaqData: FaqItem[] = [
   {
     id: "item-1",
     question: "What is UDX UI?",
@@ -38,56 +52,75 @@ const faqData = [
   },
 ]
 
-const AnimatedIcon = ({ isOpen }: { isOpen: boolean }) => {
-  const iconRef = React.useRef<HTMLDivElement>(null)
-
-  React.useEffect(() => {
-    if (!iconRef.current) return
-
-    gsap.to(iconRef.current, {
-      rotation: isOpen ? 45 : 0,
-      duration: 0.3,
-      ease: "power2.out",
-    })
-  }, [isOpen])
-
+// Pure opacity/color transition preserving accessibility & motion rules.
+const StateIcon = ({ isOpen }: { isOpen: boolean }) => {
   return (
-    <div ref={iconRef} className="flex items-center justify-center">
-      <Plus className="h-4 w-4 shrink-0 text-muted-foreground transition-colors duration-200" />
+    <div className="relative h-4 w-4 shrink-0 text-muted-foreground ml-2">
+      <Plus
+        className={cn(
+          "absolute inset-0 h-4 w-4 transition-opacity duration-150 ease-in-out",
+          isOpen ? "opacity-0" : "opacity-100"
+        )}
+        aria-hidden="true"
+      />
+      <Minus
+        className={cn(
+          "absolute inset-0 h-4 w-4 transition-opacity duration-150 ease-in-out",
+          isOpen ? "opacity-100" : "opacity-0"
+        )}
+        aria-hidden="true"
+      />
     </div>
   )
 }
 
-export function FaqMinimal() {
-  const [openItem, setOpenItem] = React.useState<string>("")
+export function FaqMinimal({
+  title = "Frequently Asked Questions",
+  description = "Everything you need to know about UDX UI and how it helps you build better software.",
+  items = defaultFaqData,
+  defaultValue,
+  className,
+  ...props
+}: FaqMinimalProps) {
+  const [openItem, setOpenItem] = React.useState<string>(defaultValue || "")
 
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 bg-background">
+    <section className={cn("w-full py-12 md:py-16 bg-background", className)} {...props}>
       <div className="container mx-auto px-4 md:px-6 max-w-3xl">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-muted-foreground md:text-lg/relaxed lg:text-base/relaxed xl:text-lg/relaxed max-w-[600px]">
-            Everything you need to know about UDX UI and how it helps you build better software.
-          </p>
-        </div>
+        {(title || description) && (
+          <div className="flex flex-col space-y-3 mb-10 text-left">
+            {title && (
+              <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
+                {title}
+              </h2>
+            )}
+            {description && (
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+                {description}
+              </p>
+            )}
+          </div>
+        )}
 
         <div className="w-full">
           <Accordion
             type="single"
             collapsible
-            className="w-full"
+            className="w-full flex-col space-y-0"
             value={openItem}
             onValueChange={setOpenItem}
           >
-            {faqData.map((item) => (
-              <AccordionItem key={item.id} value={item.id} className="border-b">
-                <AccordionTrigger className="text-left text-base font-medium hover:no-underline [&>svg]:hidden">
-                  <span className="flex-1">{item.question}</span>
-                  <AnimatedIcon isOpen={openItem === item.id} />
+            {items.map((item) => (
+              <AccordionItem
+                key={item.id}
+                value={item.id}
+                className="border-b border-border/50 first:border-t hover:bg-muted/30 px-2 sm:px-4 transition-colors duration-150"
+              >
+                <AccordionTrigger className="text-left py-4 text-sm sm:text-base font-medium hover:no-underline focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-0 rounded-[2px] [&>svg]:hidden">
+                  <span className="flex-1 pr-4">{item.question}</span>
+                  <StateIcon isOpen={openItem === item.id} />
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground">
+                <AccordionContent className="text-sm sm:text-base text-muted-foreground pb-4 leading-relaxed pr-8">
                   {item.answer}
                 </AccordionContent>
               </AccordionItem>
