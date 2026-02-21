@@ -1,72 +1,153 @@
 "use client"
 
 import * as React from "react"
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
+import { cn } from "@/lib/utils"
 
-const faqData = [
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+export interface FaqItem {
+  id: string
+  question: string
+  answer: React.ReactNode
+}
+
+export interface FaqStandardProps extends React.HTMLAttributes<HTMLDivElement> {
+  title?: string
+  description?: string
+  items?: FaqItem[]
+  columns?: 1 | 2
+}
+
+// ─── Default Data ─────────────────────────────────────────────────────────────
+
+const DEFAULT_ITEMS: FaqItem[] = [
   {
-    id: "item-1",
+    id: "faq-std-1",
     question: "What is UDX UI?",
-    answer: "UDX UI is a modern, accessible, and performant UI component library built for React applications. It provides a comprehensive set of pre-built components to help developers build beautiful interfaces faster.",
+    answer:
+      "UDX UI is a production-grade component library built for React and Next.js. It ships accessible, composable primitives that snap into any design system through CSS token overrides.",
   },
   {
-    id: "item-2",
-    question: "Is it compatible with Next.js?",
-    answer: "Yes, UDX UI is fully compatible with Next.js, including the App Router. All components are designed to work seamlessly with Server Components and Client Components where appropriate.",
+    id: "faq-std-2",
+    question: "Is it compatible with Next.js App Router?",
+    answer:
+      "Yes. Interactive components carry the \"use client\" directive only where necessary. Everything else is server-safe and works without any provider wrappers.",
   },
   {
-    id: "item-3",
-    question: "Can I customize the styling?",
-    answer: "Absolutely. UDX UI is built on top of Tailwind CSS, allowing you to easily customize the look and feel of every component using utility classes or by modifying the theme configuration.",
+    id: "faq-std-3",
+    question: "Can I use a custom design system?",
+    answer:
+      "Absolutely. Override CSS custom properties at :root and every component inherits the change automatically — no component source forks required.",
   },
   {
-    id: "item-4",
+    id: "faq-std-4",
     question: "Does it support dark mode?",
-    answer: "Yes, all components rely on CSS variables for coloring, making dark mode support automatic and effortless. You can toggle between themes using the built-in theme provider.",
+    answer:
+      "Yes. All color values reference semantic CSS variables. Adding the dark class to your root element flips every token at once with zero component-level changes.",
   },
   {
-    id: "item-5",
-    question: "Is it accessible?",
-    answer: "Accessibility is a core priority. We follow WAI-ARIA patterns and ensure all interactive elements are keyboard navigable and screen reader friendly.",
+    id: "faq-std-5",
+    question: "How is accessibility handled?",
+    answer:
+      "WAI-ARIA patterns are built into every interactive primitive. All components pass keyboard navigation, focus management, and screen reader requirements by default.",
+  },
+  {
+    id: "faq-std-6",
+    question: "Is there a free tier?",
+    answer:
+      "Yes. The Community tier ships all core primitives under the MIT license. Pro and Enterprise tiers add premium blocks, advanced patterns, and commercial use rights.",
   },
 ]
-const FaqStandard = () => {
+
+// ─── FAQ Card ─────────────────────────────────────────────────────────────────
+
+function FaqCard({ item, index }: { item: FaqItem; index: number }) {
+  const num = String(index + 1).padStart(2, "0")
+
   return (
-    <>
-     <section className="w-full py-12 md:py-24 lg:py-32 bg-background">
-          <div className="container mx-auto px-4 md:px-6 max-w-3xl">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
-                Frequently Asked Questions
-              </h2>
-              <p className="text-muted-foreground md:text-lg/relaxed lg:text-base/relaxed xl:text-lg/relaxed max-w-[600px]">
-                Everything you need to know about UDX UI and how it helps you build better software.
-              </p>
+    <article
+      className="group relative flex flex-col gap-3 rounded-lg border border-border bg-background p-6 transition-colors duration-150 hover:bg-muted/30"
+      aria-labelledby={`faq-q-${item.id}`}
+    >
+      {/* Index badge */}
+      <span
+        className="inline-flex items-center self-start rounded-md border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground/60 select-none"
+        aria-hidden="true"
+      >
+        {num}
+      </span>
+
+      {/* Question */}
+      <h3
+        id={`faq-q-${item.id}`}
+        className="text-sm sm:text-base font-semibold leading-snug text-foreground"
+      >
+        {item.question}
+      </h3>
+
+      {/* Divider */}
+      <div className="h-px w-full bg-border/60" aria-hidden="true" />
+
+      {/* Answer */}
+      <p className="text-sm text-muted-foreground leading-relaxed">
+        {item.answer}
+      </p>
+    </article>
+  )
+}
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
+export function FaqStandard({
+  title = "Frequently Asked Questions",
+  description = "Everything you need to know about UDX UI and how it helps you build better software.",
+  items = DEFAULT_ITEMS,
+  columns = 2,
+  className,
+  ...props
+}: FaqStandardProps) {
+  return (
+    <section
+      className={cn("w-full py-14 md:py-20 bg-background", className)}
+      aria-labelledby="faq-std-heading"
+      {...props}
+    >
+      <div className="container mx-auto px-4 md:px-6 max-w-5xl">
+
+        {/* ── Header ───────────────────────────────────────────────────── */}
+        <div className="mb-10 md:mb-14 max-w-xl">
+          <h2
+            id="faq-std-heading"
+            className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground"
+          >
+            {title}
+          </h2>
+          {description && (
+            <p className="mt-3 text-sm sm:text-base text-muted-foreground leading-relaxed">
+              {description}
+            </p>
+          )}
+        </div>
+
+        {/* ── Grid ─────────────────────────────────────────────────────── */}
+        <div
+          className={cn(
+            "grid gap-4",
+            columns === 2
+              ? "grid-cols-1 sm:grid-cols-2"
+              : "grid-cols-1"
+          )}
+          role="list"
+          aria-label="FAQ list"
+        >
+          {items.map((item, idx) => (
+            <div key={item.id} role="listitem">
+              <FaqCard item={item} index={idx} />
             </div>
-    
-            <div className="w-full">
-              <Accordion type="single" collapsible className="w-full">
-                {faqData.map((item) => (
-                  <AccordionItem key={item.id} value={item.id} className="border-b">
-                    <AccordionTrigger className="text-left text-base font-medium hover:no-underline">
-                      {item.question}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground">
-                      {item.answer}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </div>
-          </div>
-        </section>
-    
-    </>
+          ))}
+        </div>
+      </div>
+    </section>
   )
 }
 
