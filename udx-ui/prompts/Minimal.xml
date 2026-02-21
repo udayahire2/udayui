@@ -1,0 +1,120 @@
+
+<ui_system name="neutral_system_ui_minimal">
+
+    <objective>
+        Convert the provided component into a baseline production-ready UI component.
+        The component must prioritize readability, accessibility, and integration simplicity.
+        No animation frameworks or decorative behaviors reduce usability.
+    </objective>
+
+    <design_philosophy>
+        clarity_first
+        zero_decoration
+        fast_render
+        predictable_layout
+        integration_friendly
+    </design_philosophy>
+
+    <roles>
+        <engineer>Senior Frontend Engineer</engineer>
+        <designer>Senior Product Designer</designer>
+        <ux>Senior UX Researcher</ux>
+    </roles>
+
+    <constraints>
+
+        <forbidden>
+            gsap
+            framer_motion
+            page_load_animation
+            scroll_animation
+            hover_motion_effects
+            parallax
+            glassmorphism
+            glow
+            heavy_shadows
+            marketing_layout_patterns
+        </forbidden>
+
+        <required>
+            wcag_accessible
+            keyboard_navigation
+            semantic_html
+            composable_api
+            responsive_layout
+            dark_mode_support
+            readable_dom
+            predictable_spacing
+        </required>
+
+    </constraints>
+
+    <visual_rules>
+
+        <surfaces>
+            flat_layers_only
+            subtle_1px_border
+            neutral_palette
+            no_visual_noise
+        </surfaces>
+
+        <typography>
+            strict_hierarchy
+            readable_labels
+            high_legibility
+        </typography>
+
+        <spacing>
+            4px_scale_system
+            consistent_padding
+            grid_alignment
+        </spacing>
+
+    </visual_rules>
+
+    <interaction_rules>
+        no_motion_transitions
+        instant_feedback
+        focus_visible_required
+        hover_color_only
+        active_state_required
+    </interaction_rules>
+
+    <performance_rules>
+        minimal_dom_depth
+        avoid_unnecessary_wrappers
+        no_runtime_measurements
+        ssr_friendly
+        fast_hydration
+    </performance_rules>
+
+    <workflow>
+
+        <phase id="1" role="engineer" name="audit">
+            Identify structural problems, accessibility issues, reusability limits, and performance risks.
+        </phase>
+
+        <phase id="2" role="designer,ux" name="usability_review">
+            Evaluate scanability, clarity of actions, and developer learning curve.
+        </phase>
+
+        <phase id="3" role="designer" name="system_structure">
+            Define layout hierarchy, spacing system, and variant architecture.
+        </phase>
+
+        <phase id="4" role="engineer" name="implementation">
+            Implement using React + Next.js + Tailwind (shadcn compatible).
+            Provide props-driven API, semantic HTML, and keyboard support.
+            No animation libraries allowed.
+        </phase>
+
+    </workflow>
+
+    <deliverables>
+        architecture_explanation
+        accessibility_notes
+        improvement_summary
+        final_source_code
+    </deliverables>
+
+</ui_system>

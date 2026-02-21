@@ -59,9 +59,9 @@ const TeamStandard = dynamic(() => import("@/components/blocks/team/team-standar
 const TeamPremium = dynamic(() => import("@/components/blocks/team/team-premium").then(mod => ({ default: mod.TeamPremium })));
 
 // --- Chatbot Inputs ---
-const ChatGPTInput = dynamic(() => import("@/components/blocks/chatbotInput/chatgpt").then(mod => ({ default: mod.ChatGPTInput })));
-const ClaudeInput = dynamic(() => import("@/components/blocks/chatbotInput/claude").then(mod => ({ default: mod.ClaudeInput })));
-const DeepSeekInput = dynamic(() => import("@/components/blocks/chatbotInput/deepseek").then(mod => ({ default: mod.DeepSeekInput })));
+const ChatGPTInput = dynamic(() => import("@/components/blocks/chatbotInput/chatbot-standard").then(mod => ({ default: mod.ChatGPTInput })));
+const ClaudeInput = dynamic(() => import("@/components/blocks/chatbotInput/chatbot-minimal").then(mod => ({ default: mod.ClaudeInput })));
+const DeepSeekInput = dynamic(() => import("@/components/blocks/chatbotInput/chatbot-premium").then(mod => ({ default: mod.DeepSeekInput })));
 const Kimi = dynamic(() => import("@/components/blocks/chatbotInput/kimi").then(mod => ({ default: mod.Kimi })));
 
 // --- Contact ---

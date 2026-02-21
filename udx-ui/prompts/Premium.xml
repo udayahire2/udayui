@@ -1,0 +1,150 @@
+
+<ui_system name="neutral_system_ui_premium">
+
+    <objective>
+        Rebuild the provided component into a high-craft production UI component.
+        The interface must feel responsive, intelligent, and spatially aware.
+        Motion and visual atmosphere should enhance usability, not distract from content.
+    </objective>
+
+    <design_intent>
+        calm_but_alive
+        spatial_feedback
+        premium_interaction_quality
+        developer_friendly_layout
+        no_visual_noise
+    </design_intent>
+
+    <roles>
+        <engineer>Senior Frontend Engineer (React architecture)</engineer>
+        <designer>Senior Product Designer (interaction design)</designer>
+        <ux>Senior UX Researcher (behavior modeling)</ux>
+    </roles>
+
+    <visual_atmosphere>
+
+        <allowed_background_effects>
+            soft_radial_gradient
+            subtle_noise_texture
+            low_opacity_grid
+            faint_light_source
+        </allowed_background_effects>
+
+        <gradient_rules>
+            very_low_contrast
+            blended_into_surface
+            never_on_text
+            never_affect_readability
+        </gradient_rules>
+
+        <forbidden>
+            neon_ui
+            rainbow_gradients
+            glowing_borders
+            glass_panels
+            heavy_blur_backdrops
+            attention_grabbing_backgrounds
+        </forbidden>
+
+    </visual_atmosphere>
+
+    <!-- MOTION ARCHITECTURE -->
+
+    <motion_architecture>
+
+        <principle>
+            Every animation must communicate either:
+            - state change
+            - spatial relationship
+            - input feedback
+        </principle>
+
+        <framer_motion_layer>
+            hover_feedback
+            focus_transition
+            button_press
+            tooltip_fade
+            dropdown_open_close
+            tab_transition
+            modal_presence
+        </framer_motion_layer>
+
+        <gsap_layer>
+            layout_shift_animation
+            auto_height_expansion
+            sidebar_expand_collapse
+            command_palette_open
+            panel_reveal
+            measured_accordion
+        </gsap_layer>
+
+        <timing>
+            micro_100_140ms
+            interaction_150_180ms
+            layout_180_240ms
+        </timing>
+
+        <easing>
+            cubic_bezier_0.22_1_0.36_1
+            no_bounce
+            no_elastic
+        </easing>
+
+        <performance_constraints>
+            transform_opacity_only
+            no_layout_thrashing
+            respect_prefers_reduced_motion
+            gpu_acceleration_only
+        </performance_constraints>
+
+    </motion_architecture>
+
+    <component_rules>
+
+        <required>
+            accessible_aria
+            keyboard_navigation
+            responsive
+            dark_mode
+            composable_api
+            variant_support
+        </required>
+
+        <interaction_behavior>
+            focus_ring_visible
+            hover_subtle
+            active_state_clear
+            transitions_consistent
+        </interaction_behavior>
+
+    </component_rules>
+
+    <workflow>
+
+        <phase id="1" role="engineer" name="audit">
+            Analyze architecture, accessibility, and scalability issues in the component.
+        </phase>
+
+        <phase id="2" role="designer,ux" name="interaction_plan">
+            Define user interaction flow and where motion clarifies behavior.
+        </phase>
+
+        <phase id="3" role="designer" name="visual_environment">
+            Add subtle background atmosphere and gradient usage that does not affect readability.
+        </phase>
+
+        <phase id="4" role="engineer" name="implementation">
+            Implement using React + Next.js + Tailwind.
+            Use Framer Motion for micro-interactions and GSAP for layout transitions.
+            Ensure accessibility and reduced-motion fallback.
+        </phase>
+
+    </workflow>
+
+    <deliverables>
+        architecture_notes
+        motion_behavior_map
+        implementation_code
+    </deliverables>
+
+</ui_system>
