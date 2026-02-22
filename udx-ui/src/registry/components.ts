@@ -69,12 +69,17 @@ const ContactShaded = dynamic(() => import("@/components/blocks/contact/contact-
 const ContactMinimal = dynamic(() => import("@/components/blocks/contact/contact-minimal").then(mod => ({ default: mod.ContactMinimal })));
 const ContactPremium = dynamic(() => import("@/components/blocks/contact/contact-premium").then(mod => ({ default: mod.ContactPremium })));
 
+// --- Sidebars ---
+const SidebarStandard = dynamic(() => import("@/components/blocks/sidebar/sidebar-standard").then(mod => ({ default: mod.default })));
+const SidebarMinimal = dynamic(() => import("@/components/blocks/sidebar/sidebar-minimal").then(mod => ({ default: mod.SidebarMinimal })));
+const SidebarPremium = dynamic(() => import("@/components/blocks/sidebar/sidebar-premium").then(mod => ({ default: mod.SidebarPremium })));
+
 export type ComponentItem = {
-    name: string;
-    slug: string;
-    component: React.ComponentType<any>;
-    category: string;
-    description?: string;
+  name: string;
+  slug: string;
+  component: React.ComponentType<any>;
+  category: string;
+  description?: string;
 };
 
 export const registry: Record<string, ComponentItem> = {
@@ -380,6 +385,29 @@ export const registry: Record<string, ComponentItem> = {
     description: "Interactive team section with detailed modal views and animations.",
   },
 
+  /* ========================= SIDEBARS ========================= */
+  "sidebars/sidebar-minimal": {
+    name: "Sidebar Minimal",
+    slug: "sidebars/sidebar-minimal",
+    component: SidebarMinimal,
+    category: "Sidebars",
+    description: "Minimal collapsible sidebar layout.",
+  },
+  "sidebars/sidebar-standard": {
+    name: "Sidebar Standard",
+    slug: "sidebars/sidebar-standard",
+    component: SidebarStandard,
+    category: "Sidebars",
+    description: "Standard application sidebar with hierarchical navigation.",
+  },
+  "sidebars/sidebar-premium": {
+    name: "Sidebar Premium",
+    slug: "sidebars/sidebar-premium",
+    component: SidebarPremium,
+    category: "Sidebars",
+    description: "Premium feature-rich sidebar with advanced navigation.",
+  },
+
   /* ========================= TESTIMONIALS ========================= */
   "testimonials/testimonial-minimal": {
     name: "Testimonials Simple",
@@ -416,4 +444,5 @@ export const categories = [
   "Stats",
   "Team",
   "Testimonials",
+  "Sidebars",
 ];
