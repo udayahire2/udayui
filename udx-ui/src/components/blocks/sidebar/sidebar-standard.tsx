@@ -2,7 +2,35 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { ChevronRight, Menu, Search, Home, Inbox, Folder, Users, UserCircle, PanelLeftClose, PanelLeft, Settings, HelpCircle, Bell } from "lucide-react";
+import {
+    ChevronRight,
+    Menu,
+    Search,
+    LayoutGrid,
+    Inbox,
+    Layers,
+    UsersRound,
+    CircleUserRound,
+    PanelLeftClose,
+    PanelLeft,
+    Settings2,
+    LifeBuoy,
+    Activity,
+    Clock,
+    LogOut,
+    CreditCard,
+    User,
+    Keyboard,
+    BookOpen,
+    MessageCircle,
+    FileText,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+
+// Shadcn UI Components
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from "@/components/ui/command";
 
 // ============================================================================
 // TYPES & CONTEXT
@@ -39,21 +67,27 @@ export function SidebarProvider({
     const [isMobileOpen, setMobileOpen] = React.useState(false);
     const [isCollapsed, setCollapsed] = React.useState(defaultCollapsed);
 
-    return (
-        <SidebarContext.Provider
-            value={{ isMobileOpen, setMobileOpen, isCollapsed, setCollapsed }}
-        >
-            {children}
-        </SidebarContext.Provider>
+    const value = React.useMemo(
+        () => ({
+            isMobileOpen,
+            setMobileOpen,
+            isCollapsed,
+            setCollapsed,
+        }),
+        [isMobileOpen, isCollapsed]
     );
+
+    return <SidebarContext.Provider value={value}>{children}</SidebarContext.Provider>;
 }
 
-export function SidebarLayout({
-    children,
-    className,
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function SidebarLayout({ children, className }: React.HTMLAttributes<HTMLDivElement>) {
     return (
-        <div className={cn("flex min-h-screen w-full bg-neutral-50 dark:bg-neutral-950", className)}>
+        <div
+            className={cn(
+                "flex min-h-screen w-full bg-white selection:bg-neutral-200 dark:bg-[#09090b] dark:selection:bg-neutral-800",
+                className
+            )}
+        >
             {children}
         </div>
     );
@@ -77,27 +111,31 @@ export function Sidebar({ className, children }: React.HTMLAttributes<HTMLElemen
     return (
         <>
             {/* Mobile Backdrop */}
-            {isMobileOpen && (
-                <div
-                    className="fixed inset-0 z-40 bg-neutral-900/40 backdrop-blur-sm transition-opacity lg:hidden dark:bg-black/60"
-                    onClick={() => setMobileOpen(false)}
-                    aria-hidden="true"
-                />
-            )}
+            <AnimatePresence>
+                {isMobileOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2, ease: "easeInOut" }}
+                        className="fixed inset-0 z-40 bg-neutral-900/40 backdrop-blur-sm lg:hidden dark:bg-black/60"
+                        onClick={() => setMobileOpen(false)}
+                        aria-hidden="true"
+                    />
+                )}
+            </AnimatePresence>
 
             {/* Sidebar Container */}
             <aside
                 className={cn(
-                    "fixed inset-y-0 left-0 z-50 flex flex-col border-r border-neutral-200 bg-white transition-all duration-200 ease-in-out lg:static lg:translate-x-0 dark:border-neutral-800 dark:bg-[#0a0a0a]",
-                    isMobileOpen ? "translate-x-0" : "-translate-x-full",
-                    isCollapsed ? "w-[72px]" : "w-[260px]",
+                    "group/sidebar fixed inset-y-0 left-0 z-50 flex flex-col border-r border-neutral-200 bg-white transition-transform duration-200 ease-in-out lg:static lg:translate-x-0 dark:border-neutral-800 dark:bg-[#09090b]",
+                    isMobileOpen ? "translate-x-0 w-[260px]" : "-translate-x-full",
+                    isCollapsed ? "lg:w-[64px]" : "lg:w-[260px]",
                     className
                 )}
+                data-collapsed={isCollapsed}
             >
-                <nav
-                    aria-label="Main Navigation"
-                    className="flex h-full w-full flex-col overflow-hidden"
-                >
+                <nav aria-label="Main Navigation" className="flex h-full w-full flex-col overflow-hidden">
                     {children}
                 </nav>
             </aside>
@@ -105,10 +143,7 @@ export function Sidebar({ className, children }: React.HTMLAttributes<HTMLElemen
     );
 }
 
-export function SidebarHeader({
-    className,
-    ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function SidebarHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
     return (
         <div
             className={cn(
@@ -120,14 +155,11 @@ export function SidebarHeader({
     );
 }
 
-export function SidebarContent({
-    className,
-    ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function SidebarContent({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
     return (
         <div
             className={cn(
-                "flex flex-1 flex-col overflow-y-auto overflow-x-hidden px-3 py-4 space-y-6 scrollbar-thin scrollbar-thumb-neutral-200 dark:scrollbar-thumb-neutral-800",
+                "scrollbar-thin scrollbar-thumb-neutral-200 dark:scrollbar-thumb-neutral-800 flex flex-1 flex-col space-y-6 overflow-y-auto overflow-x-hidden px-3 py-4",
                 className
             )}
             {...props}
@@ -135,46 +167,36 @@ export function SidebarContent({
     );
 }
 
-export function SidebarFooter({
-    className,
-    ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function SidebarFooter({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
     return (
         <div
-            className={cn(
-                "shrink-0 border-t border-neutral-200 p-3 dark:border-neutral-800",
-                className
-            )}
+            className={cn("shrink-0 border-t border-neutral-200/60 p-3 dark:border-neutral-800/60", className)}
             {...props}
         />
     );
 }
 
-export function SidebarGroup({
-    className,
-    ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
-    return <div className={cn("flex flex-col space-y-1", className)} {...props} />;
+export function SidebarGroup({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+    return <motion.div layout="position" className={cn("flex flex-col space-y-1", className)} {...props} />;
 }
 
-export function SidebarGroupLabel({
-    className,
-    ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function SidebarGroupLabel({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
     const { isCollapsed } = useSidebar();
 
     if (isCollapsed) {
         return (
-            <div className="flex justify-center mb-1.5 pt-2">
-                <div className="h-0.5 w-6 rounded-full bg-neutral-200 dark:bg-neutral-800" />
+            <div className="mb-1.5 flex justify-center pt-2">
+                <div className="h-0.5 w-4 rounded-full bg-neutral-200 dark:bg-neutral-800" />
             </div>
         );
     }
 
     return (
-        <div
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             className={cn(
-                "mb-1.5 px-2 text-xs font-semibold tracking-tight text-neutral-500 dark:text-neutral-400 select-none",
+                "mb-1.5 select-none px-2 text-[11px] font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400",
                 className
             )}
             {...props}
@@ -191,54 +213,72 @@ export interface SidebarItemProps extends React.ButtonHTMLAttributes<HTMLButtonE
 }
 
 export const SidebarItem = React.forwardRef<HTMLButtonElement, SidebarItemProps>(
-    (
-        { className, isActive, asChild, children, icon: Icon, label, badge, ...props },
-        ref
-    ) => {
+    ({ className, isActive, asChild, children, icon: Icon, label, badge, ...props }, ref) => {
         const { isCollapsed } = useSidebar();
+        const [isHovered, setIsHovered] = React.useState(false);
 
         const baseClasses = cn(
-            "group relative flex w-full items-center gap-3 rounded-md px-2.5 py-1.5 text-sm font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600 outline-none",
-            isActive
-                ? "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-50"
-                : "text-neutral-600 hover:bg-neutral-100/60 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800/60 dark:hover:text-neutral-50",
-            isCollapsed && "justify-center px-0 py-2",
+            "group relative flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium outline-none transition-colors duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-500",
+            isActive ? "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-50" : "text-neutral-600 hover:bg-neutral-50 dark:text-neutral-400 dark:hover:bg-neutral-800/50",
+            isCollapsed && "justify-center px-0 py-1.5",
             className
         );
 
         const innerContent = (
             <>
-                {Icon && (
-                    <Icon
-                        className={cn(
-                            "h-4 w-4 shrink-0",
-                            isActive ? "text-neutral-900 dark:text-neutral-50" : "text-neutral-500 dark:text-neutral-400 group-hover:text-neutral-700 dark:group-hover:text-neutral-300",
-                            isCollapsed && "h-5 w-5"
-                        )}
-                    />
-                )}
-                {!isCollapsed && label && <span className="truncate">{label}</span>}
-                {!isCollapsed && badge && (
-                    <span className="ml-auto inline-flex h-5 items-center justify-center rounded-md bg-neutral-200/50 px-1.5 text-[10px] font-medium text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
-                        {badge}
-                    </span>
-                )}
+                <div className={cn("relative z-10 flex w-full items-center gap-2", isCollapsed && "justify-center")}>
+                    {Icon && (
+                        <Icon
+                            className={cn(
+                                "h-4 w-4 shrink-0",
+                                isActive
+                                    ? "text-neutral-900 dark:text-neutral-50"
+                                    : "text-neutral-500 group-hover:text-neutral-700 dark:text-neutral-400 dark:group-hover:text-neutral-300",
+                                isCollapsed && "h-[18px] w-[18px]"
+                            )}
+                        />
+                    )}
 
-                {/* Collapsed Tooltip using CSS */}
-                {isCollapsed && label && (
-                    <div className="absolute left-full ml-2 hidden w-auto min-w-max items-center justify-center rounded-md bg-neutral-900 px-2.5 py-1.5 text-xs font-medium text-white opacity-0 shadow-sm transition-opacity group-hover:flex group-hover:opacity-100 lg:group-hover:flex dark:bg-neutral-50 dark:text-neutral-900 z-50 pointer-events-none">
-                        {label}
-                    </div>
-                )}
+                    {!isCollapsed && label && <span className="truncate">{label}</span>}
+
+                    {!isCollapsed && badge && (
+                        <span className="ml-auto inline-flex h-4 items-center justify-center rounded bg-neutral-100 px-1 text-[10px] font-medium text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
+                            {badge}
+                        </span>
+                    )}
+                </div>
+
+                {/* Collapsed Tooltip */}
+                <AnimatePresence>
+                    {isCollapsed && isHovered && label && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.1 }}
+                            className="pointer-events-none absolute left-full z-50 ml-2 hidden w-auto min-w-max items-center justify-center rounded border border-neutral-200 bg-white px-2 py-1 text-xs font-medium text-neutral-900 shadow-sm lg:flex dark:border-neutral-800 dark:bg-[#09090b] dark:text-neutral-50"
+                        >
+                            {label}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </>
         );
 
         if (asChild) {
-            if (React.isValidElement<{ className?: string }>(children)) {
+            if (React.isValidElement<{ className?: string; onMouseEnter?: any; onMouseLeave?: any }>(children)) {
                 return React.cloneElement(children, {
                     ref: ref as any,
                     className: cn(baseClasses, children.props.className),
                     "aria-current": isActive ? "page" : undefined,
+                    onMouseEnter: (e: any) => {
+                        setIsHovered(true);
+                        children.props.onMouseEnter?.(e);
+                    },
+                    onMouseLeave: (e: any) => {
+                        setIsHovered(false);
+                        children.props.onMouseLeave?.(e);
+                    },
                     ...props,
                 } as any);
             }
@@ -250,6 +290,8 @@ export const SidebarItem = React.forwardRef<HTMLButtonElement, SidebarItemProps>
                 ref={ref}
                 className={baseClasses}
                 aria-current={isActive ? "page" : undefined}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
                 {...props}
             >
                 {innerContent}
@@ -275,6 +317,7 @@ export function SidebarSubMenu({
 }) {
     const { isCollapsed } = useSidebar();
     const [isOpen, setIsOpen] = React.useState(defaultOpen || isActive);
+    const [isHovered, setIsHovered] = React.useState(false);
 
     if (isCollapsed) {
         return (
@@ -282,67 +325,73 @@ export function SidebarSubMenu({
                 icon={Icon}
                 label={label}
                 isActive={isActive}
-                className="opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all"
-                onClick={() => {
-                    // In a real app, clicking a group icon in collapsed mode might navigate to the group index or open a popover.
-                    // For now, it just behaves like a tooltip item.
-                }}
+                className="opacity-70 transition-all hover:opacity-100"
+                onClick={() => { }}
             />
         );
     }
 
     return (
-        <div className="flex flex-col space-y-1">
+        <div className="flex flex-col space-y-0.5">
             <button
                 onClick={() => setIsOpen(!isOpen)}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
                 aria-expanded={isOpen}
                 className={cn(
-                    "group flex w-full items-center justify-between gap-3 rounded-md px-2.5 py-1.5 text-sm font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600 outline-none",
-                    isActive
-                        ? "text-neutral-900 dark:text-neutral-50"
-                        : "text-neutral-600 hover:bg-neutral-100/50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800/50 dark:hover:text-neutral-50"
+                    "group relative flex w-full items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm font-medium outline-none transition-colors duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-500",
+                    isActive || isOpen ? "text-neutral-900 dark:text-neutral-50" : "text-neutral-600 hover:bg-neutral-50 dark:text-neutral-400 dark:hover:bg-neutral-800/50"
                 )}
             >
-                <div className="flex items-center gap-3 truncate">
+                <div className="relative z-10 flex items-center gap-2 truncate">
                     {Icon && (
                         <Icon
                             className={cn(
                                 "h-4 w-4 shrink-0",
-                                isActive
+                                isActive || isOpen
                                     ? "text-neutral-900 dark:text-neutral-50"
-                                    : "text-neutral-500 dark:text-neutral-400 group-hover:text-neutral-700 dark:group-hover:text-neutral-300"
+                                    : "text-neutral-500 group-hover:text-neutral-700 dark:text-neutral-400 dark:group-hover:text-neutral-300"
                             )}
                         />
                     )}
                     <span className="truncate">{label}</span>
                 </div>
-                <ChevronRight
+                <div
                     className={cn(
-                        "h-4 w-4 shrink-0 text-neutral-400 transition-transform duration-200 dark:text-neutral-500",
-                        isOpen && "rotate-90"
+                        "transition-transform duration-200",
+                        isOpen ? "rotate-90" : "rotate-0"
                     )}
-                />
-            </button>
-            {isOpen && (
-                <div className="ml-4 mt-1 flex flex-col space-y-1 pl-3 border-l border-neutral-200 dark:border-neutral-800/60">
-                    {children}
+                >
+                    <ChevronRight className="h-4 w-4 shrink-0 text-neutral-400 dark:text-neutral-500" />
                 </div>
-            )}
+            </button>
+            <AnimatePresence initial={false}>
+                {isOpen && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.15, ease: "easeInOut" }}
+                        className="overflow-hidden"
+                    >
+                        <div className="ml-4 mt-0.5 flex flex-col space-y-0.5 border-l border-neutral-200 pb-0.5 pl-2 dark:border-neutral-800">
+                            {children}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }
 
-export function SidebarCollapseTrigger({
-    className,
-    ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+export function SidebarCollapseTrigger({ className, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) {
     const { isCollapsed, setCollapsed } = useSidebar();
 
     return (
         <button
             onClick={() => setCollapsed(!isCollapsed)}
             className={cn(
-                "hidden h-8 w-8 items-center justify-center rounded-md text-neutral-500 transition-colors hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800 lg:flex focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400",
+                "hidden h-6 w-6 items-center justify-center rounded-md text-neutral-500 outline-none transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 lg:flex dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-50",
                 className
             )}
             aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
@@ -354,17 +403,14 @@ export function SidebarCollapseTrigger({
     );
 }
 
-export function SidebarMobileTrigger({
-    className,
-    ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+export function SidebarMobileTrigger({ className, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) {
     const { setMobileOpen } = useSidebar();
 
     return (
         <button
             onClick={() => setMobileOpen(true)}
             className={cn(
-                "inline-flex h-9 w-9 items-center justify-center rounded-md border border-neutral-200 bg-white text-neutral-600 shadow-sm transition-colors hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 lg:hidden dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-50",
+                "inline-flex h-8 w-8 items-center justify-center rounded-md border border-neutral-200 bg-white text-neutral-600 outline-none transition-colors hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 lg:hidden dark:border-neutral-800 dark:bg-[#09090b] dark:text-neutral-400 dark:hover:bg-neutral-800",
                 className
             )}
             aria-label="Open Sidebar"
@@ -385,21 +431,21 @@ const NAVIGATION_DATA = {
         icon: "U",
     },
     primary: [
-        { label: "Dashboard", icon: Home, isActive: true },
+        { label: "Dashboard", icon: LayoutGrid, isActive: true },
         { label: "Inbox", icon: Inbox, badge: 12 },
-        { label: "Alerts", icon: Bell, badge: "3" },
+        { label: "Alerts", icon: Activity, badge: "3" },
     ],
     secondary: [
         {
             group: "Projects",
             items: [
-                { label: "All Projects", icon: Folder },
-                { label: "Recent", icon: Folder },
+                { label: "All Projects", icon: Layers },
+                { label: "Recent", icon: Clock },
             ],
         },
         {
             group: "Team Management",
-            icon: Users,
+            icon: UsersRound,
             isActive: false,
             items: [
                 { label: "Members", href: "#" },
@@ -409,32 +455,53 @@ const NAVIGATION_DATA = {
         },
     ],
     utility: [
-        { label: "Settings", icon: Settings },
-        { label: "Help Center", icon: HelpCircle },
+        { label: "Settings", id: "settings", icon: Settings2 },
+        { label: "Help Center", id: "help", icon: LifeBuoy },
     ],
     user: {
         name: "Jane Developer",
         email: "jane@company.com",
-        avatar: UserCircle,
+        avatar: CircleUserRound,
     },
 };
 
 export default function SidebarStandard() {
+    const [openCommand, setOpenCommand] = React.useState(false);
+    const [openSettings, setOpenSettings] = React.useState(false);
+    const [openHelp, setOpenHelp] = React.useState(false);
+    const [mounted, setMounted] = React.useState(false);
+
+    React.useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    React.useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+                e.preventDefault();
+                setOpenCommand((open) => !open);
+            }
+        };
+
+        document.addEventListener("keydown", handleKeyDown);
+        return () => document.removeEventListener("keydown", handleKeyDown);
+    }, []);
+
     return (
         <SidebarProvider defaultCollapsed={false}>
             <SidebarLayout>
                 {/* SIDEBAR */}
                 <Sidebar>
-                    <SidebarHeader>
-                        <div className="flex items-center gap-3 font-semibold text-neutral-900 dark:text-neutral-50 overflow-hidden">
-                            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900">
-                                <span className="text-[12px] font-bold">{NAVIGATION_DATA.brand.icon}</span>
+                    <SidebarHeader className="transition-all duration-150 group-data-[collapsed=true]/sidebar:justify-center group-data-[collapsed=true]/sidebar:px-0">
+                        <div className="flex items-center gap-2 overflow-hidden font-medium text-neutral-900 dark:text-neutral-50 group-data-[collapsed=true]/sidebar:hidden">
+                            <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900">
+                                <span className="text-[10px] font-bold">{NAVIGATION_DATA.brand.icon}</span>
                             </div>
-                            <span className="text-sm tracking-tight truncate">
+                            <span className="truncate text-sm tracking-tight">
                                 {NAVIGATION_DATA.brand.name}
                             </span>
                         </div>
-                        <SidebarCollapseTrigger />
+                        <SidebarCollapseTrigger className="shrink-0" />
                     </SidebarHeader>
 
                     <SidebarContent>
@@ -456,26 +523,14 @@ export default function SidebarStandard() {
                                     <SidebarGroupLabel>{section.group}</SidebarGroupLabel>
                                 )}
                                 {section.icon ? (
-                                    <SidebarSubMenu
-                                        label={section.group!}
-                                        icon={section.icon}
-                                        isActive={section.isActive}
-                                    >
+                                    <SidebarSubMenu label={section.group!} icon={section.icon} isActive={section.isActive}>
                                         {section.items.map((subItem) => (
-                                            <SidebarItem
-                                                key={subItem.label}
-                                                label={subItem.label}
-                                                className="text-neutral-500 py-1"
-                                            />
+                                            <SidebarItem key={subItem.label} label={subItem.label} className="py-1" />
                                         ))}
                                     </SidebarSubMenu>
                                 ) : (
                                     section.items.map((item) => (
-                                        <SidebarItem
-                                            key={item.label}
-                                            label={item.label}
-                                            icon={item.icon}
-                                        />
+                                        <SidebarItem key={item.label} label={item.label} icon={item.icon} />
                                     ))
                                 )}
                             </SidebarGroup>
@@ -483,11 +538,18 @@ export default function SidebarStandard() {
 
                         <div className="mt-auto pt-8">
                             <SidebarGroup>
-                                {NAVIGATION_DATA.utility.map((item) => (
+                                {NAVIGATION_DATA.utility.map((item: any) => (
                                     <SidebarItem
                                         key={item.label}
                                         label={item.label}
                                         icon={item.icon}
+                                        onClick={() => {
+                                            if (item.id === "settings") {
+                                                setOpenSettings(true);
+                                            } else if (item.id === "help") {
+                                                setOpenHelp(true);
+                                            }
+                                        }}
                                     />
                                 ))}
                             </SidebarGroup>
@@ -495,54 +557,205 @@ export default function SidebarStandard() {
                     </SidebarContent>
 
                     <SidebarFooter>
-                        <button className="group flex w-full items-center gap-3 rounded-md p-2 text-left text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-50 dark:focus-visible:ring-neutral-600">
-                            <NAVIGATION_DATA.user.avatar className="h-8 w-8 shrink-0 rounded-full border border-neutral-200 p-1 dark:border-neutral-800" />
-                            <div className="flex min-w-0 flex-col group-hover:text-neutral-900 dark:group-[.w-\[72px\]]:hidden dark:group-hover:text-neutral-50">
-                                <span className="truncate text-[13px] font-semibold text-neutral-900 dark:text-neutral-100">
-                                    {NAVIGATION_DATA.user.name}
-                                </span>
-                                <span className="truncate text-[11px] text-neutral-500">
-                                    {NAVIGATION_DATA.user.email}
-                                </span>
-                            </div>
-                        </button>
+                        {mounted ? (
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <button className="group flex w-full items-center gap-2 rounded-md p-1.5 text-left text-sm font-medium text-neutral-600 outline-none transition-colors hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-50 group-data-[collapsed=true]/sidebar:justify-center">
+                                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800">
+                                            <NAVIGATION_DATA.user.avatar className="h-4 w-4" />
+                                        </div>
+                                        <div className="flex min-w-0 flex-col transition-opacity group-hover:text-neutral-900 dark:group-hover:text-neutral-50 group-data-[collapsed=true]/sidebar:hidden">
+                                            <span className="truncate text-[13px] text-neutral-900 dark:text-neutral-100">
+                                                {NAVIGATION_DATA.user.name}
+                                            </span>
+                                        </div>
+                                    </button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="w-56" align="end" forceMount>
+                                    <DropdownMenuLabel className="font-normal">
+                                        <div className="flex flex-col space-y-1">
+                                            <p className="text-sm font-medium leading-none">{NAVIGATION_DATA.user.name}</p>
+                                            <p className="text-xs leading-none text-neutral-500 dark:text-neutral-400">
+                                                {NAVIGATION_DATA.user.email}
+                                            </p>
+                                        </div>
+                                    </DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuGroup>
+                                        <DropdownMenuItem>
+                                            <User className="mr-2 h-4 w-4" />
+                                            <span>Profile</span>
+                                            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            <CreditCard className="mr-2 h-4 w-4" />
+                                            <span>Billing</span>
+                                            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => setOpenSettings(true)}>
+                                            <Settings2 className="mr-2 h-4 w-4" />
+                                            <span>Settings</span>
+                                            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuGroup>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem>
+                                        <LogOut className="mr-2 h-4 w-4" />
+                                        <span>Log out</span>
+                                        <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        ) : (
+                            <button className="group flex w-full items-center gap-2 rounded-md p-1.5 text-left text-sm font-medium text-neutral-600 outline-none transition-colors hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-50 group-data-[collapsed=true]/sidebar:justify-center">
+                                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800">
+                                    <NAVIGATION_DATA.user.avatar className="h-4 w-4" />
+                                </div>
+                                <div className="flex min-w-0 flex-col transition-opacity group-hover:text-neutral-900 dark:group-hover:text-neutral-50 group-data-[collapsed=true]/sidebar:hidden">
+                                    <span className="truncate text-[13px] text-neutral-900 dark:text-neutral-100">
+                                        {NAVIGATION_DATA.user.name}
+                                    </span>
+                                </div>
+                            </button>
+                        )}
                     </SidebarFooter>
                 </Sidebar>
 
                 {/* MAIN CONTENT AREA */}
-                <div className="flex flex-1 flex-col min-w-0">
-                    <header className="flex h-14 shrink-0 items-center justify-between border-b border-neutral-200 bg-white px-4 lg:px-6 dark:border-neutral-800 dark:bg-neutral-950">
-                        <div className="flex items-center gap-4">
-                            <SidebarMobileTrigger />
-                            <h1 className="text-sm font-medium text-neutral-900 dark:text-neutral-100 hidden sm:block">
-                                Dashboard
-                            </h1>
+                <div className="flex min-w-0 flex-1 flex-col overflow-hidden bg-white dark:bg-[#09090b]">
+                    <header className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-neutral-200 bg-white px-4 lg:px-6 dark:border-neutral-800 dark:bg-[#09090b]">
+                        <div className="flex items-center gap-2 sm:gap-4">
+                            <SidebarMobileTrigger className="-ml-1 sm:ml-0" />
+                            <div className="flex items-center gap-2">
+                                <h1 className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                                    Dashboard
+                                </h1>
+                            </div>
                         </div>
-                        <div className="relative w-full max-w-sm flex items-center">
-                            <Search className="absolute left-2.5 h-4 w-4 text-neutral-500 dark:text-neutral-400" />
-                            <input
-                                type="search"
-                                placeholder="Search resources... (⌘K)"
-                                className="h-9 w-full rounded-md border border-neutral-200 bg-neutral-100 pl-9 pr-4 text-sm outline-none transition-colors focus:border-neutral-300 focus:bg-white focus:ring-2 focus:ring-neutral-400 focus:ring-offset-1 focus:ring-offset-white dark:border-neutral-800 dark:bg-neutral-900 dark:focus:border-neutral-600 dark:focus:bg-neutral-950 dark:focus:ring-neutral-600 dark:focus:ring-offset-neutral-950"
-                            />
+                        <div className="flex flex-1 items-center justify-end sm:flex-initial">
+                            <button
+                                onClick={() => setOpenCommand(true)}
+                                className="flex h-8 w-full max-w-[240px] items-center gap-2 rounded-md border border-neutral-200 bg-neutral-50 px-3 text-sm text-neutral-500 outline-none transition-colors hover:bg-neutral-100 focus:border-neutral-300 focus:bg-white focus:ring-1 focus:ring-neutral-400 dark:border-neutral-800 dark:bg-[#09090b] dark:text-neutral-400 dark:hover:bg-neutral-900 dark:focus:border-neutral-700 dark:focus:ring-neutral-500 sm:w-[240px]"
+                            >
+                                <Search className="h-4 w-4 shrink-0" />
+                                <span className="flex-1 truncate text-left">Search...</span>
+                                <kbd className="pointer-events-none hidden h-5 shrink-0 select-none items-center gap-1 rounded bg-neutral-200 px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex dark:bg-neutral-800">
+                                    <span className="text-xs">⌘</span>K
+                                </kbd>
+                            </button>
                         </div>
                     </header>
-                    <main className="flex-1 overflow-y-auto p-4 lg:p-8 bg-neutral-50/50 dark:bg-transparent">
-                        <div className="mx-auto max-w-4xl space-y-6">
+                    <main className="flex-1 overflow-y-auto p-4 lg:p-8">
+                        <div className="mx-auto max-w-5xl space-y-6">
                             <div className="grid gap-4 md:grid-cols-3">
                                 {[1, 2, 3].map((i) => (
                                     <div
                                         key={i}
-                                        className="h-32 rounded-xl border border-neutral-200 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900/50"
+                                        className="h-32 rounded-lg border border-neutral-200 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900"
                                     />
                                 ))}
                             </div>
-                            <div className="h-96 rounded-xl border border-neutral-200 bg-white shadow-sm flex items-center justify-center text-sm text-neutral-500 dark:border-neutral-800 dark:bg-neutral-900/50">
-                                Application Content
+                            <div className="flex h-[500px] items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 text-sm text-neutral-500 dark:border-neutral-800 dark:bg-neutral-900">
+                                Application Content Viewport
                             </div>
                         </div>
                     </main>
                 </div>
+
+                {/* MODALS AND COMMAND MENUS */}
+                {mounted && (
+                    <>
+                        <CommandDialog open={openCommand} onOpenChange={setOpenCommand}>
+                            <CommandInput placeholder="Type a command or search..." />
+                            <CommandList>
+                                <CommandEmpty>No results found.</CommandEmpty>
+                                <CommandGroup heading="Suggestions">
+                                    <CommandItem>
+                                        <LayoutGrid className="mr-2 h-4 w-4" />
+                                        <span>Dashboard</span>
+                                    </CommandItem>
+                                    <CommandItem>
+                                        <Activity className="mr-2 h-4 w-4" />
+                                        <span>Alerts</span>
+                                    </CommandItem>
+                                    <CommandItem>
+                                        <Settings2 className="mr-2 h-4 w-4" />
+                                        <span>Settings</span>
+                                        <CommandShortcut>⌘S</CommandShortcut>
+                                    </CommandItem>
+                                </CommandGroup>
+                                <CommandSeparator />
+                                <CommandGroup heading="Settings">
+                                    <CommandItem>
+                                        <User className="mr-2 h-4 w-4" />
+                                        <span>Profile</span>
+                                        <CommandShortcut>⌘P</CommandShortcut>
+                                    </CommandItem>
+                                    <CommandItem>
+                                        <CreditCard className="mr-2 h-4 w-4" />
+                                        <span>Billing</span>
+                                        <CommandShortcut>⌘B</CommandShortcut>
+                                    </CommandItem>
+                                </CommandGroup>
+                            </CommandList>
+                        </CommandDialog>
+
+                        <Dialog open={openSettings} onOpenChange={setOpenSettings}>
+                            <DialogContent className="sm:max-w-[425px]">
+                                <DialogHeader>
+                                    <DialogTitle>Preferences</DialogTitle>
+                                    <DialogDescription>
+                                        Manage your platform settings, appearance, and notifications.
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <div className="flex flex-col gap-4 py-4 text-sm text-neutral-500 dark:text-neutral-400">
+                                    [Settings Form Content]
+                                </div>
+                            </DialogContent>
+                        </Dialog>
+
+                        <Dialog open={openHelp} onOpenChange={setOpenHelp}>
+                            <DialogContent className="sm:max-w-[500px]">
+                                <DialogHeader>
+                                    <DialogTitle>Help & Support</DialogTitle>
+                                    <DialogDescription>
+                                        Find answers, read documentation, or contact our support team.
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <div className="grid gap-4 py-4">
+                                    <button className="flex items-start gap-3 rounded-md border border-neutral-200 p-3 text-left transition-colors hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:border-neutral-800 dark:hover:bg-neutral-900">
+                                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-neutral-100 dark:bg-neutral-800">
+                                            <BookOpen className="h-4 w-4 text-neutral-600 dark:text-neutral-400" />
+                                        </div>
+                                        <div>
+                                            <h4 className="text-sm font-medium text-neutral-900 dark:text-neutral-100">Documentation</h4>
+                                            <p className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">Browse our comprehensive guides and tutorials.</p>
+                                        </div>
+                                    </button>
+                                    <button className="flex items-start gap-3 rounded-md border border-neutral-200 p-3 text-left transition-colors hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:border-neutral-800 dark:hover:bg-neutral-900">
+                                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-neutral-100 dark:bg-neutral-800">
+                                            <MessageCircle className="h-4 w-4 text-neutral-600 dark:text-neutral-400" />
+                                        </div>
+                                        <div>
+                                            <h4 className="text-sm font-medium text-neutral-900 dark:text-neutral-100">Contact Support</h4>
+                                            <p className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">Get in touch with our dedicated support team via live chat.</p>
+                                        </div>
+                                    </button>
+                                    <button className="flex items-start gap-3 rounded-md border border-neutral-200 p-3 text-left transition-colors hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:border-neutral-800 dark:hover:bg-neutral-900">
+                                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-neutral-100 dark:bg-neutral-800">
+                                            <FileText className="h-4 w-4 text-neutral-600 dark:text-neutral-400" />
+                                        </div>
+                                        <div>
+                                            <h4 className="text-sm font-medium text-neutral-900 dark:text-neutral-100">Release Notes</h4>
+                                            <p className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">See what's new in the latest versions of Udroid OS.</p>
+                                        </div>
+                                    </button>
+                                </div>
+                            </DialogContent>
+                        </Dialog>
+                    </>
+                )}
+
             </SidebarLayout>
         </SidebarProvider>
     );
