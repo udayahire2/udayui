@@ -68,6 +68,7 @@ const Kimi = dynamic(() => import("@/components/blocks/chatbotInput/kimi").then(
 const ContactShaded = dynamic(() => import("@/components/blocks/contact/contact-shaded").then(mod => ({ default: mod.Contact })));
 const ContactMinimal = dynamic(() => import("@/components/blocks/contact/contact-minimal").then(mod => ({ default: mod.ContactMinimal })));
 const ContactPremium = dynamic(() => import("@/components/blocks/contact/contact-premium").then(mod => ({ default: mod.ContactPremium })));
+const ContactStandard = dynamic(() => import("@/components/blocks/contact/contact-stardard").then(mod => ({ default: mod.Contact02 })));
 
 // --- Sidebars ---
 const SidebarStandard = dynamic(() => import("@/components/blocks/sidebar/sidebar-standard").then(mod => ({ default: mod.default })));
@@ -134,6 +135,13 @@ export const registry: Record<string, ComponentItem> = {
     component: ContactPremium,
     category: "Contact",
     description: "Structured premium contact page with detailed form and information.",
+  },
+  "contact/contact-standard": {
+    name: "Contact Standard",
+    slug: "contact/contact-standard",
+    component: ContactStandard,
+    category: "Contact",
+    description: "Clean standard contact section with form card and info sidebar.",
   },
 
   /* ========================= CTA ========================= */

@@ -132,7 +132,7 @@ export function SidebarPremium() {
     }, []);
 
     return (
-        <SidebarProvider defaultCollapsed={false}>
+        <SidebarProvider defaultOpen={true}>
             <SidebarLayout>
                 {/* SIDEBAR */}
                 <Sidebar className="border-r border-neutral-200 bg-neutral-50 dark:border-neutral-800 dark:bg-[#09090b]">
