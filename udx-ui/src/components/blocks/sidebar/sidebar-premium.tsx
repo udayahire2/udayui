@@ -22,9 +22,6 @@ import {
     SidebarFooter,
     SidebarHeader,
     SidebarProvider,
-    SidebarGroup,
-    SidebarGroupLabel,
-    SidebarItem, // Note: You'll need to define this or map to SidebarMenuButton
     useSidebar,
 } from "@/components/ui/sidebar";
 
@@ -35,7 +32,6 @@ import {
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
-    DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -109,7 +105,7 @@ function ChatHistoryItem({ title, icon: Icon, isActive }: { title: string, icon:
             </div>
 
             {/* Fade effect at the end of text to prevent hard clipping if text is too long (optional) */}
-            <div className="pointer-events-none absolute right-8 top-0 bottom-0 w-8 bg-gradient-to-l from-neutral-100 to-transparent opacity-0 group-hover:opacity-100 dark:from-neutral-800/80 transition-opacity" />
+            <div className="pointer-events-none absolute right-8 top-0 bottom-0 w-8 bg-gradient-to- from-neutral-100 to-transparent opacity-0 group-hover:opacity-100 dark:from-neutral-800/80 transition-opacity" />
         </button>
     );
 }
@@ -269,7 +265,7 @@ export function SidebarPremium() {
                     </main>
 
                     {/* Floating Input Area (Simulated) */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-white via-white to-transparent dark:from-[#09090b] dark:via-[#09090b] pt-12">
+                    <div className="absolute bottom-0 left-0 right-0 p-4 bg-linear-to-t from-white via-white to-transparent dark:from-[#09090b] dark:via-[#09090b] pt-12">
                         <div className="mx-auto max-w-3xl">
                             <div className="relative flex min-h-[52px] w-full items-center rounded-2xl border border-neutral-200 bg-white px-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
                                 <span className="text-sm text-neutral-400">Message Udroid AI...</span>

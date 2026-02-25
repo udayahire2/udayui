@@ -59,9 +59,9 @@ const TeamStandard = dynamic(() => import("@/components/blocks/team/team-standar
 const TeamPremium = dynamic(() => import("@/components/blocks/team/team-premium").then(mod => ({ default: mod.TeamPremium })));
 
 // --- Chatbot Inputs ---
-const ChatGPTInput = dynamic(() => import("@/components/blocks/chatbotInput/chatbot-standard").then(mod => ({ default: mod.ChatGPTInput })));
-const ClaudeInput = dynamic(() => import("@/components/blocks/chatbotInput/chatbot-minimal").then(mod => ({ default: mod.ClaudeInput })));
-const DeepSeekInput = dynamic(() => import("@/components/blocks/chatbotInput/chatbot-premium").then(mod => ({ default: mod.DeepSeekInput })));
+const ChatbotMinimal = dynamic(() => import("@/components/blocks/chatbotInput/chatbot-minimal").then(mod => ({ default: mod.ClaudeInput })));
+const ChatbotStandard = dynamic(() => import("@/components/blocks/chatbotInput/chatbot-standard").then(mod => ({ default: mod.ChatGPTInput })));
+const ChatbotPremium = dynamic(() => import("@/components/blocks/chatbotInput/chatbot-premium").then(mod => ({ default: mod.DeepSeekInput })));
 const Kimi = dynamic(() => import("@/components/blocks/chatbotInput/kimi").then(mod => ({ default: mod.Kimi })));
 
 // --- Contact ---
@@ -85,26 +85,26 @@ export type ComponentItem = {
 
 export const registry: Record<string, ComponentItem> = {
   /* ========================= CHATBOT INPUTS ========================= */
-  "chatbot-input/chatgpt": {
-    name: "ChatGPT Input",
-    slug: "chatbot-input/chatgpt",
-    component: ChatGPTInput,
+  "chatbot-input/chatbot-minimal": {
+    name: "Chatbot Minimal",
+    slug: "chatbot-input/chatbot-minimal",
+    component: ChatbotMinimal,
     category: "Chatbot Inputs",
-    description: "OpenAI ChatGPT-style input with rounded design and circular buttons.",
+    description: "Minimal AI-style input with attachment menu and squared buttons.",
   },
-  "chatbot-input/claude": {
-    name: "Claude Input",
-    slug: "chatbot-input/claude",
-    component: ClaudeInput,
+  "chatbot-input/chatbot-standard": {
+    name: "Chatbot Standard",
+    slug: "chatbot-input/chatbot-standard",
+    component: ChatbotStandard,
     category: "Chatbot Inputs",
-    description: "Anthropic Claude-style input with attachment menu and squared buttons.",
+    description: "Standard AI-style input with rounded design and circular buttons.",
   },
-  "chatbot-input/deepseek": {
-    name: "DeepSeek Input",
-    slug: "chatbot-input/deepseek",
-    component: DeepSeekInput,
+  "chatbot-input/chatbot-premium": {
+    name: "Chatbot Premium",
+    slug: "chatbot-input/chatbot-premium",
+    component: ChatbotPremium,
     category: "Chatbot Inputs",
-    description: "DeepSeek AI-style input with horizontal layout and voice input support.",
+    description: "Premium AI-style input with horizontal layout and voice input support.",
   },
   "chatbot-input/kimi": {
     name: "Kimi Input",

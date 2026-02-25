@@ -71,7 +71,7 @@ const ChatGPTInput = React.forwardRef<HTMLDivElement, ChatGPTInputProps>(({
     const hasContent = message.trim().length > 0;
 
     return (
-        <div ref={ref} className={cn("w-full max-w-2xl mx-auto flex flex-col gap-2 p-4", className)}>
+        <div ref={ref} className={cn("w-full min-h-dvh max-w-2xl mx-auto flex flex-col gap-2 p-4", className)}>
             <div
                 className={cn(
                     "group relative flex flex-col rounded-[20px] border border-border/60 bg-background transition-all duration-300 ease-out shadow-sm dark:shadow-[0_2px_12px_rgba(255,255,255,0.02)] overflow-hidden",

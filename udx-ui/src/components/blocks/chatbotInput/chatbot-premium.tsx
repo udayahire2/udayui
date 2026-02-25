@@ -53,7 +53,7 @@ const DeepSeekInput = ({
     const canSend = message.trim().length > 0 && !disabled;
 
     return (
-        <div className={cn("w-full max-w-4xl mx-auto px-4", className)}>
+        <div className={cn("w-full max-w-4xl mx-auto px-4 ", className)}>
             <div className="relative flex items-end gap-3 rounded-xl border border-border bg-background shadow-sm focus-within:border-primary transition-colors p-3">
                 {/* Attachment Button */}
                 <Button

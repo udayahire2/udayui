@@ -200,12 +200,11 @@ const ModelDropdown = ({ currentModel, disabled, onSelect }: ModelDropdownProps)
                 aria-haspopup="listbox"
                 aria-label={`Model: ${currentModel.label}`}
                 className={cn(
-                    "flex h-8 items-center gap-1.5 rounded-md px-2.5",
-                    "text-xs font-medium",
-                    "border border-input bg-background text-foreground",
-                    "hover:bg-accent hover:text-accent-foreground",
+                    "flex h-8 items-center gap-2 rounded-full px-3",
+                    "text-[13px] font-medium transition-colors",
+                    "text-muted-foreground/80 hover:bg-muted/80 hover:text-foreground",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                    open && "bg-accent text-accent-foreground",
+                    open && "bg-muted/80 text-foreground",
                     "disabled:pointer-events-none disabled:opacity-50"
                 )}
             >
@@ -424,21 +423,21 @@ const ClaudeInput = ({
     return (
         <div
             className={cn(
-                "flex w-full items-center justify-center p-4",
+                "flex w-full min-h-dvh items-center justify-center p-4",
                 className
             )}
         >
-            <div className="w-full max-w-2xl space-y-2">
+            <div className="w-full max-w-2xl space-y-3">
                 {/* ── Main card ── */}
                 <div
                     className={cn(
-                        "relative flex flex-col rounded-lg bg-background",
-                        "border border-input shadow-sm",
-                        "focus-within:ring-1 focus-within:ring-ring focus-within:border-ring"
+                        "relative flex flex-col rounded-3xl bg-muted/40",
+                        "border border-border/40 shadow-sm transition-all duration-200",
+                        "focus-within:bg-background focus-within:border-border/60 focus-within:shadow-md"
                     )}
                 >
                     {/* ── Textarea ── */}
-                    <div className="p-3">
+                    <div className="px-4 pt-4">
                         <textarea
                             ref={textareaRef}
                             value={message}
@@ -449,29 +448,26 @@ const ClaudeInput = ({
                             rows={1}
                             className={cn(
                                 "w-full resize-none bg-transparent",
-                                "text-sm text-foreground placeholder:text-muted-foreground",
+                                "text-[15px] leading-relaxed text-foreground placeholder:text-muted-foreground/70",
                                 "focus:outline-none border-none",
-                                "min-h-[40px] max-h-[200px]",
+                                "min-h-[44px] max-h-[200px]",
                                 "disabled:cursor-not-allowed disabled:opacity-50"
                             )}
                         />
                     </div>
 
-                    {/* ── Divider ── */}
-                    <div className="h-px bg-border mx-3" />
-
                     {/* ── Toolbar ── */}
-                    <div className="flex items-center justify-between p-2 gap-2">
+                    <div className="flex items-center justify-between p-3 pt-2">
 
                         {/* Left: action pills */}
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-1.5">
                             <button
                                 type="button"
                                 disabled={disabled}
                                 aria-label="Attach file"
                                 className={cn(
-                                    "flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground",
-                                    "hover:bg-accent hover:text-accent-foreground",
+                                    "flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground/80",
+                                    "hover:bg-muted/80 hover:text-foreground transition-colors",
                                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                                     "disabled:pointer-events-none disabled:opacity-50"
                                 )}
@@ -484,19 +480,19 @@ const ClaudeInput = ({
                                 disabled={disabled}
                                 aria-label="Search the web"
                                 className={cn(
-                                    "flex h-8 items-center gap-1.5 rounded-md px-2.5 text-xs font-medium text-muted-foreground",
-                                    "hover:bg-accent hover:text-accent-foreground",
+                                    "flex h-8 items-center gap-2 rounded-full px-3 text-sm font-medium text-muted-foreground/80",
+                                    "hover:bg-muted/80 hover:text-foreground transition-colors",
                                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                                     "disabled:pointer-events-none disabled:opacity-50"
                                 )}
                             >
-                                <Globe className="h-3.5 w-3.5" />
+                                <Globe className="h-4 w-4" />
                                 <span>Search</span>
                             </button>
                         </div>
 
                         {/* Right: model picker · mic · send */}
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-1.5">
                             <ModelDropdown
                                 currentModel={currentModel}
                                 disabled={disabled}
@@ -508,8 +504,8 @@ const ClaudeInput = ({
                                 disabled={disabled}
                                 aria-label="Voice input"
                                 className={cn(
-                                    "flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground",
-                                    "hover:bg-accent hover:text-accent-foreground",
+                                    "flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground/80",
+                                    "hover:bg-muted/80 hover:text-foreground transition-colors",
                                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                                     "disabled:pointer-events-none disabled:opacity-50"
                                 )}
@@ -523,11 +519,11 @@ const ClaudeInput = ({
                                 onClick={handleSend}
                                 aria-label="Send message"
                                 className={cn(
-                                    "flex h-8 w-8 items-center justify-center rounded-md",
+                                    "flex h-8 w-8 items-center justify-center rounded-full transition-all duration-200",
                                     hasContent
-                                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                                        : "bg-muted text-muted-foreground cursor-not-allowed",
-                                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                                        ? "bg-foreground text-background hover:bg-foreground/90 shadow-sm"
+                                        : "bg-muted text-muted-foreground/50 cursor-not-allowed",
+                                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                                     "disabled:opacity-50"
                                 )}
                             >
@@ -538,7 +534,7 @@ const ClaudeInput = ({
                 </div>
 
                 {/* ── Disclaimer ── */}
-                <p className="text-center text-xs text-muted-foreground select-none">
+                <p className="text-center text-xs text-muted-foreground/70 select-none">
                     Claude can make mistakes. Please double-check responses.
                 </p>
             </div>
