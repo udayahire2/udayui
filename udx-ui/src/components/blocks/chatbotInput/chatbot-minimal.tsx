@@ -3,6 +3,7 @@
 import * as React from "react"
 import { ArrowUp, Plus, ChevronDown, Globe, Zap, Brain, Cpu, Rabbit } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -461,19 +462,24 @@ const ClaudeInput = ({
 
                         {/* Left: action pills */}
                         <div className="flex items-center gap-1.5">
-                            <button
-                                type="button"
-                                disabled={disabled}
-                                aria-label="Attach file"
-                                className={cn(
-                                    "flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground/80",
-                                    "hover:bg-muted/80 hover:text-foreground transition-colors",
-                                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                                    "disabled:pointer-events-none disabled:opacity-50"
-                                )}
-                            >
-                                <Plus className="h-4 w-4" />
-                            </button>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <button
+                                        type="button"
+                                        disabled={disabled}
+                                        aria-label="Attach file"
+                                        className={cn(
+                                            "flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground/80",
+                                            "hover:bg-muted/80 hover:text-foreground transition-colors",
+                                            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                                            "disabled:pointer-events-none disabled:opacity-50"
+                                        )}
+                                    >
+                                        <Plus className="h-4 w-4" />
+                                    </button>
+                                </TooltipTrigger>
+                                <TooltipContent side="top">Attach file</TooltipContent>
+                            </Tooltip>
 
                             <button
                                 type="button"
@@ -499,36 +505,46 @@ const ClaudeInput = ({
                                 onSelect={handleModelSelect}
                             />
 
-                            <button
-                                type="button"
-                                disabled={disabled}
-                                aria-label="Voice input"
-                                className={cn(
-                                    "flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground/80",
-                                    "hover:bg-muted/80 hover:text-foreground transition-colors",
-                                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                                    "disabled:pointer-events-none disabled:opacity-50"
-                                )}
-                            >
-                                <WaveformIcon className="h-4 w-4" />
-                            </button>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <button
+                                        type="button"
+                                        disabled={disabled}
+                                        aria-label="Voice input"
+                                        className={cn(
+                                            "flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground/80",
+                                            "hover:bg-muted/80 hover:text-foreground transition-colors",
+                                            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                                            "disabled:pointer-events-none disabled:opacity-50"
+                                        )}
+                                    >
+                                        <WaveformIcon className="h-4 w-4" />
+                                    </button>
+                                </TooltipTrigger>
+                                <TooltipContent side="top">Voice input</TooltipContent>
+                            </Tooltip>
 
-                            <button
-                                type="button"
-                                disabled={disabled || !hasContent}
-                                onClick={handleSend}
-                                aria-label="Send message"
-                                className={cn(
-                                    "flex h-8 w-8 items-center justify-center rounded-full transition-all duration-200",
-                                    hasContent
-                                        ? "bg-foreground text-background hover:bg-foreground/90 shadow-sm"
-                                        : "bg-muted text-muted-foreground/50 cursor-not-allowed",
-                                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                                    "disabled:opacity-50"
-                                )}
-                            >
-                                <ArrowUp className="h-4 w-4" />
-                            </button>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <button
+                                        type="button"
+                                        disabled={disabled || !hasContent}
+                                        onClick={handleSend}
+                                        aria-label="Send message"
+                                        className={cn(
+                                            "flex h-8 w-8 items-center justify-center rounded-full transition-all duration-200",
+                                            hasContent
+                                                ? "bg-foreground text-background hover:bg-foreground/90 shadow-sm"
+                                                : "bg-muted text-muted-foreground/50 cursor-not-allowed",
+                                            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                                            "disabled:opacity-50"
+                                        )}
+                                    >
+                                        <ArrowUp className="h-4 w-4" />
+                                    </button>
+                                </TooltipTrigger>
+                                <TooltipContent side="top">Send message</TooltipContent>
+                            </Tooltip>
                         </div>
                     </div>
                 </div>

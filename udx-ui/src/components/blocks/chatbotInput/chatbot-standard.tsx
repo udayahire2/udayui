@@ -74,9 +74,9 @@ const ChatGPTInput = React.forwardRef<HTMLDivElement, ChatGPTInputProps>(({
         <div ref={ref} className={cn("w-full min-h-dvh max-w-2xl mx-auto flex flex-col gap-2 p-4", className)}>
             <div
                 className={cn(
-                    "group relative flex flex-col rounded-[20px] border border-border/60 bg-background transition-all duration-300 ease-out shadow-sm dark:shadow-[0_2px_12px_rgba(255,255,255,0.02)] overflow-hidden",
-                    "focus-within:border-primary/30 focus-within:ring-[1px] focus-within:ring-primary/5 focus-within:shadow-md dark:focus-within:shadow-[0_0px_5px_rgba(255,255,255,0.001)]",
-                    "hover:border-border/80",
+                    "group relative flex flex-col rounded-3xl border border-zinc-200 bg-white transition-colors duration-200 shadow-sm overflow-hidden",
+                    "focus-within:border-zinc-300 focus-within:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:focus-within:border-zinc-700",
+                    "hover:border-zinc-300 dark:hover:border-zinc-700",
                     disabled && "opacity-50 cursor-not-allowed"
                 )}
             >
@@ -91,7 +91,7 @@ const ChatGPTInput = React.forwardRef<HTMLDivElement, ChatGPTInputProps>(({
                         onBlur={() => setIsFocused(false)}
                         placeholder={placeholder}
                         disabled={disabled}
-                        className="w-full max-h-[250px] min-h-[56px] resize-none border-0 bg-transparent px-4 py-3 text-[14px] leading-relaxed focus:outline-none text-foreground placeholder:text-muted-foreground/60"
+                        className="w-full max-h-[250px] min-h-[56px] resize-none border-0 bg-transparent px-4 py-3 text-[15px] font-medium leading-relaxed tracking-tight focus:outline-none text-zinc-900 placeholder:text-zinc-400 dark:text-zinc-100 dark:placeholder:text-zinc-500"
                         rows={1}
                         aria-label="Message input"
                     />
@@ -123,7 +123,7 @@ const ChatGPTInput = React.forwardRef<HTMLDivElement, ChatGPTInputProps>(({
                             <DropdownMenuContent
                                 align="start"
                                 sideOffset={8}
-                                className="w-[200px] p-1.5 rounded-2xl bg-popover/95 backdrop-blur-xl border border-border/50 shadow-2xl"
+                                className="w-[200px] p-1.5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-lg"
                             >
                                 <div className="px-2 py-1.5 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
                                     Attachments
@@ -211,7 +211,7 @@ const ChatGPTInput = React.forwardRef<HTMLDivElement, ChatGPTInputProps>(({
                                         <Button
                                             variant="default"
                                             size="sm"
-                                            className="h-7 w-7 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm transition-transform duration-200 border-0 p-0 flex items-center justify-center hover:scale-105 active:scale-95"
+                                            className="h-7 w-7 rounded-full bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900 shadow-none transition-colors border-0 p-0 flex items-center justify-center"
                                             disabled={disabled}
                                             aria-label="Start voice mode"
                                             type="button"
@@ -230,7 +230,7 @@ const ChatGPTInput = React.forwardRef<HTMLDivElement, ChatGPTInputProps>(({
                                         onClick={handleSend}
                                         disabled={disabled}
                                         size="sm"
-                                        className="h-7 w-7 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm transition-transform duration-200 p-0 flex items-center justify-center hover:scale-105 active:scale-95"
+                                        className="h-7 w-7 rounded-full bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900 shadow-none transition-colors p-0 flex items-center justify-center"
                                         aria-label="Send message"
                                         type="button"
                                     >
@@ -245,7 +245,7 @@ const ChatGPTInput = React.forwardRef<HTMLDivElement, ChatGPTInputProps>(({
             </div>
 
             <div className="text-center px-4">
-                <p className="text-[11px] font-medium text-muted-foreground/50 flex items-center justify-center gap-1.5">
+                <p className="text-[12px] font-medium tracking-tight text-zinc-400 dark:text-zinc-500 flex items-center justify-center gap-1.5">
                     <span>AI can make mistakes. Verify important information.</span>
                 </p>
             </div>
