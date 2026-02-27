@@ -114,8 +114,8 @@ const ModelDropdown = ({ currentModel, disabled, onSelect }: ModelDropdownProps)
     const [focusedIdx, setFocusedIdx] = React.useState<number>(-1)
 
     const containerRef = React.useRef<HTMLDivElement>(null)
-    const buttonRef = React.useRef<HTMLButtonElement>(null)
-    const itemRefs = React.useRef<(HTMLButtonElement | null)[]>([])
+    const triggerRef = React.useRef<HTMLButtonElement>(null)
+    const optionsRef = React.useRef<(HTMLButtonElement | null)[]>([])
 
     // ── Outside click ──
     React.useEffect(() => {
@@ -140,7 +140,7 @@ const ModelDropdown = ({ currentModel, disabled, onSelect }: ModelDropdownProps)
 
     React.useEffect(() => {
         if (open && focusedIdx >= 0) {
-            itemRefs.current[focusedIdx]?.focus()
+            optionsRef.current[focusedIdx]?.focus()
         }
     }, [focusedIdx, open])
 
@@ -175,13 +175,13 @@ const ModelDropdown = ({ currentModel, disabled, onSelect }: ModelDropdownProps)
                 if (focusedIdx >= 0) {
                     onSelect(MODELS[focusedIdx])
                     setOpen(false)
-                    buttonRef.current?.focus()
+                    triggerRef.current?.focus()
                 }
                 break
             case "Escape":
                 e.preventDefault()
                 setOpen(false)
-                buttonRef.current?.focus()
+                triggerRef.current?.focus()
                 break
         }
     }
@@ -193,7 +193,7 @@ const ModelDropdown = ({ currentModel, disabled, onSelect }: ModelDropdownProps)
         <div className="relative" ref={containerRef} onKeyDown={handleKeyDown}>
             {/* ── Trigger button ── */}
             <button
-                ref={buttonRef}
+                ref={triggerRef}
                 type="button"
                 disabled={disabled}
                 onClick={() => setOpen((v) => !v)}
@@ -201,25 +201,18 @@ const ModelDropdown = ({ currentModel, disabled, onSelect }: ModelDropdownProps)
                 aria-haspopup="listbox"
                 aria-label={`Model: ${currentModel.label}`}
                 className={cn(
-                    "flex h-8 items-center gap-2 rounded-full px-3",
-                    "text-[13px] font-medium transition-colors",
+                    "flex h-8 items-center gap-1.5 rounded-full px-3",
+                    "text-sm font-medium transition-colors",
                     "text-muted-foreground/80 hover:bg-muted/80 hover:text-foreground",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                     open && "bg-muted/80 text-foreground",
-                    "disabled:pointer-events-none disabled:opacity-50"
+                    "disabled:opacity-50"
                 )}
             >
-                {/* model indicator dot */}
-                <span
-                    className={cn(
-                        "inline-block h-1.5 w-1.5 rounded-full shrink-0",
-                        modelDotColor[currentModel.group]
-                    )}
-                />
-                <span className="max-w-[110px] truncate">{currentModel.label}</span>
+                <span className="max-w-[130px] truncate">{currentModel.label}</span>
                 <ChevronDown
                     className={cn(
-                        "h-3 w-3 shrink-0 opacity-50",
+                        "h-3.5 w-3.5 shrink-0 opacity-50 transition-transform duration-200",
                         open && "rotate-180"
                     )}
                 />
@@ -232,9 +225,9 @@ const ModelDropdown = ({ currentModel, disabled, onSelect }: ModelDropdownProps)
                     aria-label="Select model"
                     aria-activedescendant={focusedIdx >= 0 ? `model-opt-${focusedIdx}` : undefined}
                     className={cn(
-                        "absolute bottom-full right-0 mb-1 z-50",
-                        "w-64 overflow-hidden rounded-md",
-                        "border border-border bg-popover text-popover-foreground shadow-sm"
+                        "absolute bottom-full left-0 mb-2 z-50",
+                        "w-[280px] overflow-hidden rounded-2xl",
+                        "border border-border/50 bg-background/95 backdrop-blur-xl text-popover-foreground shadow-xl"
                     )}
                 >
                     {/* Latest group */}
@@ -244,11 +237,11 @@ const ModelDropdown = ({ currentModel, disabled, onSelect }: ModelDropdownProps)
                         allModels={MODELS}
                         currentModel={currentModel}
                         focusedIdx={focusedIdx}
-                        itemRefs={itemRefs}
+                        itemRefs={optionsRef}
                         onSelect={(m) => {
                             onSelect(m)
                             setOpen(false)
-                            buttonRef.current?.focus()
+                            triggerRef.current?.focus()
                         }}
                     />
 
@@ -262,17 +255,17 @@ const ModelDropdown = ({ currentModel, disabled, onSelect }: ModelDropdownProps)
                         allModels={MODELS}
                         currentModel={currentModel}
                         focusedIdx={focusedIdx}
-                        itemRefs={itemRefs}
+                        itemRefs={optionsRef}
                         onSelect={(m) => {
                             onSelect(m)
                             setOpen(false)
-                            buttonRef.current?.focus()
+                            triggerRef.current?.focus()
                         }}
                     />
 
                     {/* Footer hint */}
                     <div className="px-3 py-2 border-t border-border bg-muted/50">
-                        <p className="text-[10px] text-muted-foreground select-none">
+                        <p className="text-xs text-muted-foreground select-none">
                             ↑↓ to navigate · Enter to select · Esc to close
                         </p>
                     </div>
@@ -303,8 +296,8 @@ const ModelGroup = ({
     itemRefs,
     onSelect,
 }: ModelGroupProps) => (
-    <div className="py-1">
-        <p className="px-3 py-1 text-xs font-semibold text-muted-foreground select-none">
+    <div className="p-1.5">
+        <p className="px-2 py-1.5 text-xs font-medium text-muted-foreground/70 select-none">
             {label}
         </p>
         {models.map((model) => {
@@ -323,20 +316,20 @@ const ModelGroup = ({
                     tabIndex={isFocused ? 0 : -1}
                     onClick={() => onSelect(model)}
                     className={cn(
-                        "flex w-full items-start gap-2.5 px-3 py-1.5 text-left outline-none",
-                        "hover:bg-accent hover:text-accent-foreground",
-                        isFocused && !isActive && "bg-accent text-accent-foreground",
-                        isActive && "bg-accent text-accent-foreground font-medium"
+                        "flex w-full items-start gap-2.5 rounded-xl px-2.5 py-2 text-left outline-none transition-colors",
+                        "hover:bg-accent/50 hover:text-accent-foreground",
+                        isFocused && !isActive && "bg-accent/50 text-accent-foreground",
+                        isActive && "bg-accent text-accent-foreground"
                     )}
                 >
                     {/* Model icon */}
                     <span
                         className={cn(
-                            "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded",
-                            isActive ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                            "mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border",
+                            isActive ? "bg-background border-border shadow-sm text-foreground" : "bg-transparent border-transparent text-muted-foreground"
                         )}
                     >
-                        <model.Icon className="h-3 w-3" />
+
                     </span>
 
                     {/* Label + description */}
@@ -346,7 +339,7 @@ const ModelGroup = ({
                             {model.badge && (
                                 <span
                                     className={cn(
-                                        "inline-flex items-center rounded px-1 py-0.5 text-[10px] font-medium leading-none",
+                                        "inline-flex items-center rounded px-1 py-0.5 text-xs font-medium leading-none",
                                         model.badgeVariant ? badgeClasses[model.badgeVariant] : "bg-secondary text-secondary-foreground"
                                     )}
                                 >
@@ -372,6 +365,43 @@ const ModelGroup = ({
         })}
     </div>
 )
+
+// ─── ToolbarButton ────────────────────────────────────────────────────────────
+
+interface ToolbarButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    tooltip?: string
+}
+
+const ToolbarButton = React.forwardRef<HTMLButtonElement, ToolbarButtonProps>(
+    ({ className, tooltip, children, ...props }, ref) => {
+        const button = (
+            <button
+                ref={ref}
+                type="button"
+                className={cn(
+                    "flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground/80",
+                    "hover:bg-muted/80 hover:text-foreground transition-colors",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                    "disabled:opacity-50",
+                    className
+                )}
+                {...props}
+            >
+                {children}
+            </button>
+        )
+
+        if (!tooltip) return button
+
+        return (
+            <Tooltip>
+                <TooltipTrigger asChild>{button}</TooltipTrigger>
+                <TooltipContent side="top">{tooltip}</TooltipContent>
+            </Tooltip>
+        )
+    }
+)
+ToolbarButton.displayName = "ToolbarButton"
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
@@ -424,7 +454,7 @@ const ClaudeInput = ({
     return (
         <div
             className={cn(
-                "flex w-full min-h-dvh items-center justify-center p-4",
+                "flex w-full flex-col items-center justify-center min-h-dvh p-4",
                 className
             )}
         >
@@ -447,9 +477,10 @@ const ClaudeInput = ({
                             placeholder={placeholder}
                             disabled={disabled}
                             rows={1}
+                            aria-label="Chat input"
                             className={cn(
                                 "w-full resize-none bg-transparent",
-                                "text-[15px] leading-relaxed text-foreground placeholder:text-muted-foreground/70",
+                                "text-base leading-relaxed text-foreground placeholder:text-muted-foreground/70",
                                 "focus:outline-none border-none",
                                 "min-h-[44px] max-h-[200px]",
                                 "disabled:cursor-not-allowed disabled:opacity-50"
@@ -458,28 +489,17 @@ const ClaudeInput = ({
                     </div>
 
                     {/* ── Toolbar ── */}
-                    <div className="flex items-center justify-between p-3 pt-2">
+                    <div className="flex items-center justify-between px-4 pb-3 pt-2">
 
                         {/* Left: action pills */}
                         <div className="flex items-center gap-1.5">
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <button
-                                        type="button"
-                                        disabled={disabled}
-                                        aria-label="Attach file"
-                                        className={cn(
-                                            "flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground/80",
-                                            "hover:bg-muted/80 hover:text-foreground transition-colors",
-                                            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                                            "disabled:pointer-events-none disabled:opacity-50"
-                                        )}
-                                    >
-                                        <Plus className="h-4 w-4" />
-                                    </button>
-                                </TooltipTrigger>
-                                <TooltipContent side="top">Attach file</TooltipContent>
-                            </Tooltip>
+                            <ToolbarButton
+                                disabled={disabled}
+                                aria-label="Attach file"
+                                tooltip="Attach file"
+                            >
+                                <Plus className="h-4 w-4" />
+                            </ToolbarButton>
 
                             <button
                                 type="button"
@@ -489,11 +509,11 @@ const ClaudeInput = ({
                                     "flex h-8 items-center gap-2 rounded-full px-3 text-sm font-medium text-muted-foreground/80",
                                     "hover:bg-muted/80 hover:text-foreground transition-colors",
                                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                                    "disabled:pointer-events-none disabled:opacity-50"
+                                    "disabled:opacity-50"
                                 )}
                             >
                                 <Globe className="h-4 w-4" />
-                                <span>Search</span>
+                                <span className="hidden sm:inline-block">Search</span>
                             </button>
                         </div>
 
@@ -505,24 +525,13 @@ const ClaudeInput = ({
                                 onSelect={handleModelSelect}
                             />
 
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <button
-                                        type="button"
-                                        disabled={disabled}
-                                        aria-label="Voice input"
-                                        className={cn(
-                                            "flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground/80",
-                                            "hover:bg-muted/80 hover:text-foreground transition-colors",
-                                            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                                            "disabled:pointer-events-none disabled:opacity-50"
-                                        )}
-                                    >
-                                        <WaveformIcon className="h-4 w-4" />
-                                    </button>
-                                </TooltipTrigger>
-                                <TooltipContent side="top">Voice input</TooltipContent>
-                            </Tooltip>
+                            <ToolbarButton
+                                disabled={disabled}
+                                aria-label="Voice input"
+                                tooltip="Voice input"
+                            >
+                                <WaveformIcon className="h-4 w-4" />
+                            </ToolbarButton>
 
                             <Tooltip>
                                 <TooltipTrigger asChild>
