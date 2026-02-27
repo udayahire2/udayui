@@ -9,6 +9,7 @@ const NavbarMega = dynamic(() => import("@/components/blocks/headers").then(mod 
 const NavbarCinematic = dynamic(() => import("@/components/blocks/headers").then(mod => ({ default: mod.NavbarCinematic })));
 const NavbarSaas = dynamic(() => import("@/components/blocks/headers").then(mod => ({ default: mod.NavbarSaas })));
 const NavbarMarketing = dynamic(() => import("@/components/blocks/headers").then(mod => ({ default: mod.NavbarMarketing })));
+const DynamicNavigation = dynamic(() => import("@/components/blocks/headers").then(mod => ({ default: mod.DynamicNavigation })));
 
 // --- Heroes ---
 const HeroMinimal = dynamic(() => import("@/components/blocks/heroes").then(mod => ({ default: mod.HeroMinimal })));
@@ -285,6 +286,13 @@ export const registry: Record<string, ComponentItem> = {
     component: NavbarCinematic,
     category: "Headers",
     description: "Cinematic header with dramatic scroll effects and animations.",
+  },
+  "headers/dynamic-navigation": {
+    name: "Floating Dynamic Navigation",
+    slug: "headers/dynamic-navigation",
+    component: DynamicNavigation,
+    category: "Headers",
+    description: "Floating premium dynamic navigation with smooth animations.",
   },
 
   /* ========================= HEROES ========================= */
