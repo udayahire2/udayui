@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { registry } from "@/registry/components";
-import { ModeToggle } from "@/components/ui/mode-toggle";
+import { uiDemoRegistry } from "@/registry/ui-registry";
 import { ResizablePreview } from "@/components/ui/resizable-preview";
 
 interface PreviewPageProps {
@@ -12,10 +12,27 @@ interface PreviewPageProps {
 export default async function PreviewPage(props: PreviewPageProps) {
     const params = await props.params;
     const slug = params.slug.join("/");
+
+    // ── 1. Try blocks registry ──
     const componentItem = registry[slug];
 
+    // ── 2. Fall back to UI demo registry (/preview/ui/[file]) ──
     if (!componentItem) {
-        return notFound();
+        const uiFile = params.slug.length === 2 && params.slug[0] === "ui"
+            ? params.slug[1]
+            : null;
+        const uiItem = uiFile ? uiDemoRegistry[uiFile] : null;
+
+        if (!uiItem) {
+            return notFound();
+        }
+
+        const UIComponent = uiItem.component;
+        return (
+            <ResizablePreview title={uiItem.name} backHref="/preview?tab=ui">
+                <UIComponent />
+            </ResizablePreview>
+        );
     }
 
     const Component = componentItem.component;
