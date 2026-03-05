@@ -46,15 +46,33 @@ const AccordionDemo = dynamic(async () => {
 /* ── Alert ── */
 const AlertDemo = dynamic(async () => {
     const { Alert, AlertTitle, AlertDescription } = await import("@/components/ui/alert");
+    const { Bell, Info, CheckCircle2, AlertTriangle, XCircle } = await import("lucide-react");
     function Demo() {
         return (
             <Stage>
                 <div className="w-full max-w-md space-y-4">
                     <Alert>
-                        <AlertTitle>Heads up!</AlertTitle>
+                        <Bell aria-hidden="true" />
+                        <AlertTitle>Heads up</AlertTitle>
                         <AlertDescription>You can add components to your app using the CLI.</AlertDescription>
                     </Alert>
+                    <Alert variant="info">
+                        <Info aria-hidden="true" />
+                        <AlertTitle>New update available</AlertTitle>
+                        <AlertDescription>Version 2.1 ships with refreshed sections and improved runtime performance.</AlertDescription>
+                    </Alert>
+                    <Alert variant="success">
+                        <CheckCircle2 aria-hidden="true" />
+                        <AlertTitle>Changes saved</AlertTitle>
+                        <AlertDescription>Your profile updates were applied successfully.</AlertDescription>
+                    </Alert>
+                    <Alert variant="warning">
+                        <AlertTriangle aria-hidden="true" />
+                        <AlertTitle>Storage nearly full</AlertTitle>
+                        <AlertDescription>You are using 92% of your storage quota. Consider cleaning up old assets.</AlertDescription>
+                    </Alert>
                     <Alert variant="destructive">
+                        <XCircle aria-hidden="true" />
                         <AlertTitle>Error</AlertTitle>
                         <AlertDescription>Your session has expired. Please log in again.</AlertDescription>
                     </Alert>
