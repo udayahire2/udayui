@@ -256,7 +256,7 @@ const CalendarDemo = dynamic(async () => {
         );
     }
     return { default: Demo };
-});
+}, { ssr: false });
 
 /* ── Card ── */
 const CardDemo = dynamic(async () => {
@@ -356,7 +356,7 @@ const CollapsibleDemo = dynamic(async () => {
         );
     }
     return { default: Demo };
-});
+}, { ssr: false });
 
 /* ── Combobox ── */
 const ComboboxDemo = dynamic(async () => {
@@ -649,7 +649,7 @@ const ProgressDemo = dynamic(async () => {
         );
     }
     return { default: Demo };
-});
+}, { ssr: false });
 
 /* ── Radio Group ── */
 const RadioGroupDemo = dynamic(async () => {
@@ -795,7 +795,7 @@ const SliderDemo = dynamic(async () => {
         );
     }
     return { default: Demo };
-});
+}, { ssr: false });
 
 /* ── Smooth Button (has default export) ── */
 const SmoothButtonDemo = dynamic(() => import("@/components/ui/smooth-button"));

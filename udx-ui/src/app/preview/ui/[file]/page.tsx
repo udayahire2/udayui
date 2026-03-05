@@ -1,17 +1,19 @@
-import { notFound } from "next/navigation";
+"use client"
+
+import { useParams } from "next/navigation";
 import { uiDemoRegistry } from "@/registry/ui-registry";
 import { ResizablePreview } from "@/components/ui/resizable-preview";
 
-interface UIPreviewPageProps {
-    params: Promise<{ file: string }>;
-}
-
-export default async function UIPreviewPage(props: UIPreviewPageProps) {
-    const params = await props.params;
-    const item = uiDemoRegistry[params.file];
+export default function UIPreviewPage() {
+    const params = useParams<{ file: string }>();
+    const item = params.file ? uiDemoRegistry[params.file] : null;
 
     if (!item) {
-        return notFound();
+        return (
+            <div className="flex min-h-screen items-center justify-center bg-background">
+                <p className="text-muted-foreground">Component not found.</p>
+            </div>
+        );
     }
 
     const Component = item.component;
