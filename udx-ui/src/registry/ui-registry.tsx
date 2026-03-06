@@ -1,4 +1,6 @@
+"use client";
 import dynamic from "next/dynamic";
+
 import * as React from "react";
 
 /* ─────────────────────────────────────────────────────────
@@ -553,7 +555,7 @@ const LiquidGlassyButtonDemo = dynamic(async () => {
     const { LiquidGlassyButton } = await import("@/components/ui/liquid-glassy-button");
     function Demo() {
         return (
-            <Stage className="bg-gradient-to-br from-slate-900 to-slate-700">
+            <Stage>
                 <div className="flex flex-col gap-4 items-center">
                     <LiquidGlassyButton className="px-8 py-3 text-base font-semibold">
                         Get Started
