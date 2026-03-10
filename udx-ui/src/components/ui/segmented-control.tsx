@@ -1,86 +1,125 @@
 "use client"
 
 import * as React from "react"
-import { motion } from "framer-motion"
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { cn } from "@/lib/utils"
 
-export interface SegmentedControlProps {
-    options: { label: string; value: string; icon?: React.ReactNode }[]
-    value?: string
-    onValueChange?: (value: string) => void
-    defaultValue?: string
-    className?: string
-    size?: "default" | "sm" | "lg"
+export interface SegmentedControlOption {
+    label: string
+    value: string
+    icon?: React.ReactNode
+    disabled?: boolean
 }
+
+export interface SegmentedControlProps {
+    options: SegmentedControlOption[]
+    value?: string
+    defaultValue?: string
+    onValueChange?: (value: string) => void
+    size?: "sm" | "default" | "lg"
+    disabled?: boolean
+    fullWidth?: boolean
+    className?: string
+}
+
+const sizeClasses = {
+    sm: "h-7 px-3 text-xs gap-1.5",
+    default: "h-8 px-4 text-sm gap-2",
+    lg: "h-9 px-5 text-sm gap-2",
+} as const
 
 export function SegmentedControl({
     options,
     value,
-    onValueChange,
     defaultValue,
-    className,
+    onValueChange,
     size = "default",
+    disabled = false,
+    fullWidth = false,
+    className,
 }: SegmentedControlProps) {
-    // Use uncontrolled state if value isn't provided, otherwise controlled
-    const [internalValue, setInternalValue] = React.useState(defaultValue || options[0]?.value)
-    const id = React.useId()
+    const [internalValue, setInternalValue] = React.useState(
+        defaultValue ?? options[0]?.value
+    )
 
     const currentValue = value !== undefined ? value : internalValue
 
-    const handleValueChange = (newValue: string) => {
-        if (!newValue) return // Prevent deselecting
+    const handleSelect = (optionValue: string, optionDisabled?: boolean) => {
+        if (disabled || optionDisabled || optionValue === currentValue) return
+        if (value === undefined) setInternalValue(optionValue)
+        onValueChange?.(optionValue)
+    }
 
-        if (value === undefined) {
-            setInternalValue(newValue)
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (disabled) return
+        const activeOptions = options.filter((o) => !o.disabled)
+        const currentIndex = activeOptions.findIndex((o) => o.value === currentValue)
+
+        if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+            e.preventDefault()
+            const next = activeOptions[(currentIndex + 1) % activeOptions.length]
+            if (next) handleSelect(next.value)
+        } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+            e.preventDefault()
+            const prev =
+                activeOptions[(currentIndex - 1 + activeOptions.length) % activeOptions.length]
+            if (prev) handleSelect(prev.value)
         }
-
-        onValueChange?.(newValue)
     }
 
     return (
-        <ToggleGroup
-            type="single"
-            value={currentValue}
-            onValueChange={handleValueChange}
+        <div
+            role="tablist"
+            aria-disabled={disabled}
+            onKeyDown={handleKeyDown}
             className={cn(
-                "bg-muted/50 p-1 rounded-lg backdrop-blur-sm",
+                "inline-flex items-center gap-1 rounded-lg border border-border bg-muted p-1",
+                fullWidth && "w-full",
+                disabled && "pointer-events-none opacity-50",
                 className
             )}
         >
-            {options.map((option) => (
-                <ToggleGroupItem
-                    key={option.value}
-                    value={option.value}
-                    size={size}
-                    className={cn(
-                        "relative rounded-md shrink-0 transition-colors duration-200 z-10 px-4",
-                        currentValue === option.value
-                            ? "text-foreground font-medium"
-                            : "text-muted-foreground hover:text-foreground"
-                    )}
-                    variant="default" // Force default so it doesn't get outline styles
-                    // Remove hover bg since we use framer motion for active state
-                    style={{ background: "transparent" }}
-                >
-                    {currentValue === option.value && (
-                        <motion.span
-                            layoutId={`segmented-control-indicator-${id}`}
-                            className="absolute inset-0 z-[-1] bg-background rounded-md shadow-[0_1px_3px_rgba(0,0,0,0.1),0_1px_2px_rgba(0,0,0,0.06)] dark:bg-muted dark:shadow-none"
-                            initial={false}
-                            transition={{
-                                type: "spring",
-                                stiffness: 400,
-                                damping: 30,
-                            }}
-                        />
-                    )}
-                    <span className="relative z-10 flex items-center gap-2">
-                        {option.icon}
-                        {option.label}
-                    </span>
-                </ToggleGroupItem>
-            ))}
-        </ToggleGroup>
+            {options.map((option) => {
+                const isActive = currentValue === option.value
+                const isDisabled = disabled || option.disabled
+
+                return (
+                    <button
+                        key={option.value}
+                        type="button"
+                        role="tab"
+                        aria-selected={isActive}
+                        aria-disabled={isDisabled}
+                        disabled={isDisabled}
+                        tabIndex={isActive ? 0 : -1}
+                        onClick={() => handleSelect(option.value, option.disabled)}
+                        className={cn(
+                            // Base
+                            "relative inline-flex shrink-0 items-center justify-center rounded-md font-medium outline-none",
+                            "select-none cursor-pointer",
+                            "transition-all duration-150 ease-in-out",
+                            // Focus ring
+                            "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-muted",
+                            // Size
+                            sizeClasses[size],
+                            // Full width stretch
+                            fullWidth && "flex-1",
+                            // State: active
+                            isActive
+                                ? "bg-background text-foreground shadow-sm border border-border/60"
+                                : "bg-transparent text-muted-foreground hover:text-foreground",
+                            // Disabled per-option
+                            isDisabled && !disabled && "cursor-not-allowed opacity-50"
+                        )}
+                    >
+                        {option.icon && (
+                            <span className="shrink-0 [&_svg]:size-3.5">
+                                {option.icon}
+                            </span>
+                        )}
+                        <span>{option.label}</span>
+                    </button>
+                )
+            })}
+        </div>
     )
 }

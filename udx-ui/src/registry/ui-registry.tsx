@@ -940,6 +940,147 @@ const ToggleGroupDemo = dynamic(async () => {
     return { default: Demo };
 });
 
+/* ── Theme Toggle ── */
+const ThemeToggleDemo = dynamic(async () => {
+    const { ThemeToggle } = await import("@/components/ui/theme-toggle");
+    function Demo() {
+        return (
+            <Stage>
+                <div className="flex flex-col items-center gap-6">
+                    <p className="text-sm text-muted-foreground">Click to switch between light & dark mode</p>
+                    <ThemeToggle className="w-12 h-12" />
+                </div>
+            </Stage>
+        );
+    }
+    return { default: Demo };
+}, { ssr: false });
+
+/* ── Toggle System (all-in-one) ── */
+const ToggleSystemDemo = dynamic(async () => {
+    const { Toggle } = await import("@/components/ui/toggle");
+    const { Switch } = await import("@/components/ui/switch");
+    const { ThemeToggle } = await import("@/components/ui/theme-toggle");
+    const { SegmentedControl } = await import("@/components/ui/segmented-control");
+    const { MultiStateToggle } = await import("@/components/ui/multi-state-toggle");
+    const { ColorPickerToggle } = await import("@/components/ui/color-picker-toggle");
+    const { Bold, Italic, HandMetal, AlignLeft, AlignCenter, AlignRight } = await import("lucide-react");
+    const { Label } = await import("@/components/ui/label");
+    function Demo() {
+        return (
+            <div className="w-full bg-background p-8 md:p-12">
+                <div className="max-w-4xl mx-auto space-y-12">
+                    <div>
+                        <h1 className="text-2xl font-bold tracking-tight mb-1">Toggle System</h1>
+                        <p className="text-sm text-muted-foreground">Premium toggle components inspired by modern product design.</p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                        {/* 1. Responsive Switch */}
+                        <section className="space-y-3">
+                            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Switch</h2>
+                            <div className="flex flex-col gap-5 p-5 rounded-xl border bg-card shadow-sm">
+                                <div className="flex items-center justify-between">
+                                    <div className="space-y-0.5">
+                                        <Label htmlFor="ts-airplane">Airplane Mode</Label>
+                                        <div className="text-[0.78rem] text-muted-foreground">Disable all wireless communication.</div>
+                                    </div>
+                                    <Switch id="ts-airplane" />
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <Label htmlFor="ts-small">Small Variant</Label>
+                                    <Switch id="ts-small" size="sm" />
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* 2. Theme Toggle */}
+                        <section className="space-y-3">
+                            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Theme Toggle</h2>
+                            <div className="flex items-center justify-center p-8 rounded-xl border bg-card shadow-sm h-[120px]">
+                                <ThemeToggle />
+                            </div>
+                        </section>
+
+                        {/* 3. Segmented Control */}
+                        <section className="space-y-3">
+                            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Segmented Control</h2>
+                            <div className="flex flex-col gap-5 p-5 rounded-xl border bg-card shadow-sm">
+                                <SegmentedControl
+                                    defaultValue="preview"
+                                    options={[
+                                        { label: "Preview", value: "preview" },
+                                        { label: "Code", value: "code" },
+                                        { label: "Inspect", value: "inspect" },
+                                    ]}
+                                />
+                                <SegmentedControl
+                                    defaultValue="monthly"
+                                    size="sm"
+                                    options={[
+                                        { label: "Monthly", value: "monthly" },
+                                        { label: "Yearly (Save 20%)", value: "yearly" },
+                                    ]}
+                                />
+                            </div>
+                        </section>
+
+                        {/* 4. Color Picker */}
+                        <section className="space-y-3">
+                            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Color Picker</h2>
+                            <div className="flex items-center justify-center p-8 rounded-xl border bg-card shadow-sm h-[120px]">
+                                <ColorPickerToggle
+                                    defaultValue="blue"
+                                    colors={[
+                                        { label: "Red", value: "red", colorCode: "#EF4444" },
+                                        { label: "Orange", value: "orange", colorCode: "#F97316" },
+                                        { label: "Yellow", value: "yellow", colorCode: "#EAB308" },
+                                        { label: "Green", value: "green", colorCode: "#22C55E" },
+                                        { label: "Blue", value: "blue", colorCode: "#3B82F6" },
+                                        { label: "Purple", value: "purple", colorCode: "#A855F7" },
+                                    ]}
+                                />
+                            </div>
+                        </section>
+
+                        {/* 5. Multi-State Toggle */}
+                        <section className="space-y-3">
+                            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Multi-State Toggle</h2>
+                            <div className="flex gap-4 items-center justify-center p-8 rounded-xl border bg-card shadow-sm h-[120px]">
+                                <div className="flex flex-col items-center gap-2">
+                                    <Label className="text-xs text-muted-foreground">Text Alignment</Label>
+                                    <MultiStateToggle
+                                        defaultValue="left"
+                                        states={[
+                                            { value: "left", label: "Left", icon: <AlignLeft className="size-4" /> },
+                                            { value: "center", label: "Center", icon: <AlignCenter className="size-4" /> },
+                                            { value: "right", label: "Right", icon: <AlignRight className="size-4" /> },
+                                        ]}
+                                    />
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* 6. Icon Toggle */}
+                        <section className="space-y-3">
+                            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Icon Toggle</h2>
+                            <div className="flex gap-2 items-center justify-center p-8 rounded-xl border bg-card shadow-sm h-[120px]">
+                                <Toggle aria-label="Toggle bold"><Bold /></Toggle>
+                                <Toggle aria-label="Toggle italic" variant="outline"><Italic /></Toggle>
+                                <Toggle aria-label="Toggle metal"><HandMetal /></Toggle>
+                            </div>
+                        </section>
+
+                    </div>
+                </div>
+            </div>
+        );
+    }
+    return { default: Demo };
+},
+    { ssr: false }
+);
+
 /* ── Tooltip ── */
 const TooltipDemo = dynamic(async () => {
     const { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } =
@@ -1280,7 +1421,9 @@ export const uiDemoRegistry: Record<string, UIDemoItem> = {
     tabs: { name: "Tabs", file: "tabs", description: "Tab group for content panels.", component: TabsDemo },
     textarea: { name: "Textarea", file: "textarea", description: "Multi-line text input.", component: TextareaDemo },
     toggle: { name: "Toggle", file: "toggle", description: "Pressed-state toggle button.", component: ToggleDemo },
+    "toggle-system": { name: "Toggle System", file: "toggle", description: "All-in-one showcase of every premium toggle variant.", component: ToggleSystemDemo },
     "toggle-group": { name: "Toggle Group", file: "toggle-group", description: "Grouped toggle buttons.", component: ToggleGroupDemo },
+    "theme-toggle": { name: "Theme Toggle", file: "theme-toggle", description: "Animated sun/moon light-dark theme switcher.", component: ThemeToggleDemo },
     tooltip: { name: "Tooltip", file: "tooltip", description: "Lightweight popup on hover.", component: TooltipDemo },
     spinner: { name: "Spinner", file: "spinner", description: "Animated loading spinner.", component: SpinnerDemo },
     "udx-logo": { name: "UDX Logo", file: "udx-logo", description: "Animated UDX UI brand logo.", component: UdxLogoDemo },
