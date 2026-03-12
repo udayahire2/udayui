@@ -37,9 +37,9 @@ export interface ColorPickerToggleProps {
 // ─── Size map ─────────────────────────────────────────────────────────────────
 
 const sizeMap = {
-    sm: { swatch: "size-6", icon: "size-3", padding: "p-0.5" },
-    md: { swatch: "size-8", icon: "size-3.5", padding: "p-0.5" },
-    lg: { swatch: "size-10", icon: "size-4", padding: "p-1" },
+    sm: { swatch: "size-5", icon: "size-2.5" },
+    md: { swatch: "size-7", icon: "size-3.5" },
+    lg: { swatch: "size-9", icon: "size-4" },
 } as const
 
 // ─── Color parsing & contrast ─────────────────────────────────────────────────
@@ -233,7 +233,7 @@ const ColorPickerToggle = React.forwardRef<HTMLDivElement, ColorPickerToggleProp
             handleSelect(colors[next])
         }
 
-        const { swatch, icon, padding } = sizeMap[size]
+        const { swatch, icon } = sizeMap[size]
 
         // ── Render ────────────────────────────────────────────────────────────
         return (
@@ -246,7 +246,7 @@ const ColorPickerToggle = React.forwardRef<HTMLDivElement, ColorPickerToggleProp
                 aria-orientation="horizontal"
                 aria-disabled={groupDisabled || undefined}
                 className={cn(
-                    "flex flex-wrap items-center gap-1.5",
+                    "flex flex-wrap items-center gap-2.5",
                     groupDisabled && "pointer-events-none opacity-50",
                     className
                 )}
@@ -274,77 +274,57 @@ const ColorPickerToggle = React.forwardRef<HTMLDivElement, ColorPickerToggleProp
                             onClick={() => handleSelect(color)}
                             onKeyDown={(e) => handleKeyDown(e, index)}
                             className={cn(
-                                "relative shrink-0 rounded-md outline-none",
-                                swatch, padding,
-                                // Flat surface — 1px border, minimal shadow
-                                "border border-border/60 bg-background",
-                                "shadow-[0_1px_2px_rgba(0,0,0,0.05)]",
-                                // Transitions: border-color + box-shadow + opacity only
-                                // Duration: 150ms — within the 120-180ms system rule
-                                "transition-[border-color,box-shadow,opacity] duration-150",
-                                // Hover: subtle border darkening, no scale, no glow
-                                !isDisabled && "hover:border-foreground/25",
-                                // Selected: standard ring with offset, thicker border
-                                isActive && [
-                                    "border-foreground/30",
-                                    "ring-2 ring-ring/60 ring-offset-1 ring-offset-background",
-                                ],
-                                // Focus: standard ring — same as Radix/shadcn pattern
-                                "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                                isDisabled && "cursor-not-allowed opacity-45"
+                                "group relative flex shrink-0 items-center justify-center outline-none",
+                                "rounded-full transition-all duration-300 ease-in-out",
+                                swatch,
+                                !isDisabled && !isActive && "hover:scale-110",
+                                isActive && "ring-[1.5px] ring-foreground/60 ring-offset-[3px] ring-offset-background",
+                                "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-[3px]",
+                                isDisabled && "cursor-not-allowed opacity-50"
                             )}
                         >
-                            {/* Color fill — inset from border, subtle inner sheen */}
+                            {/* Color fill */}
                             <span
                                 aria-hidden="true"
                                 className={cn(
-                                    "absolute inset-0.5 rounded-[3px]",
-                                    "ring-1 ring-inset ring-black/8 dark:ring-white/10",
+                                    "flex size-full items-center justify-center rounded-full",
+                                    "border border-black/5 dark:border-white/5",
+                                    "shadow-[inset_0_1px_2px_rgba(0,0,0,0.08)]",
                                     isDisabled && "opacity-75"
                                 )}
-                                style={{
-                                    backgroundColor: color.colorCode,
-                                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.14)",
-                                }}
-                            />
-
-                            {/* Check — opacity transition only, no scale, no draw-on */}
-                            <span
-                                aria-hidden="true"
-                                className="absolute inset-0 flex items-center justify-center"
+                                style={{ backgroundColor: color.colorCode }}
                             >
                                 <Check
                                     className={cn(
                                         icon,
                                         "stroke-[2.5]",
-                                        "transition-opacity duration-150",
-                                        isActive ? "opacity-100" : "opacity-0"
+                                        "transition-all duration-300 ease-out",
+                                        isActive ? "scale-100 opacity-100" : "scale-0 opacity-0"
                                     )}
                                     style={{ color: checkColor }}
                                 />
-                            </span>
 
-                            {/* Disabled strikethrough */}
-                            {isDisabled && (
-                                <span
-                                    aria-hidden="true"
-                                    className="absolute inset-0 rounded-md overflow-hidden"
-                                >
-                                    <svg
-                                        viewBox="0 0 100 100"
-                                        preserveAspectRatio="none"
-                                        className="absolute inset-0 size-full"
+                                {/* Disabled strikethrough */}
+                                {isDisabled && (
+                                    <span
+                                        aria-hidden="true"
+                                        className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-full"
                                     >
-                                        <line
-                                            x1="14" y1="86" x2="86" y2="14"
-                                            stroke="currentColor"
-                                            strokeWidth="8"
-                                            strokeLinecap="round"
-                                            className="text-foreground/35"
-                                        />
-                                    </svg>
-                                </span>
-                            )}
+                                        <svg
+                                            viewBox="0 0 100 100"
+                                            preserveAspectRatio="none"
+                                            className="absolute inset-0 size-full opacity-60"
+                                        >
+                                            <line
+                                                x1="18" y1="82" x2="82" y2="18"
+                                                stroke="currentColor"
+                                                strokeWidth="6"
+                                                strokeLinecap="round"
+                                            />
+                                        </svg>
+                                    </span>
+                                )}
+                            </span>
                         </button>
                     )
                 })}
@@ -356,4 +336,4 @@ const ColorPickerToggle = React.forwardRef<HTMLDivElement, ColorPickerToggleProp
 ColorPickerToggle.displayName = "ColorPickerToggle"
 
 export { ColorPickerToggle }
-export type { ColorOption, ColorPickerToggleProps }
+
